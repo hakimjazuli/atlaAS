@@ -2,5 +2,5 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-class Regex {
+trait hasRegex {
 }

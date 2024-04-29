@@ -2,11 +2,17 @@
 
 namespace HtmlFirst\atlaAS;
 
+use HtmlFirst\atlaAS\Utils\Request;
+use HtmlFirst\atlaAS\Utils\Response;
 use HtmlFirst\atlaAS\Vars\AppSettings;
 use HtmlFirst\atlaAS\Vars\Env;
 
 class App {
+    public Request $request;
+    public Response $response;
     public function __construct(private Env $env, private AppSettings $app_settings) {
+        $this->request = new Request;
+        $this->response = new Response;
     }
     public function run() {
     }
