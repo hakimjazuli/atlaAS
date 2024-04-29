@@ -1,18 +1,18 @@
 {
-    "name": "html_first/atla-as",
-    "description": "php framework with file system router with springkle of common utilites",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "HtmlFirst\\AtlaAs\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Hakim Jazuli",
-            "email": "muhammadhakimjazuli@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {}
+	"name": "html_first/atla-as",
+	"description": "php framework with file system router with springkle of common utilites",
+	"license": "MIT",
+	"autoload": {
+		"psr-4": {
+			"HtmlFirst\\atlaAS\\": "src/"
+		}
+	},
+	"authors": [
+		{
+			"name": "Hakim Jazuli",
+			"email": "muhammadhakimjazuli@gmail.com"
+		}
+	],
+	"minimum-stability": "dev",
+	"require": {}
 }
