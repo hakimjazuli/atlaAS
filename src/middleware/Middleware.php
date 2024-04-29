@@ -1,9 +1,9 @@
 <?php
 
-namespace HtmlFirst\atlaAS\Router;
+namespace HtmlFirst\atlaAS\Middleware;
 
 use HtmlFirst\atlaAS\Utils\hasValidator;
 
-class FSRouter {
+abstract class Middleware {
     use hasValidator;
 }

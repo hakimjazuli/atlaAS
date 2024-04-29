@@ -2,5 +2,5 @@
 
 namespace HtmlFirst\atlaAS\Vars;
 
-interface Settings {
+interface AppSettings {
 }
