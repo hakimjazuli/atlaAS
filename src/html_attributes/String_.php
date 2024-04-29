@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlFirst\atlaAS\Utils;
+namespace HtmlFirst\atlaAS\html_attributes;
 
 trait String_ {
     public static function attr(array $attributes): string {

@@ -2,8 +2,6 @@
 
 namespace HtmlFirst\atlaAS\html_attributes;
 
-use HtmlFirst\atlaAS\Utils\String_;
-
 abstract class Main {
     public function __construct() {
     }
