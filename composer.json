@@ -1,7 +1,8 @@
 {
 	"name": "html_first/atla-as",
-	"description": "php framework with file system router with springkle of common utilites",
+	"description": "php framework with file system router with sprinkle of common utilites",
 	"license": "MIT",
+	"version": "0.0.1",
 	"autoload": {
 		"psr-4": {
 			"HtmlFirst\\atlaAS\\": "src/"
