@@ -2,9 +2,6 @@
 
 namespace HtmlFirst\atlaAS\csr;
 
-/**
- * generate alpine.js attributes
- */
 abstract class AlpineMap {
     private String_ $string_;
     public function __construct() {
