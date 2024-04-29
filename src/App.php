@@ -2,6 +2,8 @@
 
 namespace HtmlFirst\atlaAS;
 
+use HtmlFirst\atlaAS\cli\CLI;
+use HtmlFirst\atlaAS\Router\FSRouter;
 use HtmlFirst\atlaAS\Utils\Request;
 use HtmlFirst\atlaAS\Utils\Response;
 use HtmlFirst\atlaAS\Vars\AppSettings;
@@ -14,6 +16,12 @@ class App {
         $this->request = new Request;
         $this->response = new Response;
     }
-    public function run() {
+    public function run(CLI|false $cli = false) {
+        if ($cli === false) {
+            $fs_router = new FSRouter($this);
+            $fs_router->run();
+            return;
+        }
+        $cli->run();
     }
 }
