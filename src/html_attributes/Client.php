@@ -2,8 +2,8 @@
 
 namespace HtmlFirst\atlaAS\html_attributes;
 
-class Client {
-    private array $instructions = [];
-    public function attr() {
-    }
+/**
+ * generate alpine.js attributes
+ */
+class Client extends Main {
 }
