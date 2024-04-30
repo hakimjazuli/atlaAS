@@ -11,6 +11,13 @@ class FSRouter extends FSMiddleware {
     public function run() {
         $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path;
         $this->current_route = $this->app->app_settings->routes_class;
+        $this->routes_from_uri_array();
+        if (!$this->real_route) {
+            return;
+        }
+        $this->run_real_route();
+    }
+    private function routes_from_uri_array() {
         foreach ($this->app->request->uri_array as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
             $this->current_middleware = $this->current_route . '\\' . $this->app->app_settings->middleware_name;
@@ -21,10 +28,6 @@ class FSRouter extends FSMiddleware {
                 break;
             }
         }
-        if (!$this->real_route) {
-            return;
-        }
-        $this->run_real_route();
     }
     private string $current_route;
     private object|string|false $real_route = false;
