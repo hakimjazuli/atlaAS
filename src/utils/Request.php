@@ -4,6 +4,7 @@ namespace HtmlFirst\atlaAS\Utils;
 
 class Request {
     public bool $is_https;
+    public string $http_mode;
     public string $uri;
     public array $uri_array;
     public string|null $query_params = null;
@@ -11,7 +12,11 @@ class Request {
     public string $method;
     public string $base;
     public function __construct() {
-        $this->is_https = $this->assign_http();
+        if ($this->is_https = $this->assign_http()) {
+            $this->http_mode = 'https';
+        } else {
+            $this->http_mode = 'http';
+        }
         $request_uri = \explode('?', $_SERVER['REQUEST_URI']);
         $this->uri = \trim($request_uri[0], '/');
         $this->uri_array = $this->get_uri();
