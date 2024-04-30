@@ -15,19 +15,16 @@ abstract class FSMiddleware {
             return;
         };
         $mw = new $mw($this->app);
-        if (!\method_exists(
+        if (\method_exists(
             $mw,
             $method = $this->app->app_settings->middleware_name
         )) {
-            return;
-        }
-        $mw->$method();
-        if (!\method_exists(
+            $mw->$method();
+        } elseif (\method_exists(
             $mw,
             $method = $this->app->request->method
         )) {
-            return;
+            $mw->$method();
         }
-        $mw->$method();
     }
 }
