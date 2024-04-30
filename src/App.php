@@ -12,7 +12,7 @@ use HtmlFirst\atlaAS\Vars\AppEnv;
 class App {
     public Request $request;
     public Response $response;
-    public function __construct(public AppEnv $env, public AppSettings $app_settings) {
+    public function __construct(public AppEnv $app_env, public AppSettings $app_settings) {
         $this->request = new Request;
         $this->response = new Response;
     }
