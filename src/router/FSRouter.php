@@ -11,21 +11,24 @@ class FSRouter extends FSMiddleware {
     }
     public function run() {
         $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path;
-        $this->current_route = "\\Routes";
+        $this->current_route = $this->app->app_settings->routes_class;
         foreach ($this->app->request->uri_array as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
             $this->current_middleware = $this->current_route . '\\' . $this->app->app_settings->middleware_name;
             $this->check_mw();
             $this->current_route .= '\\' . $uri;
             if ($this->check_route()) {
-            } elseif ($this->is_folder_exist()) {
-            } else {
+            } elseif (!$this->is_folder_exist()) {
                 break;
             }
         }
+        if (!$this->real_route) {
+            return;
+        }
+        $this->run_real_route();
     }
     private string $current_route;
-    private string $real_route;
+    private object|string|false $real_route = false;
     private function check_route(): bool {
         if (!\class_exists($this->current_route)) {
             return false;
@@ -34,13 +37,32 @@ class FSRouter extends FSMiddleware {
         return true;
     }
     private function run_real_route() {
+        $this->check_common_middleware_exist_in_route();
+        $this->check_method_middleware_exist_in_route();
+        if (\method_exists(
+            $class = $this->real_route,
+            $method = $this->app->request->method
+        )) {
+            $class = new $class();
+            $class->$method();
+        }
     }
-    // private function check_common_middleware_exist_in_route(): void {
-    //     if ($this->is_method_exist($this->app->app_settings->middleware_name)) {
-    //         $this->current_class;
-    //     };
-    // }
-    // private function check_method_middleware_exist_in_class(): void {
-    //     $this->is_method_exist($this->app->request->method);
-    // }
+    private function check_common_middleware_exist_in_route(): void {
+        if (\method_exists(
+            $class = $this->real_route,
+            $mw = $this->app->app_settings->middleware_name
+        )) {
+            $class = new $class();
+            $class->$mw();
+        };
+    }
+    private function check_method_middleware_exist_in_route(): void {
+        if (\method_exists(
+            $class = $this->real_route,
+            $mw = $this->app->app_settings->middleware_name . '_' . $this->app->request->method
+        )) {
+            $class = new $class();
+            $class->$mw();
+        };
+    }
 }
