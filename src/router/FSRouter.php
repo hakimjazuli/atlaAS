@@ -26,6 +26,6 @@ class FSRouter extends FSMiddleware {
         };
     }
     private function check_method_middleware_exist_in_class(): void {
-        $this->is_method_exist($this->app->request->method());
+        $this->is_method_exist($this->app->request->method);
     }
 }
