@@ -12,7 +12,7 @@ class FSMiddleware {
     }
     public function check_mw(): void {
         $mw = $this->current_middleware;
-        if (\class_exists($mw)) {
+        if (!\class_exists($mw)) {
             return;
         };
         $mw = new $mw($this->app);
