@@ -2,6 +2,6 @@
 
 namespace HtmlFirst\atlaAS\Vars;
 
-interface AppSettings {
+abstract class AppSettings {
     public string $middleware_name = 'mw';
 }

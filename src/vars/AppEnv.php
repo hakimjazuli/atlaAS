@@ -2,5 +2,5 @@
 
 namespace HtmlFirst\atlaAS\Vars;
 
-interface AppEnv {
+abstract class AppEnv {
 }
