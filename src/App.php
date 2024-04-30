@@ -15,7 +15,7 @@ class App {
     public Response $response;
     public function __construct(public AppEnv $app_env, public AppSettings $app_settings) {
         $this->request = new Request;
-        $this->app_root = $this->request->public_path . '/../src/';
+        $this->app_root = \realpath($this->request->public_path . '/../src/');
         $this->response = new Response;
     }
     public function run(CLI|false $cli = false) {
