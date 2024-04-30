@@ -38,30 +38,33 @@ class FSRouter extends FSMiddleware {
     private function run_real_route() {
         $this->check_common_middleware_exist_in_route();
         $this->check_method_middleware_exist_in_route();
-        if (\method_exists(
+        if (!\method_exists(
             $route = $this->real_route,
             $method = $this->app->request->method
         )) {
-            $route = new $route($this->app);
-            $route->$method();
+            return;
         }
+        $route = new $route($this->app);
+        $route->$method();
     }
     private function check_common_middleware_exist_in_route(): void {
-        if (\method_exists(
+        if (!\method_exists(
             $middleware = $this->real_route,
             $mw_method = $this->app->app_settings->middleware_name
         )) {
-            $middleware = new $middleware($this->app);
-            $middleware->$mw_method();
+            return;
         };
+        $middleware = new $middleware($this->app);
+        $middleware->$mw_method();
     }
     private function check_method_middleware_exist_in_route(): void {
-        if (\method_exists(
+        if (!\method_exists(
             $middleware = $this->real_route,
             $mw_method = $this->app->app_settings->middleware_name . '_' . $this->app->request->method
         )) {
-            $middleware = new $middleware($this->app);
-            $middleware->$mw_method();
+            return;
         };
+        $middleware = new $middleware($this->app);
+        $middleware->$mw_method();
     }
 }
