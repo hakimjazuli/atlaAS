@@ -2,5 +2,5 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
-abstract class Routes {
+abstract class Routes_ {
 }
