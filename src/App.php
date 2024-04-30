@@ -11,9 +11,11 @@ use HtmlFirst\atlaAS\Vars\AppEnv;
 
 class App {
     public Request $request;
+    public string $app_root;
     public Response $response;
     public function __construct(public AppEnv $app_env, public AppSettings $app_settings) {
         $this->request = new Request;
+        $this->app_root = $this->request->public_path . '/../src/';
         $this->response = new Response;
     }
     public function run(CLI|false $cli = false) {
