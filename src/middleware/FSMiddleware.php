@@ -16,6 +16,9 @@ abstract class FSMiddleware {
             return;
         };
         $mw = new $mw($this->app);
+        if (!$this->is_method_exist('run')) {
+            return;
+        }
         $mw->run();
     }
 }
