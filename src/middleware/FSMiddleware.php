@@ -5,7 +5,7 @@ namespace HtmlFirst\atlaAS\Middleware;
 use HtmlFirst\atlaAS\App;
 use HtmlFirst\atlaAS\Utils\hasFSValidator;
 
-abstract class FSMiddleware {
+class FSMiddleware {
     public string $current_middleware;
     use hasFSValidator;
     public function __construct(private App $app) {
