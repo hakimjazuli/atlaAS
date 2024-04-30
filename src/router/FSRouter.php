@@ -3,7 +3,7 @@
 namespace HtmlFirst\atlaAS\Router;
 
 use HtmlFirst\atlaAS\App;
-use HtmlFirst\atlaAS\Middleware\FSMiddleware;
+use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 
 class FSRouter extends FSMiddleware {
     public function __construct(private App $app) {
@@ -40,29 +40,29 @@ class FSRouter extends FSMiddleware {
         $this->check_common_middleware_exist_in_route();
         $this->check_method_middleware_exist_in_route();
         if (\method_exists(
-            $class = $this->real_route,
+            $route = $this->real_route,
             $method = $this->app->request->method
         )) {
-            $class = new $class();
-            $class->$method();
+            $route = new $route($this->app);
+            $route->$method();
         }
     }
     private function check_common_middleware_exist_in_route(): void {
         if (\method_exists(
-            $class = $this->real_route,
-            $mw = $this->app->app_settings->middleware_name
+            $middleware = $this->real_route,
+            $mw_method = $this->app->app_settings->middleware_name
         )) {
-            $class = new $class();
-            $class->$mw();
+            $middleware = new $middleware($this->app);
+            $middleware->$mw_method();
         };
     }
     private function check_method_middleware_exist_in_route(): void {
         if (\method_exists(
-            $class = $this->real_route,
-            $mw = $this->app->app_settings->middleware_name . '_' . $this->app->request->method
+            $middleware = $this->real_route,
+            $mw_method = $this->app->app_settings->middleware_name . '_' . $this->app->request->method
         )) {
-            $class = new $class();
-            $class->$mw();
+            $middleware = new $middleware($this->app);
+            $middleware->$mw_method();
         };
     }
 }

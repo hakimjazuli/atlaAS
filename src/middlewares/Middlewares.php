@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlFirst\atlaAS\Middleware;
+namespace HtmlFirst\atlaAS\Middlewares;
 
 use HtmlFirst\atlaAS\App;
 
