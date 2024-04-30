@@ -5,11 +5,10 @@ namespace HtmlFirst\atlaAS\Middlewares;
 use HtmlFirst\atlaAS\App;
 use HtmlFirst\atlaAS\Utils\hasFSValidator;
 
-class FSMiddleware {
+abstract class FSMiddleware {
     public string $current_middleware;
+    public App $app;
     use hasFSValidator;
-    public function __construct(private App $app) {
-    }
     public function check_mw(): void {
         $mw = $this->current_middleware;
         if (!\class_exists($mw)) {

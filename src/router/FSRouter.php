@@ -6,8 +6,7 @@ use HtmlFirst\atlaAS\App;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 
 class FSRouter extends FSMiddleware {
-    public function __construct(private App $app) {
-        new parent($app);
+    public function __construct(public App $app) {
     }
     public function run() {
         $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path;
