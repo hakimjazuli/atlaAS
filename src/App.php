@@ -44,6 +44,6 @@ class App {
     }
     public function reroute_error(int $code = 404) {
         self::set_error_header($code);
-        self::reroute($this->app_settings->routes_error_prefix . $code);
+        self::reroute($this->app_settings->routes_errors_prefix . $code);
     }
 }

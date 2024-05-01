@@ -2,6 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
+use Backend\Abstracts\ResourcesHandler;
 use HtmlFirst\atlaAS\App;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
@@ -50,11 +51,12 @@ class FSRouter extends FSMiddleware {
         $this->check_method_middleware_exist_in_route();
         if (!\method_exists(
             $route = $this->real_route,
-            $method = $this->app->request->method
+            $this->app->request->method
         )) {
             return;
         }
         $route_ = new $route($this->app);
+        $this->check_method_with_spread_input_logic($route_);
         $this->run_method_with_input_logic($route, $route_);
     }
     private function check_common_middleware_exist_in_route(): void {
@@ -86,7 +88,7 @@ class FSRouter extends FSMiddleware {
             \count($url_inputs) === 0 &&
             $num_params !== $this->request_length - $this->routes_length
         ) {
-            $this->app->reroute_error(403);
+            $this->app->reroute_error(404);
             return;
         }
         $url_inputs = \count($url_inputs) === 0 ?
@@ -94,17 +96,18 @@ class FSRouter extends FSMiddleware {
             $url_inputs;
         $class_instance->{$method}(...$url_inputs);
     }
-    // private function method_with_spread_input_logic($class_ref, $method, $routes_length) {
-    //     if ($this->is_map_resource($class_ref, $method)) {
-    //         $url_inputs = \array_slice($this->uri_array, $routes_length);
-    //         ResourcesHandler::map_resource($url_inputs, $this->base_path . $class_ref);
-    //         exit(0);
-    //     };
-    // }
-    // private function is_map_resource($class_ref, $method_name) {
-    //     if ($this->request->method !== 'get') {
-    //         return false;
-    //     }
-    //     return Functions::is_first_parameter_spread($class_ref, $method_name);
-    // }
+    private function check_method_with_spread_input_logic($class_ref) {
+        if ($this->is_map_resource($class_ref)) {
+            $url_inputs = \array_slice($this->app->request->uri_array, $this->routes_length);
+            $handler = new ResourcesHandler($this->app);
+            $handler->map_resource($url_inputs, $this->app->app_root . $class_ref);
+            exit(0);
+        };
+    }
+    private function is_map_resource(Routes_ $class_ref) {
+        if ($this->app->request->method !== 'get') {
+            return false;
+        }
+        return FunctionHelpers::is_first_parameter_spread($class_ref, $this->app->request->method);
+    }
 }
