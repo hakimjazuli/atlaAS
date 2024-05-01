@@ -2,10 +2,10 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
-use Backend\Abstracts\ResourcesHandler;
 use HtmlFirst\atlaAS\App;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
+use HtmlFirst\atlaAS\Utils\ResourcesHandler;
 
 class FSRouter extends FSMiddleware {
     public function __construct(public App $app) {
