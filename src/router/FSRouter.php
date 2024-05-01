@@ -56,7 +56,9 @@ class FSRouter extends FSMiddleware {
             return;
         }
         $route_ = new $route($this->app);
-        $this->check_method_with_spread_input_logic($route);
+        if ($this->check_method_with_spread_input_logic($route)) {
+            return;
+        }
         $this->run_method_with_input_logic($route, $route_);
     }
     private function check_common_middleware_exist_in_route(): void {
@@ -96,18 +98,19 @@ class FSRouter extends FSMiddleware {
             $url_inputs;
         $class_instance->{$method}(...$url_inputs);
     }
-    private function check_method_with_spread_input_logic($class_ref) {
-        if ($this->is_map_resource($class_ref)) {
+    private function check_method_with_spread_input_logic(string $class_name): bool {
+        if ($this->is_map_resource($class_name)) {
             $url_inputs = \array_slice($this->app->request->uri_array, $this->routes_length);
             $handler = new ResourcesHandler($this->app);
-            $handler->map_resource($url_inputs, $this->app->app_root . $class_ref);
-            exit(0);
+            $handler->map_resource($url_inputs, $this->app->app_root . $class_name);
+            return true;
         };
+        return false;
     }
-    private function is_map_resource(Routes_ $class_ref) {
+    private function is_map_resource(string $class_name) {
         if ($this->app->request->method !== 'get') {
             return false;
         }
-        return FunctionHelpers::is_first_parameter_spread($class_ref, $this->app->request->method);
+        return FunctionHelpers::is_first_parameter_spread($class_name, $this->app->request->method);
     }
 }
