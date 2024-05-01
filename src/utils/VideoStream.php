@@ -11,16 +11,13 @@ use HtmlFirst\atlaAS\App;
  * @link http://codesamplez.com/programming/php-html5-video-streaming-tutorial
  */
 class VideoStream {
-    private $path = "";
     private $stream = "";
     private $buffer = 0;
     private $start  = -1;
     private $end    = -1;
     private $size   = 0;
 
-    function __construct(private App $app, string $filePath) {
-        $this->path = $filePath;
-
+    function __construct(private App $app, private string $path) {
         /** HS */
         $this->buffer = $app->app_settings::$chunk_sizes;
         /** HS */

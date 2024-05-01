@@ -7,8 +7,12 @@ use HtmlFirst\atlaAS\App;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class FileServer {
+class Fileserver {
     public function __construct(private App $app) {
+    }
+    public function file_version(string $public_uri): string {
+        $version =  $public_uri . '?v=' . \filemtime($this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path . \DIRECTORY_SEPARATOR . $public_uri);
+        return $version;
     }
     /**
      * recurse_dir_and_path
@@ -20,6 +24,8 @@ class FileServer {
      * - callable: will call $callback($file_or_dir); for each dirs detected in the $path
      * - null with $callback_file: will returns array
      * @return void|array
+     * - array: if $callback_file AND $callback_dir is null;
+     * - void: if $callback_file OR $callback_dir is callable
      */
     public function recurse_dir_and_path(string $path, null|callable $callback_file = null, null|callable $callback_dir = null) {
         $recurvecontainer = new RecursiveDirectoryIterator($path);
@@ -214,7 +220,7 @@ class FileServer {
         \header("Content-Type: $content_type");
         return $content_type;
     }
-    public function caching(float $days = 60, bool $force_cache = false): void {
+    private function caching(float $days = 60, bool $force_cache = false): void {
         if ($this->app->app_settings->use_caching()[0] || $force_cache) {
             $expires = self::unix_unit_to_days($days);
             \header('Pragma: public');
@@ -259,9 +265,5 @@ class FileServer {
             return 'is_resource_file';
         }
         return 'not_found';
-    }
-    public static function file_version(string $resource_url, string $route_relative, string $routes_base): string {
-        $version =  $route_relative . $resource_url . '?v=' . \filemtime($routes_base . $route_relative . '/' . $resource_url);
-        return $version;
     }
 }
