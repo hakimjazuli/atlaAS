@@ -7,7 +7,7 @@ use HtmlFirst\atlaAS\App;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class Fileserver {
+class FileServer {
     public function __construct(private App $app) {
     }
     public function file_version(string $public_uri): string {
