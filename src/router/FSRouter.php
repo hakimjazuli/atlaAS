@@ -4,8 +4,8 @@ namespace HtmlFirst\atlaAS\Router;
 
 use HtmlFirst\atlaAS\App;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
+use HtmlFirst\atlaAS\Utils\FileServer;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
-use HtmlFirst\atlaAS\Utils\ResourcesHandler;
 
 class FSRouter extends FSMiddleware {
     public function __construct(public App $app) {
@@ -101,7 +101,7 @@ class FSRouter extends FSMiddleware {
     private function check_method_with_spread_input_logic(string $class_name): bool {
         if ($this->is_map_resource($class_name)) {
             $url_inputs = \array_slice($this->app->request->uri_array, $this->routes_length);
-            $handler = new ResourcesHandler($this->app);
+            $handler = new FileServer($this->app);
             $handler->map_resource($url_inputs, $this->app->app_root . $class_name);
             return true;
         };
