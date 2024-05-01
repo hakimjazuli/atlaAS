@@ -81,21 +81,16 @@ class FSRouter extends FSMiddleware {
         $middleware = new $middleware($this->app);
         $middleware->$mw_method();
     }
-    private function run_method_with_input_logic(string $class_ref, Routes_ $class_instance, array $url_inputs = []): void {
+    private function run_method_with_input_logic(string $class_ref, Routes_ $class_instance): void {
         $num_params = FunctionHelpers::url_input_legth(
             $class_ref,
             $method = $this->app->request->method
         );
-        if (
-            \count($url_inputs) === 0 &&
-            $num_params !== $this->request_length - $this->routes_length
-        ) {
+        if ($num_params !== $this->request_length - $this->routes_length) {
             $this->app->reroute_error(404);
             return;
         }
-        $url_inputs = \count($url_inputs) === 0 ?
-            \array_slice($this->app->request->uri_array, -$num_params) :
-            $url_inputs;
+        $url_inputs = \array_slice($this->app->request->uri_array, -$num_params);
         $class_instance->{$method}(...$url_inputs);
     }
     private function check_method_with_spread_input_logic(string $class_name): bool {
