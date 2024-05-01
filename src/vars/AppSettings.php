@@ -2,11 +2,9 @@
 
 namespace HtmlFirst\atlaAS\Vars;
 
-use HtmlFirst\atlaAS\App;
-
 abstract class AppSettings {
-    public function __construct(private App $app) {
-    }
+    public static $is_in_production = false;
+
     public string $middleware_name = 'mw';
     public string $routes_path = 'routes';
     public string $routes_class = '\\Routes';
@@ -28,6 +26,6 @@ abstract class AppSettings {
         return [$this->if_in_production(true, true), 60/* days */];
     }
     public function if_in_production(bool $in_production_value, bool $not_in_production_value): bool {
-        return $this->app->app_env::$is_in_production ? $in_production_value : $not_in_production_value;
+        return self::$is_in_production ? $in_production_value : $not_in_production_value;
     }
 }
