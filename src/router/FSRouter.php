@@ -56,7 +56,7 @@ class FSRouter extends FSMiddleware {
             return;
         }
         $route_ = new $route($this->app);
-        $this->check_method_with_spread_input_logic($route_);
+        $this->check_method_with_spread_input_logic($route);
         $this->run_method_with_input_logic($route, $route_);
     }
     private function check_common_middleware_exist_in_route(): void {
