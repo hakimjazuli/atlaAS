@@ -2,10 +2,14 @@
 
 namespace Backend\Abstracts;
 
+use Backend\Classes\Libs\VideoStream;
+use HtmlFirst\atlaAS\App;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-abstract class ResourcesHandler {
+class ResourcesHandler {
+    public function __construct(private App $app) {
+    }
     /**
      * recurse_dir_and_path
      * @param  string $path
@@ -17,16 +21,16 @@ abstract class ResourcesHandler {
      * - null with $callback_file: will returns array
      * @return void|array
      */
-    public static function recurse_dir_and_path(string $path, null|callable $callback_file = null, null|callable $callback_dir = null) {
+    public function recurse_dir_and_path(string $path, null|callable $callback_file = null, null|callable $callback_dir = null) {
         $recurvecontainer = new RecursiveDirectoryIterator($path);
         $files_and_dirs = new RecursiveIteratorIterator($recurvecontainer);
         if ($callback_file === null && $callback_dir === null) {
             return $files_and_dirs;
         }
         foreach ($files_and_dirs as $file_or_dir) {
-            if (\is_file(Vars::system_path($file_or_dir))) {
+            if (\is_file($this->app->app_settings::system_path($file_or_dir))) {
                 $callback_file($file_or_dir);
-            } elseif (\is_dir(Vars::system_path($file_or_dir))) {
+            } elseif (\is_dir($this->app->app_settings::system_path($file_or_dir))) {
                 $callback_dir($file_or_dir);
             }
         }
@@ -38,15 +42,15 @@ abstract class ResourcesHandler {
      * @param  bool $force_download
      * @return void
      */
-    public static function map_resource(array $relative_path, string $mapper_directory, $force_download = false): void {
-        $file = Vars::system_path($mapper_directory . '/' . join('/', $relative_path));
+    public function map_resource(array $relative_path, string $mapper_directory, $force_download = false): void {
+        $file = $this->app->app_settings::system_path($mapper_directory . '/' . join('/', $relative_path));
         $resource = self::page_resource_handler($file, $force_download);
         switch ($resource) {
             case 'is_resource_file':
                 break;
             case 'is_system_file':
             case 'not_found':
-                Routes::reroute_error(404);
+                $this->app->reroute_error(404);
                 break;
         }
     }
@@ -210,8 +214,8 @@ abstract class ResourcesHandler {
         \header("Content-Type: $content_type");
         return $content_type;
     }
-    public static function caching(float $days = 60, bool $force_cache = false): void {
-        if (Vars::use_caching()[0] || $force_cache) {
+    public function caching(float $days = 60, bool $force_cache = false): void {
+        if ($this->app->app_settings->use_caching()[0] || $force_cache) {
             $expires = self::unix_unit_to_days($days);
             \header('Pragma: public');
             \header("Cache-Control: max-age=$expires");
@@ -224,34 +228,34 @@ abstract class ResourcesHandler {
         \header('Content-Transfer-Encoding: Binary');
         \header("Content-disposition: filename=$path");
     }
-    private static function file_handler(string $filename, bool $use_stream = false, bool $force_download = false): void {
-        self::caching(Vars::use_caching()[1]);
+    private function file_handler(string $filename, bool $use_stream = false, bool $force_download = false): void {
+        self::caching($this->app->app_settings->use_caching()[1]);
         $content_type = self::header_file_type($filename);
         \header('Accept-Ranges: bytes');
         $file_size = filesize($filename);
         if ($force_download) {
             self::download_force($filename);
         } elseif ($use_stream && str_starts_with($content_type, 'video') && !$force_download) {
-            $stream = new VideoStream($filename);
+            $stream = new VideoStream($this->app, $filename);
             $stream->start();
             return;
         } else {
             \header("Content-Length: $file_size");
         }
-        if (Vars::$load_file_with_php_require) {
+        if ($this->app->app_settings::$load_file_with_php_require) {
             require $filename;
             return;
         }
         /** readfile|require will automatically echo the result */
         readfile($filename);
     }
-    private static function page_resource_handler(string $file, bool $force_download = false): string {
+    private function page_resource_handler(string $file, bool $force_download = false): string {
         $file_ext = pathinfo($file, PATHINFO_EXTENSION);
-        if ($file_ext == Vars::$system_file) {
+        if ($file_ext == $this->app->app_settings::$system_file) {
             return 'is_system_file';
         }
-        if (is_file(Vars::system_path($file))) {
-            self::file_handler($file, Vars::$use_stream, $force_download);
+        if (is_file($this->app->app_settings::system_path($file))) {
+            self::file_handler($file, $this->app->app_settings::$use_stream, $force_download);
             return 'is_resource_file';
         }
         return 'not_found';

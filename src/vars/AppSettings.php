@@ -10,6 +10,7 @@ abstract class AppSettings {
     public string $middleware_name = 'mw';
     public string $routes_path = 'routes';
     public string $routes_class = '\\Routes';
+    public string $routes_error_prefix = '/errors/';
 
     public static $chunk_sizes = 204_800;
     public static $refresh_micro_second = 500_000;

@@ -25,4 +25,25 @@ class App {
         }
         $cli->run();
     }
+    public static function reroute(string $path) {
+        \header("location: $path");
+        exit(0);
+    }
+    public static function set_error_header(int $code = 404) {
+        switch ($code) {
+            case 403:
+                \header("HTTP/1.1 403 Forbidden");
+                break;
+            case 404:
+                \header("HTTP/1.0 404 Not Found");
+                break;
+            case 500:
+                \header("HTTP/1.0 500 Internal Server Error");
+                break;
+        }
+    }
+    public function reroute_error(int $code = 404) {
+        self::set_error_header($code);
+        self::reroute($this->app_settings->routes_error_prefix . $code);
+    }
 }
