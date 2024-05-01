@@ -15,6 +15,7 @@ class FSRouter extends FSMiddleware {
         $this->current_route = $this->app->app_settings->routes_class;
         $this->routes_from_uri_array();
         if (!$this->real_route) {
+            $this->app->reroute_error(404);
             return;
         }
         $this->run_real_route();
