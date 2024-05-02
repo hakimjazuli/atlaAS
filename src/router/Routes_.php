@@ -2,9 +2,8 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
-use HtmlFirst\atlaAS\App;
+use HtmlFirst\atlaAS\Utils\hasProtectedApp;
 
 abstract class Routes_ {
-    public function __construct(protected App $app) {
-    }
+    use hasProtectedApp;
 }
