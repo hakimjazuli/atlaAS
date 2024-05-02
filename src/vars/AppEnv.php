@@ -7,7 +7,7 @@ abstract class AppEnv {
 
     public static $db_driver = 'mysql';
     public static $db_host = 'localhost';
-    public static $db_database = 'palusidas';
+    public static $db_database = 'db_name';
     public static $db_username = 'root';
     public static $db_password = '';
 }
