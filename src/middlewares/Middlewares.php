@@ -4,9 +4,7 @@ namespace HtmlFirst\atlaAS\Middlewares;
 
 use HtmlFirst\atlaAS\App;
 
-abstract class Middlewares {
+abstract class Middlewares implements hasMidlleware {
     public function __construct(protected App $app) {
-    }
-    public function mw(string $method) {
     }
 }
