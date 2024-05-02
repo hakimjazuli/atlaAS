@@ -2,7 +2,7 @@
 
 namespace Backend\Classes\Libs;
 
-use HtmlFirst\atlaAS\App;
+use HtmlFirst\atlaAS\App_;
 
 /**
  * Description of VideoStream
@@ -17,7 +17,7 @@ class VideoStream {
     private $end    = -1;
     private $size   = 0;
 
-    function __construct(private App $app, private string $path) {
+    function __construct(private App_ $app, private string $path) {
         /** HS */
         $this->buffer = $app->app_settings::$chunk_sizes;
         /** HS */

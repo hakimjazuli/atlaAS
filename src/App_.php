@@ -7,7 +7,7 @@ use HtmlFirst\atlaAS\Utils\Request;
 use HtmlFirst\atlaAS\Vars\AppSettings;
 use HtmlFirst\atlaAS\Vars\AppEnv;
 
-abstract class App {
+abstract class App_ {
     public Request $request;
     public string $app_root;
     public string $public_url_root;
