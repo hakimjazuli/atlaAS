@@ -20,10 +20,17 @@ class Response {
         $output = self::echo_preprocess($html_function, $html_document);
         echo \preg_replace(self::$single_line, '', $output);
     }
-    public static function print_json(array $array, bool $as_json_api = true): void {
-        if ($as_json_api) {
-            \header('Content-Type: application/json');
-        }
-        \print_r(\json_encode($array));
+    public static function echo_json_api(array $array): void {
+        // if ($json = \json_encode($array)) {
+        //     \header('Content-Type: application/json');
+        //     echo $json;
+        //     return;
+        // }
+        \header("HTTP/1.0 500 Internal Server Error");
+        \print_r([
+            'status' => 'error',
+            'message' => 'failed to encode to json'
+        ]);
+        exit(0);
     }
 }
