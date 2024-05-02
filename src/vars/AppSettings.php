@@ -8,14 +8,14 @@ abstract class AppSettings {
 
     public string $middleware_name = 'mw';
     public string $routes_path = 'routes';
-    public string $routes_class = '\\Routes';
+    public string $routes_class = 'Routes';
     public string $routes_errors_prefix = '/errors/';
 
-    public static $chunk_sizes = 204_800;
-    public static $refresh_micro_second = 500_000;
-    public static $load_file_with_php_require = false;
-    public static $system_file = 'php';
-    public static $use_stream = true;
+    public static int $chunk_sizes = 204_800;
+    public static int $refresh_micro_second = 500_000;
+    public static bool $load_file_with_php_require = false;
+    public static string $system_file = 'php';
+    public static bool $use_stream = true;
 
     public static function server_ip() {
         return @$_SERVER['SERVER_ADDR'];
