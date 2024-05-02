@@ -13,7 +13,7 @@ class Hasher {
     public function password_check(string $value, string $dbpassword): bool {
         return password_verify($this->app->app_env::$app_key . $value, $dbpassword);
     }
-    public  function generate_token(): string {
+    public function generate_token(): string {
         $token_handler = $this->app->app_env::$app_key . \random_bytes(32);
         $token_handler = \unpack('H*', $token_handler)[1];
         $token_handler = \str_shuffle($token_handler);
