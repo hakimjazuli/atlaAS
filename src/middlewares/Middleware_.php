@@ -4,7 +4,7 @@ namespace HtmlFirst\atlaAS\Middlewares;
 
 use HtmlFirst\atlaAS\Utils\hasProtectedApp;
 
-abstract class Middlewares {
+abstract class Middleware_ {
     use hasMiddleware;
     use hasProtectedApp;
 }
