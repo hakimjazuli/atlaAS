@@ -2,11 +2,11 @@
 
 namespace HtmlFirst\atlaAS\Middlewares;
 
-use HtmlFirst\atlaAS\App_;
+use HtmlFirst\atlaAS\App;
 
 abstract class FSMiddleware {
     public string $current_middleware;
-    public App_ $app;
+    public App $app;
     public string $current_folder;
     public function is_folder_exist(): bool {
         return \is_dir($this->current_folder);

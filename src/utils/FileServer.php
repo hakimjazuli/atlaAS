@@ -3,12 +3,12 @@
 namespace HtmlFirst\atlaAS\Utils;
 
 use Backend\Classes\Libs\VideoStream;
-use HtmlFirst\atlaAS\App_;
+use HtmlFirst\atlaAS\App;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 class FileServer {
-    public function __construct(private App_ $app) {
+    public function __construct(private App $app) {
     }
     public function file_version(string $public_uri): string {
         $version = $public_uri . '?t=' . \filemtime($this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path . \DIRECTORY_SEPARATOR . trim($public_uri, '/'));
