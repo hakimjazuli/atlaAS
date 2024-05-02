@@ -21,11 +21,11 @@ class Response {
         echo \preg_replace(self::$single_line, '', $output);
     }
     public static function echo_json_api(array $array): void {
-        // if ($json = \json_encode($array)) {
-        //     \header('Content-Type: application/json');
-        //     echo $json;
-        //     return;
-        // }
+        if ($json = \json_encode($array)) {
+            \header('Content-Type: application/json');
+            echo $json;
+            return;
+        }
         \header("HTTP/1.0 500 Internal Server Error");
         \print_r([
             'status' => 'error',
