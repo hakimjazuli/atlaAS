@@ -12,9 +12,11 @@ class App {
     public Request $request;
     public string $app_root;
     public string $public_url_root;
-    public function __construct(public string|AppEnv $app_env, public string|AppSettings $app_settings) {
-        $this->app_env = new $app_env;
-        $this->app_settings = new $app_settings($app_env);
+    public AppEnv $app_env;
+    public AppSettings $app_settings;
+    public function __construct(string $app_env_ref, string $app_settings_ref) {
+        $this->app_env = new $app_env_ref;
+        $this->app_settings = new $app_settings_ref($this->app_env);
         $this->request = new Request;
         $this->app_root = \dirname($this->request->public_path);
         $this->public_url_root = $this->request->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
