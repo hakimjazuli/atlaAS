@@ -2,9 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
-use HtmlFirst\atlaAS\App;
+use HtmlFirst\atlaAS\Middlewares\Middlewares;
 
-abstract class Routes_ {
-    public function __construct(protected App $app) {
-    }
+abstract class Routes_ extends Middlewares {
 }
