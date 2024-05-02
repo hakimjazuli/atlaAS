@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Middlewares;
 
-trait hasMidlleware {
+trait hasMiddleware {
     public function mw(string $method) {
     }
 }

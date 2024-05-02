@@ -5,7 +5,7 @@ namespace HtmlFirst\atlaAS\Middlewares;
 use HtmlFirst\atlaAS\App;
 
 abstract class Middlewares {
-    use hasMidlleware;
+    use hasMiddleware;
     public function __construct(protected App $app) {
     }
 }
