@@ -3,12 +3,14 @@
 namespace HtmlFirst\atlaAS\Middlewares;
 
 use HtmlFirst\atlaAS\App;
-use HtmlFirst\atlaAS\Utils\hasFSValidator;
 
 abstract class FSMiddleware {
     public string $current_middleware;
     public App $app;
-    use hasFSValidator;
+    public string $current_folder;
+    public function is_folder_exist(): bool {
+        return \is_dir($this->current_folder);
+    }
     public function check_mw(): void {
         $mw = $this->current_middleware;
         if (!\class_exists($mw)) {
