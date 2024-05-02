@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Classes\Libs;
+namespace HtmlFirst\atlaAS\Utils;
 
 use HtmlFirst\atlaAS\App;
 

@@ -2,7 +2,6 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-use Backend\Classes\Libs\VideoStream;
 use HtmlFirst\atlaAS\App;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
