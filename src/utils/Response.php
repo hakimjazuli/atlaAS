@@ -19,8 +19,8 @@ class Response {
     public static function echo_single_line(callable $html_function, bool $html_document = true) {
         $output = self::preprocess($html_function, $html_document);
         echo trim(\preg_replace(
-            [self::$single_line, self::$excesive_spacing,'> <'],
-            [' ', ' ',''],
+            [self::$single_line, self::$excesive_spacing, '/> /', '/ </'],
+            [' ', ' ', '>', '<'],
             $output
         ), ' ');
     }
