@@ -23,6 +23,7 @@ class App {
     public function run(): void {
         $fs_router = new FSRouter($this);
         $fs_router->run();
+        /** test */
     }
     public static function reroute(string $path): void {
         \header("location: $path");
