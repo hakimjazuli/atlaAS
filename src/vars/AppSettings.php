@@ -3,7 +3,8 @@
 namespace HtmlFirst\atlaAS\Vars;
 
 abstract class AppSettings {
-    public static $is_in_production = false;
+    public function __construct(private AppEnv $app_env) {
+    }
 
     public string $middleware_name = 'mw';
     public string $routes_path = 'routes';
@@ -23,9 +24,9 @@ abstract class AppSettings {
         return str_replace(['/', '\\'], [\DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR], $path);
     }
     public function use_caching() {
-        return [$this->if_in_production(true, true), 60/* days */];
+        return [$this->if_in_production(true, false), 60/* days */];
     }
     public function if_in_production(bool $in_production_value, bool $not_in_production_value): bool {
-        return self::$is_in_production ? $in_production_value : $not_in_production_value;
+        return $this->app_env->is_in_production ? $in_production_value : $not_in_production_value;
     }
 }
