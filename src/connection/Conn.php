@@ -22,12 +22,12 @@ class Conn {
             }
         };
     }
-    public static function connection_start(string $mode) {
+    private static function connection_start(string $mode) {
         if (!isset($_ENV['_CONN'][$mode])) {
             return $_ENV['_CONN'][$mode] = self::connect($mode);
         }
     }
-    public static function connection_close(string $mode) {
+    private static function connection_close(string $mode) {
         if (isset($_ENV['_CONN'][$mode])) {
             return $_ENV['_CONN'][$mode] = null;
         }
