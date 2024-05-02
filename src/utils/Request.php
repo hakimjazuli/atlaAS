@@ -45,11 +45,16 @@ class Request {
             }
         }
     }
+    public false|array $overwite_param = false;
     public function get_query_param(string|false $param_name = false): string|array {
-        if ($param_name) {
-            return $_GET[$param_name];
+        $val = $_GET;
+        if ($this->overwite_param) {
+            $val = $this->overwite_param;
         }
-        return $_GET;
+        if ($param_name) {
+            return $val[$param_name];
+        }
+        return $val;
     }
     private function get_uri(): array {
         $uri = \explode('/', $this->uri);
