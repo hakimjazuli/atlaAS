@@ -27,6 +27,6 @@ abstract class AppSettings {
         return [$this->if_in_production(true, false), 60/* days */];
     }
     public function if_in_production(bool $in_production_value, bool $not_in_production_value): bool {
-        return $this->app_env->is_in_production ? $in_production_value : $not_in_production_value;
+        return $this->app_env::$is_in_production ? $in_production_value : $not_in_production_value;
     }
 }
