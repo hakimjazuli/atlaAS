@@ -1,6 +1,6 @@
 {
 	"name": "html_first/atla-as",
-	"description": "php framework with file system router with sprinkle of common utilites",
+	"description": "php file system routing and file serving library",
 	"license": "MIT",
 	"version": "0.0.1",
 	"autoload": {
