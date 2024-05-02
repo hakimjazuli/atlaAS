@@ -4,7 +4,7 @@ namespace HtmlFirst\atlaAS\Router;
 
 use HtmlFirst\atlaAS\Utils\hasProtectedApp;
 
-abstract class Routes_ {
+abstract class Route_ {
     use hasProtectedApp;
     /**
      * use this only for calling it's own get method;
