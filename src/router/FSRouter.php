@@ -55,11 +55,10 @@ class FSRouter extends FSMiddleware {
         )) {
             return;
         }
-        $route_ = new $route($this->app);
         if ($this->check_method_with_spread_input_logic($route)) {
             return;
         }
-        $this->run_method_with_input_logic($route, $route_);
+        $this->run_method_with_input_logic($route);
     }
     private function check_middleware_exist_in_route(): void {
         if (!\method_exists(
@@ -68,12 +67,11 @@ class FSRouter extends FSMiddleware {
         )) {
             return;
         };
-        $middleware = new $middleware($this->app);
-        $middleware->$mw_method($this->app->request->method);
+        (new $middleware($this->app))->$mw_method($this->app->request->method);
     }
-    private function run_method_with_input_logic(string $class_ref, Routes_ $class_instance): void {
+    private function run_method_with_input_logic(string $class_name): void {
         $num_params = FunctionHelpers::url_input_legth(
-            $class_ref,
+            $class_name,
             $method = $this->app->request->method
         );
         if ($num_params !== $this->request_length - $this->routes_length) {
@@ -81,7 +79,7 @@ class FSRouter extends FSMiddleware {
             return;
         }
         $url_inputs = \array_slice($this->app->request->uri_array, -$num_params);
-        $class_instance->{$method}(...$url_inputs);
+        (new $class_name($this->app))->$method(...$url_inputs);
     }
     private function check_method_with_spread_input_logic(string $class_name): bool {
         if ($this->is_map_resource($class_name)) {
