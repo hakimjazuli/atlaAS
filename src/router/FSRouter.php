@@ -47,7 +47,7 @@ class FSRouter extends FSMiddleware {
         return true;
     }
     private function run_real_route() {
-        // $this->check_middleware_exist_in_route();
+        $this->check_middleware_exist_in_route();
         if (!\method_exists(
             $route = $this->real_route,
             $this->app->request->method
@@ -59,15 +59,15 @@ class FSRouter extends FSMiddleware {
         }
         $this->run_method_with_input_logic($route);
     }
-    // private function check_middleware_exist_in_route(): void {
-    //     if (!\method_exists(
-    //         $middleware = $this->real_route,
-    //         $mw_method = $this->app->app_settings->middleware_name
-    //     )) {
-    //         return;
-    //     };
-    //     (new $middleware($this->app))->$mw_method($this->app->request->method);
-    // }
+    private function check_middleware_exist_in_route(): void {
+        if (!\method_exists(
+            $middleware = $this->real_route,
+            $mw_method = $this->app->app_settings->middleware_name
+        )) {
+            return;
+        };
+        (new $middleware($this->app))->$mw_method($this->app->request->method);
+    }
     private function run_method_with_input_logic(string $class_name): void {
         $num_params = FunctionHelpers::url_input_legth(
             $class_name,
