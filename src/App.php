@@ -42,6 +42,15 @@ class App {
         }
     }
     public function reroute_error(int $code = 404): void {
+        switch ($code) {
+            case 403:
+            case 404:
+            case 500:
+                break;
+            default:
+                $code = 404;
+                break;
+        }
         self::set_error_header($code);
         self::reroute($this->app_settings->routes_errors_prefix . $code);
     }

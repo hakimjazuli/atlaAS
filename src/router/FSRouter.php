@@ -48,8 +48,7 @@ class FSRouter extends FSMiddleware {
         return true;
     }
     private function run_real_route() {
-        $this->check_common_middleware_exist_in_route();
-        $this->check_method_middleware_exist_in_route();
+        $this->check_middleware_exist_in_route();
         if (!\method_exists(
             $route = $this->real_route,
             $this->app->request->method
@@ -62,7 +61,7 @@ class FSRouter extends FSMiddleware {
         }
         $this->run_method_with_input_logic($route, $route_);
     }
-    private function check_common_middleware_exist_in_route(): void {
+    private function check_middleware_exist_in_route(): void {
         if (!\method_exists(
             $middleware = $this->real_route,
             $mw_method = $this->app->app_settings->middleware_name
@@ -70,17 +69,7 @@ class FSRouter extends FSMiddleware {
             return;
         };
         $middleware = new $middleware($this->app);
-        $middleware->$mw_method();
-    }
-    private function check_method_middleware_exist_in_route(): void {
-        if (!\method_exists(
-            $middleware = $this->real_route,
-            $mw_method = $this->app->app_settings->middleware_name . '_' . $this->app->request->method
-        )) {
-            return;
-        };
-        $middleware = new $middleware($this->app);
-        $middleware->$mw_method();
+        $middleware->$mw_method($this->app->request->method);
     }
     private function run_method_with_input_logic(string $class_ref, Routes_ $class_instance): void {
         $num_params = FunctionHelpers::url_input_legth(
