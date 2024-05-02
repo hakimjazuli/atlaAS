@@ -2,14 +2,13 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
-use HtmlFirst\atlaAS\App;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\FileServer;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
+use HtmlFirst\atlaAS\Utils\hasPublicApp;
 
 class FSRouter extends FSMiddleware {
-    public function __construct(public App $app) {
-    }
+    use hasPublicApp;
     public function run() {
         $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path;
         $this->current_route = '\\' . $this->app->app_settings->routes_class;
