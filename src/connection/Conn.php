@@ -81,7 +81,7 @@ class Conn {
         string $sql_relative_path,
         string|null $csrf_key = null,
         string|null $connection = null,
-        array|null $bind,
+        array|null $bind = null,
         bool $override_csrf = false
     ): atlaASQuery {
         if (!\is_file($sql_relative_path =
