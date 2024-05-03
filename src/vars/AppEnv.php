@@ -3,11 +3,11 @@
 namespace HtmlFirst\atlaAS\Vars;
 
 abstract class AppEnv {
-    public static $is_in_production = false;
+    public static bool $is_in_production = false;
 
-    public static $app_key = '4arrW44EN4T5YIYTytcyrbuAERbrIb5e48Y7Ro8y9WYEY8b69';
-    public static $default_connection = 'site';
-    public static $conn = [
+    public static string $app_key = '4arrW44EN4T5YIYTytcyrbuAERbrIb5e48Y7Ro8y9WYEY8b69';
+    public static string $default_connection = 'site';
+    public static array $conn = [
         'http' => [
             'site' =>
             [
