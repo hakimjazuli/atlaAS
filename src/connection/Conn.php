@@ -8,7 +8,7 @@ use PDO;
 use PDOException;
 use PDOStatement;
 
-abstract class Conn {
+class Conn {
     use hasPrivateApp;
     private static function normalize_array(PDOStatement $stmts): atlaASQuery {
         return new class($stmts) extends atlaASQuery {
