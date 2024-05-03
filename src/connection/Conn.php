@@ -60,40 +60,55 @@ abstract class Conn {
         }
         return $conn;
     }
-    public function sql_query(string $sql_query, $option = [], bool $override_csrf = false): atlaASQuery {
-        \extract(\array_merge(
-            [
-                'csrf' => null,
-                'connection' => $this->app->app_env::$default_connection,
-                'bind' => null,
-            ],
-            $option,
-        ));
-        $method = $atlaAS->method;
-        $hasher = new Hasher($this->app);
-        if (($method !== 'get' || $csrf !== null) && !$override_csrf) {
-            $hasher->csrf_check($atlaAS, $csrf, true);
+    public function sql_query(
+        string $sql_relative_path,
+        string|null $csrf_key = null,
+        string|null $connection = null,
+        array|null $bind,
+        bool $override_csrf = false
+    ): atlaASQuery {
+        if (!\is_file($sql_relative_path =
+            $this->app->app_root . \DIRECTORY_SEPARATOR .
+            $this->app->app_settings->sqls_path . \DIRECTORY_SEPARATOR . $this->app->app_settings->$sql_relative_path)) {
+            $this->app->set_error_header(500);
+            \header('Content-Type: application/json');
+            \print_r(new class() extends atlaASQuery {
+                public $data = ['sql_file' => 'not found'];
+                public $count = 0;
+            });
         }
-        $pdo = self::connection_start($connection);
+        $method = $this->app->request->method;
+        $METHOD = $this->app->request->method_params($method);
         $_api = $this->app->app_env::$api;
-        $METHOD = $atlaAS->params;
         if ($_SERVER['REMOTE_ADDR'] === $this->app->app_settings::server_ip()) {
             $api_key = $_api['key'];
         } else {
             $api_key = $METHOD['api_key'];
         }
         if (!$_api['check'][$api_key]) {
+            $this->app->set_error_header(403);
+            \header('Content-Type: application/json');
             return new class() extends atlaASQuery {
                 public $data = ['api_key' => 'wrong key'];
                 public $count = 0;
             };
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
+            $this->app->set_error_header(403);
+            \header('Content-Type: application/json');
             return new class() extends atlaASQuery {
                 public $data = ['api_key' => 'key status is not active'];
                 public $count = 0;
             };
         }
-        $stmt = $pdo->prepare($sql_query);
+        $hasher = new Hasher($this->app);
+        if (($method !== 'get' || $csrf_key !== null) && !$override_csrf) {
+            $hasher->csrf_check($csrf_key);
+        }
+        $connection = $connection ?? $this->app->app_env::$default_connection;
+        $pdo = self::connection_start($connection);
+        $stmt = $pdo->prepare(
+            \file_get_contents($sql_relative_path)
+        );
         if ($bind !== null) {
             foreach ($bind as $parameter => $data_s) {
                 if (isset($data_s[0])) {
