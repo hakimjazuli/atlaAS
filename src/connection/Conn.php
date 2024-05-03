@@ -86,7 +86,8 @@ class Conn {
     ): atlaASQuery {
         if (!\is_file($sql_relative_path =
             $this->app->app_root . \DIRECTORY_SEPARATOR .
-            $this->app->app_settings->sqls_path . \DIRECTORY_SEPARATOR . $this->app->app_settings->$sql_relative_path)) {
+            $this->app->app_settings->sqls_path . \DIRECTORY_SEPARATOR .
+            $sql_relative_path)) {
             $this->app->set_error_header(500);
             \header('Content-Type: application/json');
             \print_r(new class() extends atlaASQuery {
