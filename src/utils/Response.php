@@ -14,12 +14,12 @@ class Response {
     }
     public static function echo_no_indent(callable $html_function, bool $html_document = true) {
         $output = self::preprocess($html_function, $html_document);
-        echo \preg_replace(self::$no_indents, '', $output);
+        echo \preg_replace(self::$regex_no_indents, '', $output);
     }
     public static function echo_single_line(callable $html_function, bool $html_document = true) {
         $output = self::preprocess($html_function, $html_document);
         echo trim(\preg_replace(
-            [self::$single_line, self::$excesive_spacing, '/> /', '/ </'],
+            [self::$regex_single_line, self::$regex_excesive_spacing, '/> /', '/ </'],
             [' ', ' ', '>', '<'],
             $output
         ), ' ');
