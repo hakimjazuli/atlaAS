@@ -2,12 +2,16 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
+use HtmlFirst\atlaAS\App;
+use HtmlFirst\atlaAS\Router\Route_;
+
 class Request {
     public bool $is_https;
     public string $http_mode;
     public string $uri;
     public array $uri_array;
     public string|null $query_params = null;
+    public array|null $query_params_arrray = null;
     public string $public_path;
     public string $method;
     public string $base;
@@ -22,6 +26,7 @@ class Request {
         $this->uri_array = $this->get_uri();
         if (\count($request_uri) > 1) {
             $this->query_params = $request_uri[1];
+            $this->generate_query_param();
         }
         $this->method = \strtolower($_SERVER['REQUEST_METHOD']);
         $this->public_path = $_SERVER['DOCUMENT_ROOT'];
@@ -45,16 +50,23 @@ class Request {
             }
         }
     }
-    public false|array $overwite_param = false;
-    public function get_query_param(string|false $param_name = false): string|array {
+    public function generate_query_param(null|array $query_param = null, Route_|null $route_ = null): array {
         $val = $_GET;
-        if ($this->overwite_param) {
-            $val = $this->overwite_param;
+        if ($query_param) {
+            $val = $query_param;
         }
-        if ($param_name) {
-            return $val[$param_name];
+        $this->query_params_arrray = $val;
+        if ($route_) {
+            $this->assign_query_param_to_route_($route_);
         }
         return $val;
+    }
+    private function assign_query_param_to_route_(Route_ $route_) {
+        foreach ($this->query_params_arrray as $key => $value) {
+            if (\property_exists($route_, $key)) {
+                $route_->$key = $value;
+            }
+        }
     }
     private function get_uri(): array {
         $uri = \explode('/', $this->uri);

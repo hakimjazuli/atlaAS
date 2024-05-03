@@ -37,7 +37,7 @@ class Hasher {
         if (($stored_token = isset($_SESSION[$csrf]) ? $_SESSION[$csrf] : null) === null) {
             return false;
         }
-        $METHOD = $this->app->request->get_query_param();
+        $METHOD = $this->app->request->generate_query_param();
         if (($submitted_token = isset($METHOD[$csrf]) ? $METHOD[$csrf] : null) === null) {
             return false;
         }

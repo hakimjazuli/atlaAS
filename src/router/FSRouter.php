@@ -19,11 +19,18 @@ class FSRouter extends FSMiddleware {
         }
         $this->run_real_route();
     }
+    private function route_from_path($public_uri): Route_ {
+        $route_ = '\\' . $this->app->app_settings->routes_class . \str_replace('/', '\\', $public_uri);
+        return new $route_($this->app);
+    }
     private int $routes_length = 0;
     public function render_get(null|array $url = null, null|array $query_parameter = null) {
         $url = $url ?? $this->app->request->uri_array;
-        if (\is_array($query_parameter)) {
-            $this->app->request->overwite_param = $query_parameter;
+        if ($query_parameter !== null) {
+            $this->app->request->generate_query_param(
+                $query_parameter,
+                $this->route_from_path(\join($url))
+            );
         }
         $this->request_length = \count($url);
         $routes_length = 0;
