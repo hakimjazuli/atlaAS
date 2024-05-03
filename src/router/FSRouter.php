@@ -13,7 +13,7 @@ class FSRouter extends FSMiddleware {
         $this->render_get();
     }
     private function route_from_path($public_uri): Route_ {
-        $route_ = '\\' . $this->app->app_settings->routes_class . \str_replace('/', '\\', $public_uri);
+        $route_ = '\\' . $this->app->app_settings->routes_class . '\\' . \str_replace('/', '\\', $public_uri);
         return new $route_($this->app);
     }
     private int $routes_length = 0;
