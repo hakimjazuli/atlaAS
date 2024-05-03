@@ -38,7 +38,6 @@ abstract class AppEnv {
         'check' => [
             'c9b87345734563vb7UAER86bTEx46wIOu65Ebgvdf4tvy487' => [
                 'status' => 'active',
-                'assign_to' => 'app_main_key'
             ],
         ]
     ];
