@@ -88,17 +88,17 @@ abstract class Conn {
         if (!$_api['check'][$api_key]) {
             $this->app->set_error_header(403);
             \header('Content-Type: application/json');
-            return new class() extends atlaASQuery {
+            \print_r(new class() extends atlaASQuery {
                 public $data = ['api_key' => 'wrong key'];
                 public $count = 0;
-            };
+            });
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
             $this->app->set_error_header(403);
             \header('Content-Type: application/json');
-            return new class() extends atlaASQuery {
+            \print_r(new class() extends atlaASQuery {
                 public $data = ['api_key' => 'key status is not active'];
                 public $count = 0;
-            };
+            });
         }
         $hasher = new Hasher($this->app);
         if (($method !== 'get' || $csrf_key !== null) && !$override_csrf) {
