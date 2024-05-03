@@ -50,6 +50,7 @@ class Request {
             }
         }
     }
+    public array|false $overwrite_param = false;
     public function generate_query_param(null|array $query_param = null, Route_|null &$route_ = null): array {
         $val = $_GET;
         if ($query_param) {
