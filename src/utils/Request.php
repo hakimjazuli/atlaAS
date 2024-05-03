@@ -50,7 +50,7 @@ class Request {
             }
         }
     }
-    public function generate_query_param(null|array $query_param = null, Route_|null $route_ = null): array {
+    public function generate_query_param(null|array $query_param = null, Route_|null &$route_ = null): array {
         $val = $_GET;
         if ($query_param) {
             $val = $query_param;
@@ -61,7 +61,7 @@ class Request {
         }
         return $val;
     }
-    private function assign_query_param_to_route_(Route_ $route_) {
+    private function assign_query_param_to_route_(Route_ &$route_) {
         foreach ($this->query_params_arrray as $key => $value) {
             if (\property_exists($route_, $key)) {
                 $route_->$key = $value;
