@@ -20,9 +20,33 @@ class App {
         $this->app_root = \dirname($this->request->public_path);
         $this->public_url_root = $this->request->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
     }
+    public function render_get(null|array $url = null, null|array $query_parameter = null) {
+        $url = $url ?? $this->request->uri_array;
+        if ($query_parameter !== null) {
+            $this->request->generate_query_param(
+                $query_parameter,
+                $this->fs_router->route_from_path(\join($url))
+            );
+        }
+        $this->fs_router->request_length = \count($url);
+        $routes_length = 0;
+        foreach ($url as $uri) {
+            $this->fs_router->current_folder .= \DIRECTORY_SEPARATOR . $uri;
+            $this->fs_router->current_middleware = $this->fs_router->current_route . '\\' . $this->app_settings->middleware_name;
+            $this->fs_router->check_mw();
+            $routes_length++;
+            $this->fs_router->current_route .= '\\' . $uri;
+            if ($this->fs_router->check_route()) {
+                $this->fs_router->routes_length = $routes_length;
+            } elseif (!$this->fs_router->is_folder_exist()) {
+                break;
+            }
+        }
+    }
+    private FSRouter $fs_router;
     public function run(): void {
-        $fs_router = new FSRouter($this);
-        $fs_router->run();
+        $this->fs_router = new FSRouter($this);
+        $this->fs_router->run();
     }
     public static function reroute(string $path): void {
         \header("location: $path");
