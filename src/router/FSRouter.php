@@ -9,10 +9,8 @@ use HtmlFirst\atlaAS\Utils\hasPublicApp;
 
 class FSRouter extends FSMiddleware {
     use hasPublicApp;
-    public function run() {
-        $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path;
-        $this->current_route = '\\' . $this->app->app_settings->routes_class;
-        $this->render_get();
+    public function run(null|array $url = null, null|array $query_parameter = null) {
+        $this->render_get($url, $query_parameter);
         if (!$this->real_route) {
             $this->app->reroute_error(404);
             return;
@@ -25,6 +23,8 @@ class FSRouter extends FSMiddleware {
     }
     private int $routes_length = 0;
     public function render_get(null|array $url = null, null|array $query_parameter = null) {
+        $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path;
+        $this->current_route = '\\' . $this->app->app_settings->routes_class;
         $url = $url ?? $this->app->request->uri_array;
         if ($query_parameter !== null) {
             $this->app->request->generate_query_param(
