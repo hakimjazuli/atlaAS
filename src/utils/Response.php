@@ -24,7 +24,7 @@ class Response {
             $output
         ), ' ');
     }
-    public static function echo_json_api(array $array): void {
+    public static function echo_json_api(array|object $array): void {
         if ($json = \json_encode($array)) {
             \header('Content-Type: application/json');
             echo $json;
