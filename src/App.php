@@ -20,6 +20,11 @@ class App {
         $this->app_root = \dirname($this->request->public_path);
         $this->public_url_root = $this->request->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
     }
+    private FSRouter $fs_router;
+    public function run(): void {
+        $this->fs_router = new FSRouter($this);
+        $this->fs_router->run();
+    }
     /**
      * render_get
      *
@@ -34,10 +39,40 @@ class App {
     public function render_get(null|array $route_array_path = null, null|array $query_parameter = null) {
         $this->fs_router->render_get($route_array_path, $query_parameter);
     }
-    private FSRouter $fs_router;
-    public function run(): void {
-        $this->fs_router = new FSRouter($this);
-        $this->fs_router->run();
+    /**
+     * follow_up_params
+     * - generate followup for ParamsReceiver and
+     * - fallback using render_get(...args);
+     *
+     * @param  array $conditionals
+     * - conditional will be triggered when bool are false;
+     * - consider use $this->app->param_match(...args);
+     * - [
+     *      ...[
+     *          bool, ['param_warning_receiver_name' => 'warning message']
+     *      ]
+     * ]
+     * @param  array $add_to associative :
+     * - [
+     *      ... $new_param_name_to_send_as => $prop_of_the_class
+     * ]
+     * @param bool $url_fallback :
+     * - null: use it's own class route to render as fallback;
+     * - array: use public uri array;
+     * @return array
+     */
+    public function follow_up_params(array $conditionals, array $add_to = [], array|null $url_fallback = null): void {
+        $this->fs_router->follow_up_params($conditionals, $add_to, $url_fallback);
+    }
+    /**
+     * param_match
+     *
+     * @param  string $param_name : key of method parameter
+     * @param  string $regex
+     * @return bool
+     */
+    public function param_match(string $regex, string $param_name): bool {
+        return \preg_match($regex, $this->request->query_params_arrray[$param_name]);
     }
     public static function reroute(string $path): void {
         \header("location: $path");

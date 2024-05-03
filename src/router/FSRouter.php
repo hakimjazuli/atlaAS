@@ -13,6 +13,7 @@ class FSRouter extends FSMiddleware {
         $this->render_get();
     }
     private int $routes_length = 0;
+    private array|null $real_route_array = null;
     public function render_get(null|array $url = null, null|array $query_parameter = null) {
         $previous_param = $this->app->request->overwrite_param;
         $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path;
@@ -105,5 +106,21 @@ class FSRouter extends FSMiddleware {
             return false;
         }
         return FunctionHelpers::is_first_parameter_spread($class_name, $this->app->request->method);
+    }
+    public function follow_up_params(array $conditionals, array $add_to = [], array|null $url_fallback = null): void {
+        $passed = true;
+        $follow_up = $add_to;
+        foreach ($conditionals as $data) {
+            [$conditional, $if_meet_merge] = $data;
+            if (!$conditional) {
+                $follow_up = \array_merge($follow_up, $if_meet_merge);
+                $passed = false;
+            }
+        }
+        if ($passed) {
+            $url_fallback = $url_fallback ?? $this->real_route_array;
+            $this->render_get($url_fallback, $follow_up);
+            exit(0);
+        }
     }
 }

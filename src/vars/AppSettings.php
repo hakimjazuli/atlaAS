@@ -8,6 +8,7 @@ abstract class AppSettings {
 
     public string $middleware_name = 'mw';
     public string $routes_path = 'routes';
+    public string $sqls_path = 'sqls';
     public string $routes_class = 'Routes';
     public string $routes_errors_prefix = '/errors/';
 
