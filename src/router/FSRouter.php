@@ -9,13 +9,8 @@ use HtmlFirst\atlaAS\Utils\hasPublicApp;
 
 class FSRouter extends FSMiddleware {
     use hasPublicApp;
-    public function run(null|array $url = null, null|array $query_parameter = null) {
-        $this->render_get($url, $query_parameter);
-        if (!$this->real_route) {
-            $this->app->reroute_error(404);
-            return;
-        }
-        $this->run_real_route();
+    public function run() {
+        $this->render_get();
     }
     private function route_from_path($public_uri): Route_ {
         $route_ = '\\' . $this->app->app_settings->routes_class . \str_replace('/', '\\', $public_uri);
@@ -46,6 +41,11 @@ class FSRouter extends FSMiddleware {
                 break;
             }
         }
+        if (!$this->real_route) {
+            $this->app->reroute_error(404);
+            return;
+        }
+        $this->run_real_route();
     }
     private string $current_route;
     private object|string|false $real_route = false;

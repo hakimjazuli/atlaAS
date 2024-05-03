@@ -21,7 +21,7 @@ class App {
         $this->public_url_root = $this->request->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
     }
     public function render_get(null|array $url = null, null|array $query_parameter = null) {
-        $this->fs_router->run($url, $query_parameter);
+        $this->fs_router->render_get($url, $query_parameter);
     }
     private FSRouter $fs_router;
     public function run(): void {
