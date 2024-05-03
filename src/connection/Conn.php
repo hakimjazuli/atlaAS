@@ -90,10 +90,10 @@ class Conn {
             $sql_relative_path)) {
             $this->app->set_error_header(500);
             \header('Content-Type: application/json');
-            \print_r(new class() extends atlaASQuery {
+            return new class() extends atlaASQuery {
                 public $data = ['sql_file' => 'not found'];
                 public $count = 0;
-            });
+            };
         }
         $method = $this->app->request->method;
         $METHOD = $this->app->request->method_params($method);
@@ -106,17 +106,17 @@ class Conn {
         if (!$_api['check'][$api_key]) {
             $this->app->set_error_header(403);
             \header('Content-Type: application/json');
-            \print_r(new class() extends atlaASQuery {
+            return new class() extends atlaASQuery {
                 public $data = ['api_key' => 'wrong key'];
                 public $count = 0;
-            });
+            };
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
             $this->app->set_error_header(403);
             \header('Content-Type: application/json');
-            \print_r(new class() extends atlaASQuery {
+            return new class() extends atlaASQuery {
                 public $data = ['api_key' => 'key status is not active'];
                 public $count = 0;
-            });
+            };
         }
         $hasher = new Hasher($this->app);
         if (($method !== 'get' || $csrf_key !== null) && !$override_csrf) {
