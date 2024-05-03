@@ -20,8 +20,19 @@ class App {
         $this->app_root = \dirname($this->request->public_path);
         $this->public_url_root = $this->request->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
     }
-    public function render_get(null|array $url = null, null|array $query_parameter = null) {
-        $this->fs_router->render_get($url, $query_parameter);
+    /**
+     * render_get
+     *
+     * @param  null|array $route_array_path
+     * - null: base routing;
+     * - array: one dimentional array to route url;
+     * @param  null|array $query_parameter
+     * - associative array, assigned to route class property if any (for best practice);
+     * - null do nothing;
+     * @return void
+     */
+    public function render_get(null|array $route_array_path = null, null|array $query_parameter = null) {
+        $this->fs_router->render_get($route_array_path, $query_parameter);
     }
     private FSRouter $fs_router;
     public function run(): void {
