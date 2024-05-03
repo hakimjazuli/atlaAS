@@ -91,7 +91,9 @@ class Conn {
             $this->app->set_error_header(500);
             \header('Content-Type: application/json');
             return new class() extends atlaASQuery {
-                public $data = ['sql_file' => 'not found'];
+                public $data = [
+                    ['sql_file' => 'not found']
+                ];
                 public $count = 0;
             };
         }
@@ -107,14 +109,18 @@ class Conn {
             $this->app->set_error_header(403);
             \header('Content-Type: application/json');
             return new class() extends atlaASQuery {
-                public $data = ['api_key' => 'wrong key'];
+                public $data = [
+                    ['api_key' => 'wrong key']
+                ];
                 public $count = 0;
             };
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
             $this->app->set_error_header(403);
             \header('Content-Type: application/json');
             return new class() extends atlaASQuery {
-                public $data = ['api_key' => 'key status is not active'];
+                public $data = [
+                    ['api_key' => 'key status is not active']
+                ];
                 public $count = 0;
             };
         }
