@@ -75,7 +75,7 @@ class Conn {
      *    'field_name'=>[?PDO::PARAM_type, ?$value],
      *]
      * @param bool $override_csrf = false
-     * @return void
+     * @return atlaASQuery
      */
     public function sql_query(
         string $sql_relative_path,
