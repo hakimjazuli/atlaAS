@@ -20,12 +20,12 @@ abstract class Conn {
             }
         };
     }
-    public function connection_start(string $mode) {
+    private function connection_start(string $mode) {
         if (!isset($_ENV['_CONN'][$mode])) {
             return $_ENV['_CONN'][$mode] = self::connect($mode);
         }
     }
-    public function connection_close(string $mode) {
+    private function connection_close(string $mode) {
         if (isset($_ENV['_CONN'][$mode])) {
             return $_ENV['_CONN'][$mode] = null;
         }
@@ -60,6 +60,23 @@ abstract class Conn {
         }
         return $conn;
     }
+    /**
+     * sql_query
+     * 
+     * @param string $sql_relative_path
+     * @param string|null $csrf_key -descriptive
+     * @param string|null $connection
+     * - string: chose from env;
+     * - null: default from env;
+     * @param array|null $bind
+     * - null : do nothing;
+     * - [
+     *    ...
+     *    'field_name'=>[?PDO::PARAM_type, ?$value],
+     *]
+     * @param bool $override_csrf = false
+     * @return void
+     */
     public function sql_query(
         string $sql_relative_path,
         string|null $csrf_key = null,
