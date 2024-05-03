@@ -12,22 +12,45 @@ class FSRouter extends FSMiddleware {
     public function run() {
         $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path;
         $this->current_route = '\\' . $this->app->app_settings->routes_class;
-        $this->app->render_get();
+        $this->render_get();
         if (!$this->real_route) {
             $this->app->reroute_error(404);
             return;
         }
         $this->run_real_route();
     }
-    public function route_from_path($public_uri): Route_ {
+    private function route_from_path($public_uri): Route_ {
         $route_ = '\\' . $this->app->app_settings->routes_class . \str_replace('/', '\\', $public_uri);
         return new $route_($this->app);
     }
-    public int $routes_length = 0;
-    public string $current_route;
+    private int $routes_length = 0;
+    public function render_get(null|array $url = null, null|array $query_parameter = null) {
+        $url = $url ?? $this->app->request->uri_array;
+        if ($query_parameter !== null) {
+            $this->app->request->generate_query_param(
+                $query_parameter,
+                $this->route_from_path(\join($url))
+            );
+        }
+        $this->request_length = \count($url);
+        $routes_length = 0;
+        foreach ($url as $uri) {
+            $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
+            $this->current_middleware = $this->current_route . '\\' . $this->app->app_settings->middleware_name;
+            $this->check_mw();
+            $routes_length++;
+            $this->current_route .= '\\' . $uri;
+            if ($this->check_route()) {
+                $this->routes_length = $routes_length;
+            } elseif (!$this->is_folder_exist()) {
+                break;
+            }
+        }
+    }
+    private string $current_route;
     private object|string|false $real_route = false;
-    public int $request_length = 0;
-    public function check_route(): bool {
+    private int $request_length = 0;
+    private function check_route(): bool {
         if (!\class_exists($this->current_route)) {
             return false;
         }
