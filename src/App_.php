@@ -10,7 +10,13 @@ use HtmlFirst\atlaAS\Vars\AppSettings_;
 use HtmlFirst\atlaAS\Vars\AppEnv_;
 
 class App_ {
-    public array $global = [];
+    private array $global = [];
+    public function global(string $identifier, string $prop, mixed $overwrite_value) {
+        if (isset($this->global[$identifier][$prop])) {
+            return $this->global[$identifier][$prop];
+        }
+        return ($this->global[$identifier][$prop] = $overwrite_value);
+    }
 
     public Request $request;
     public string $app_root;
