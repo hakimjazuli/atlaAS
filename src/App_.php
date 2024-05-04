@@ -39,25 +39,21 @@ class App_ {
      * @return void
      */
     public function render_get(null|array $route_array_path = null, false|array $query_parameter = false) {
-        $resets = [
-            Temp_::shuffle($this->request->method, 'get'),
-            Temp_::shuffle($this->request->overwrite_param, $query_parameter),
-            Temp_::shuffle($this->request->uri_array, $route_array_path)
-        ];
-        $this->fs_router->render($route_array_path, $query_parameter);
-        foreach ($resets as $reset) {
-            $reset();
-        }
-
-        // $reset_method = Temp_::shuffle($this->request->method, 'get');
-        // if ($query_parameter !== null) {
-        //     $reset_param = Temp_::shuffle($this->request->overwrite_param, $query_parameter);
-        // }
+        // $resets = [
+        //     Temp_::shuffle($this->request->method, 'get'),
+        //     Temp_::shuffle($this->request->overwrite_param, $query_parameter),
+        //     Temp_::shuffle($this->request->uri_array, $route_array_path)
+        // ];
         // $this->fs_router->render($route_array_path, $query_parameter);
-        // $reset_method();
-        // if (isset($reset_param)) {
-        //     $reset_param();
+        // foreach ($resets as $reset) {
+        //     $reset();
         // }
+        Temp_::temp_var(
+            fn () => $this->fs_router->render($route_array_path, $query_parameter),
+            [$this->request->method, 'get'],
+            [$this->request->overwrite_param, $query_parameter],
+            [$this->request->uri_array, $route_array_path]
+        );
     }
     /**
      * follow_up_params

@@ -23,9 +23,9 @@ class Temp_ {
             $variable = $temp_placeholder;
         };
     }
-    public static function temp_var(callable $function, ...$variables_n_temp_value) {
+    public static function temp_var(callable $function, array &$variables_n_temp_value) {
         $reset_to_oris = [];
-        foreach ($variables_n_temp_value as &$pair) {
+        foreach ($variables_n_temp_value as $pair) {
             $reset_to_oris[] = self::shuffle(...$pair);
         }
         $function();
