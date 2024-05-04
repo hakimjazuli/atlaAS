@@ -49,24 +49,9 @@ class Request {
             }
         }
     }
-    public function generate_query_param(null|array $overwrite_query_param_with = null, Route_|null &$route_ = null): array {
-        $val = $_GET;
-        if ($overwrite_query_param_with) {
-            $val = $overwrite_query_param_with;
-        }
-        if (!$route_) {
-            $this->query_params_arrray = $val;
-        } else {
-            $this->assign_query_param_to_route_($route_);
-        }
+    public function generate_query_param(): array {;
+        $this->query_params_arrray = $val = $_GET;
         return $val;
-    }
-    private function assign_query_param_to_route_(Route_ &$route_) {
-        foreach ($this->query_params_arrray as $key => $value) {
-            if (\property_exists($route_, $key)) {
-                $route_->$key = $value;
-            }
-        }
     }
     private function get_uri(): array {
         $uri = \explode('/', $this->uri);

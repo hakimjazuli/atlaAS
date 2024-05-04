@@ -16,15 +16,13 @@ class FSRouter extends FSMiddleware {
     private string $current_route;
     private object|string|false $real_route = false;
     private int $request_length = 0;
-    public function render(
-        null|array $url = null,
-    ) {
+    public function render() {
+        $uri_array = $this->app->request->uri_array;
+        $this->request_length = \count($uri_array);
         $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings::$routes_path;
         $this->current_route = '\\' . $this->app->app_settings::$routes_class;
-        $url = $url ?? $this->app->request->uri_array;
-        $this->request_length = \count($url);
         $routes_length = 0;
-        foreach ($url as $uri) {
+        foreach ($uri_array as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
             $this->current_middleware = $this->current_route . '\\' . $this->app->app_settings::$middleware_name;
             $this->check_mw();

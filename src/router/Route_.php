@@ -6,11 +6,4 @@ use HtmlFirst\atlaAS\Utils\hasProtectedApp_;
 
 abstract class Route_ {
     use hasProtectedApp_;
-    /**
-     * use this only for calling it's own get method, by chaining it with ->$method_name(...$uri);
-     */
-    protected function self_with_query_param(array $query_param) {
-        $this->app->request->generate_query_param($query_param, $this);
-        return $this;
-    }
 }

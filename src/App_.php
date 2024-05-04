@@ -45,7 +45,7 @@ class App_ {
             Temp_::var($this->request->query_params_arrray, $query_parameter),
             Temp_::var($this->request->uri_array, $route_array_path)
         );
-        $this->fs_router->render($route_array_path, $query_parameter);
+        $this->fs_router->render();
         $reseters();
     }
     /**
