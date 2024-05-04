@@ -24,6 +24,7 @@ class App {
     public function run(): void {
         $this->fs_router = new FSRouter($this);
         $this->fs_router->run();
+        exit(0);
     }
     /**
      * render_get

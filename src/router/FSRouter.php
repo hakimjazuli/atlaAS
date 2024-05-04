@@ -108,18 +108,18 @@ class FSRouter extends FSMiddleware {
         return FunctionHelpers::is_first_parameter_spread($class_name, $this->app->request->method);
     }
     public function follow_up_params(array $conditionals, array $add_to = [], array|null $url_fallback = null): void {
-        $not_match = false;
-        $follow_up = $add_to;
+        $match = true;
+        $query_parameter = $add_to;
         foreach ($conditionals as $data) {
             [$conditional, $if_meet_merge] = $data;
             if (!$conditional) {
-                $follow_up = \array_merge($follow_up, $if_meet_merge);
-                $not_match = true;
+                $query_parameter = \array_merge($query_parameter, $if_meet_merge);
+                $match = false;
             }
         }
-        if (!$not_match) {
+        if (!$match) {
             $url_fallback = $url_fallback ?? $this->real_route_array;
-            $this->render_get($url_fallback, $follow_up);
+            $this->render_get($url_fallback, $query_parameter);
             exit(0);
         }
     }
