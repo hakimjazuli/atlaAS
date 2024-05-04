@@ -7,12 +7,6 @@ abstract class AppEnv_ {
 
     public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
     public static string $default_connection = 'site';
-    public static function connection_list() {
-        return new class {
-            public static $app = 'app';
-            public static $site = 'site';
-        };
-    }
     public static array $conn = [
         'http' => [
             'app' =>
