@@ -25,7 +25,7 @@ trait hasAppRegex {
     }
     protected static $regex_float = '/^[-|\.|0-9]{1,}$/';
     protected static $regex_non_alphanumeric = '/[^a-zA-Z0-9_]+/';
-    protected static function enum(...$allowed_values): string {
+    protected static function regex_enum(...$allowed_values): string {
         $escaped_values = array_map('preg_quote', $allowed_values);
         $pattern = '/^(' . implode('|', $escaped_values) . ')$/';
         return $pattern;
