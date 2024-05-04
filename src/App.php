@@ -38,12 +38,12 @@ class App {
      * @return void
      */
     public function render_get(null|array $route_array_path = null, null|array $query_parameter = null) {
-        $this->fs_router->render_get($route_array_path, $query_parameter);
+        $this->fs_router->render('get', $route_array_path, $query_parameter);
     }
     /**
      * follow_up_params
      * - generate followup for ParamsReceiver and
-     * - fallback using render_get(...args);
+     * - fallback using render(...args);
      *
      * @param  array $conditionals
      * - conditional will be triggered when bool are false;

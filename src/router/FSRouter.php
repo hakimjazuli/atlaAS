@@ -10,12 +10,31 @@ use HtmlFirst\atlaAS\Utils\hasPublicApp;
 class FSRouter extends FSMiddleware {
     use hasPublicApp;
     public function run() {
-        $this->render_get();
+        $this->render();
     }
     private int $routes_length = 0;
     private array|null $real_route_array = null;
-    public function render_get(null|array $url = null, null|array $query_parameter = null) {
-        $previous_param = $this->app->request->overwrite_param;
+    private string $previous_method;
+    private string $previous_param;
+    private function get_previous_method() {
+        $this->previous_method = $this->app->request->method;
+    }
+    private function reset_method_to(string|null $set = null) {
+        $this->app->request->overwrite_param = $set ?? $this->previous_param;
+    }
+    private function get_previous_param() {
+        $this->previous_param = $this->app->request->overwrite_param;
+    }
+    private function reset_param_to(array|null $set = null) {
+        $this->app->request->method = $set ?? $this->previous_method;
+    }
+    public function render(
+        null|string $render_method = null,
+        null|array $url = null,
+        null|array $query_parameter = null
+    ) {
+        $this->get_previous_method();
+        $this->get_previous_param();
         $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path;
         $this->current_route = '\\' . $this->app->app_settings->routes_class;
         $url = $url ?? $this->app->request->uri_array;
@@ -37,11 +56,15 @@ class FSRouter extends FSMiddleware {
             $this->app->reroute_error(404);
             return;
         }
+        if ($render_method !== null) {
+            $this->reset_method_to($render_method);
+        }
         if ($query_parameter !== null) {
-            $this->app->request->overwrite_param = $query_parameter;
+            $this->reset_param_to($query_parameter);
         }
         $this->run_real_route();
-        $this->app->request->overwrite_param = $previous_param;
+        $this->reset_method_to();
+        $this->reset_param_to();
     }
     private string $current_route;
     private object|string|false $real_route = false;
@@ -119,7 +142,7 @@ class FSRouter extends FSMiddleware {
         }
         if (!$match) {
             $url_fallback = $url_fallback ?? $this->real_route_array;
-            $this->render_get($url_fallback, $query_parameter);
+            $this->render('get', $url_fallback, $query_parameter);
             exit(0);
         }
     }
