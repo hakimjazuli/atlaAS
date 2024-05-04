@@ -34,12 +34,12 @@ class App_ {
      * @param  null|array $route_array_path
      * - null: base routing;
      * - array: one dimentional array to route url;
-     * @param  false|array $query_parameter
+     * @param  null|array $query_parameter
      * - associative array, assigned to route class property if any (for best practice);
      * - null do nothing;
      * @return void
      */
-    public function render_get(null|array $route_array_path = null, false|array $query_parameter = false) {
+    public function render_get(null|array $route_array_path = null, null|array $query_parameter = null) {
         $reseters = FunctionHelpers::callable_collections(
             Temp_::var($this->request->method, 'get'),
             Temp_::var($this->request->query_params_arrray, $query_parameter),
