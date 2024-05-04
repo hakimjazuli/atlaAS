@@ -4,6 +4,7 @@ namespace HtmlFirst\atlaAS\Connection;
 
 use HtmlFirst\atlaAS\Utils\Hasher;
 use HtmlFirst\atlaAS\Utils\hasPrivateApp_;
+use HtmlFirst\atlaAS\Utils\Response;
 use PDO;
 use PDOException;
 use PDOStatement;
@@ -60,6 +61,12 @@ class Conn {
         }
         return $conn;
     }
+    private function get_api_key($METHOD) {
+        if ($_SERVER['REMOTE_ADDR'] === $this->app->app_settings::server_ip()) {
+            return $this->app->get_api_key();
+        }
+        return $METHOD['api_key'];
+    }
     /**
      * sql_query
      * 
@@ -89,7 +96,7 @@ class Conn {
             $this->app->app_settings->sqls_path . \DIRECTORY_SEPARATOR .
             $sql_relative_path)) {
             $this->app->set_error_header(500);
-            \header('Content-Type: application/json');
+            Response::header_json();
             return new class() extends atlaASQuery_ {
                 public $data = [
                     ['sql_file' => 'not found']
@@ -100,14 +107,10 @@ class Conn {
         $method = $this->app->request->method;
         $METHOD = $this->app->request->method_params($method);
         $_api = $this->app->app_env::$api;
-        if ($_SERVER['REMOTE_ADDR'] === $this->app->app_settings::server_ip()) {
-            $api_key = $this->app->get_api_key();
-        } else {
-            $api_key = $METHOD['api_key'];
-        }
+        $api_key = $this->get_api_key($METHOD);
         if (!$_api['check'][$api_key]) {
             $this->app->set_error_header(403);
-            \header('Content-Type: application/json');
+            Response::header_json();
             return new class() extends atlaASQuery_ {
                 public $data = [
                     ['api_key' => 'wrong key']
@@ -116,7 +119,7 @@ class Conn {
             };
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
             $this->app->set_error_header(403);
-            \header('Content-Type: application/json');
+            Response::header_json();
             return new class() extends atlaASQuery_ {
                 public $data = [
                     ['api_key' => 'key status is not active']

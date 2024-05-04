@@ -6,7 +6,7 @@ class Response {
     use hasAppRegex;
     private static function preprocess(callable $html_function, bool $html_document = true) {
         if ($html_document) {
-            \header("Content-Type: text/html; charset=UTF-8");
+            \header('Content-Type: text/html; charset=UTF-8');
         }
         \ob_start();
         $html_function();
@@ -26,7 +26,7 @@ class Response {
     }
     public static function echo_json_api(array|object $array): void {
         if ($json = \json_encode($array)) {
-            \header('Content-Type: application/json');
+            self::header_json();
             echo $json;
             return;
         }
@@ -36,5 +36,8 @@ class Response {
             'message' => 'failed to encode to json'
         ]);
         exit(0);
+    }
+    public static function header_json() {
+        \header('Content-Type: application/json');
     }
 }
