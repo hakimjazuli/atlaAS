@@ -5,8 +5,8 @@ namespace HtmlFirst\atlaAS\Vars;
 use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 
 abstract class Env_ {
-    public static Env_ $instance;
     use hasSetGlobal;
+    public static Env_|null $instance = null;
     public function __construct() {
         $this->set_as_global();
     }

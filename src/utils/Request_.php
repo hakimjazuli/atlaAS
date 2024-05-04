@@ -5,7 +5,7 @@ namespace HtmlFirst\atlaAS\Utils;
 
 class Request_ {
     use hasSetGlobal;
-    public static Request_ $instance;
+    public static Request_|null $instance = null;
     public bool $is_https;
     public string $http_mode;
     public string $uri;

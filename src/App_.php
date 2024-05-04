@@ -18,7 +18,7 @@ class App_ {
     public string $public_url_root;
 
     use hasSetGlobal;
-    public static App_ $instance;
+    public static App_|null $instance = null;
 
     public function __construct(string $app_env_ref, string $app_settings_ref) {
         new $app_env_ref;

@@ -6,7 +6,7 @@ use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 
 abstract class Settings_ {
     use hasSetGlobal;
-    public static Settings_ $instance;
+    public static Settings_|null $instance = null;
     public function __construct() {
         $this->set_as_global();
     }

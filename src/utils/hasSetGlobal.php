@@ -9,8 +9,8 @@ trait hasSetGlobal {
         $instance = 'instance';
         if (\property_exists($this, $instance)) {
             $reflection_class = new ReflectionClass($this::class);
-            $static_roperties = $reflection_class->getStaticProperties();
-            if (array_key_exists('staticProperty', $static_roperties)) {
+            $static_properties = $reflection_class->getStaticProperties();
+            if (array_key_exists($instance, $static_properties)) {
                 static::$$instance = $this;
             }
         }
