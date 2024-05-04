@@ -72,7 +72,7 @@ class FSRouter extends FSMiddleware {
         (new $middleware($this->app))->$mw_method($this->app->request->method);
     }
     private function run_method_with_input_logic(string $class_name): void {
-        $num_params = FunctionHelpers::url_input_legth(
+        $num_params = FunctionHelpers::url_input_length(
             $class_name,
             $method = $this->app->request->method
         );

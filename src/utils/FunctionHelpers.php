@@ -13,8 +13,13 @@ abstract class FunctionHelpers {
         }
         return false;
     }
-    public static function url_input_legth(string $class_name, string $method_name) {
+    public static function url_input_length(string $class_name, string $method_name) {
         $reflection = new ReflectionMethod($class_name, $method_name);
         return $reflection->getNumberOfParameters();
+    }
+    public static function run_array_functions(callable ...$functions) {
+        foreach ($functions as $function) {
+            $function();
+        }
     }
 }

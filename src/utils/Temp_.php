@@ -23,14 +23,7 @@ class Temp_ {
             $variable = $temp_placeholder;
         };
     }
-    public static function temp_var(callable $function, array &$variables_n_temp_value) {
-        $reset_to_oris = [];
-        foreach ($variables_n_temp_value as $pair) {
-            $reset_to_oris[] = self::shuffle(...$pair);
-        }
-        $function();
-        foreach ($reset_to_oris as $reset_to_ori) {
-            $reset_to_ori();
-        }
+    public static function reseter(callable ...$shufflers) {
+        return fn () => FunctionHelpers::run_array_functions($shufflers);
     }
 }
