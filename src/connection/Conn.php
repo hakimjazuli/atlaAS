@@ -129,7 +129,7 @@ class Conn {
                 public $count = 0;
             };
         }
-        $hasher = new Hasher(App_::$app);
+        $hasher = new Hasher();
         if (($method !== 'get' || $csrf_key) && $check_csrf) {
             $hasher->csrf_check($csrf_key);
         }

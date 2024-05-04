@@ -7,6 +7,6 @@ use HtmlFirst\atlaAS\App_;
 abstract class Query_ {
     protected Conn $conn;
     public function __construct() {
-        $this->conn = new Conn(App_::$app);
+        $this->conn = new Conn();
     }
 }

@@ -20,7 +20,7 @@ abstract class FSMiddleware {
             $mw,
             $method = App_::$app->app_settings::$middleware_name
         )) {
-            (new $mw(App_::$app))->$method(App_::$app->request->method);
+            (new $mw)->$method(App_::$app->request->method);
         }
     }
 }

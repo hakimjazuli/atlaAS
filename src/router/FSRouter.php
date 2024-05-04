@@ -66,7 +66,7 @@ class FSRouter extends FSMiddleware {
         )) {
             return;
         };
-        (new $middleware(App_::$app))->$mw_method(App_::$app->request->method);
+        (new $middleware)->$mw_method(App_::$app->request->method);
     }
     private function run_method_with_input_logic(string $class_name): void {
         $num_params = FunctionHelpers::url_input_length(
@@ -78,14 +78,14 @@ class FSRouter extends FSMiddleware {
             return;
         }
         $url_inputs = \array_slice(App_::$app->request->uri_array, -$num_params);
-        $route_ = new $class_name(App_::$app);
+        $route_ = new $class_name;
         $route_->$method(...$url_inputs);
     }
     private function check_method_with_spread_input_logic(string $class_name): bool {
         if ($this->is_map_resource($class_name)) {
             $url_inputs = \array_slice(App_::$app->request->uri_array, $this->routes_length);
-            (new $class_name(App_::$app))->get(...$url_inputs);
-            $handler = new FileServer(App_::$app);
+            (new $class_name)->get(...$url_inputs);
+            $handler = new FileServer;
             $handler->map_resource($url_inputs, App_::$app->app_root . $class_name);
             return true;
         };
