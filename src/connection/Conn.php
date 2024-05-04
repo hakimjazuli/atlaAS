@@ -135,7 +135,7 @@ class Conn {
         if (($method !== 'get' || $csrf_key !== null) && $check_csrf) {
             $hasher->csrf_check($csrf_key);
         }
-        $connection = $connection ?? $this->app->app_env::$default_connection;
+        $connection = $connection ?? $this->app->app_env::$connection[0];
         $pdo = self::connection_start($connection);
         $stmt = $pdo->prepare(
             \file_get_contents($sql_relative_path)

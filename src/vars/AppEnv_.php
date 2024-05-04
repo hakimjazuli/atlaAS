@@ -6,7 +6,9 @@ abstract class AppEnv_ {
     public static bool $is_in_production = false;
 
     public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
-    public static string $default_connection = 'site';
+    public static array $connection = [
+        'site', 'app'
+    ];
     public static array $conn = [
         'http' => [
             'app' =>
@@ -14,7 +16,7 @@ abstract class AppEnv_ {
                 'host' => 'localhost',
                 'username' => 'root',
                 'password' => '',
-                'db' => '',
+                'db' => 'atlaas_htmx',
                 'type' => 'mysql',
                 'file_name' => '',
                 'encoding' => '',
@@ -24,11 +26,11 @@ abstract class AppEnv_ {
                 'host' => 'localhost',
                 'username' => 'root',
                 'password' => '',
-                'db' => 'atlaas_htmx',
+                'db' => '',
                 'type' => 'mysql',
                 'file_name' => '',
                 'encoding' => '',
-            ]
+            ],
         ],
         'https' => [
             'app' =>
