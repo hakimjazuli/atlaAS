@@ -2,10 +2,10 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
-use HtmlFirst\atlaAS\Utils\hasProtectedApp;
+use HtmlFirst\atlaAS\Utils\hasProtectedApp_;
 
 abstract class Route_ {
-    use hasProtectedApp;
+    use hasProtectedApp_;
     /**
      * use this only for calling it's own get method, by chaining it ->get(...$uri);
      */

@@ -5,10 +5,10 @@ namespace HtmlFirst\atlaAS\Router;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\FileServer;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
-use HtmlFirst\atlaAS\Utils\hasPublicApp;
+use HtmlFirst\atlaAS\Utils\hasPublicApp_;
 
 class FSRouter extends FSMiddleware {
-    use hasPublicApp;
+    use hasPublicApp_;
     public function run() {
         $this->render();
     }

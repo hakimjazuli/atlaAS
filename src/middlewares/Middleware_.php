@@ -2,9 +2,9 @@
 
 namespace HtmlFirst\atlaAS\Middlewares;
 
-use HtmlFirst\atlaAS\Utils\hasProtectedApp;
+use HtmlFirst\atlaAS\Utils\hasProtectedApp_;
 
 abstract class Middleware_ {
     use hasMiddleware;
-    use hasProtectedApp;
+    use hasProtectedApp_;
 }

@@ -3,7 +3,7 @@
 namespace HtmlFirst\atlaAS\Utils;
 
 class Hasher {
-    use hasPrivateApp;
+    use hasPrivateApp_;
     public function password_generate(string $value): string {
         return password_hash($this->app->app_env::$app_key . $value, PASSWORD_DEFAULT);
     }

@@ -3,13 +3,13 @@
 namespace HtmlFirst\atlaAS\Connection;
 
 use HtmlFirst\atlaAS\Utils\Hasher;
-use HtmlFirst\atlaAS\Utils\hasPrivateApp;
+use HtmlFirst\atlaAS\Utils\hasPrivateApp_;
 use PDO;
 use PDOException;
 use PDOStatement;
 
 class Conn {
-    use hasPrivateApp;
+    use hasPrivateApp_;
     private static function normalize_array(PDOStatement $stmts): atlaASQuery_ {
         return new class($stmts) extends atlaASQuery_ {
             public $data;
