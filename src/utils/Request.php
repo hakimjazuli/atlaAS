@@ -49,10 +49,10 @@ class Request {
             }
         }
     }
-    public function generate_query_param(null|array $query_param = null, Route_|null &$route_ = null): array {
+    public function generate_query_param(null|array $overwrite_query_param_with = null, Route_|null &$route_ = null): array {
         $val = $_GET;
-        if ($query_param) {
-            $val = $query_param;
+        if ($overwrite_query_param_with) {
+            $val = $overwrite_query_param_with;
         }
         if (!$route_) {
             $this->query_params_arrray = $val;

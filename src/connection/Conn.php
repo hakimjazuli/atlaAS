@@ -131,7 +131,7 @@ class Conn {
             };
         }
         $hasher = new Hasher($this->app);
-        if (($method !== 'get' || $csrf_key !== null) && $check_csrf) {
+        if (($method !== 'get' || $csrf_key) && $check_csrf) {
             $hasher->csrf_check($csrf_key);
         }
         $connection = $connection ?? $this->app->app_env::$connections[0];
@@ -139,7 +139,7 @@ class Conn {
         $stmt = $pdo->prepare(
             \file_get_contents($sql_relative_path)
         );
-        if ($bind !== null) {
+        if ($bind) {
             foreach ($bind as $parameter => $data_s) {
                 if (isset($data_s[0])) {
                     $pdo_param_type = $data_s[0];
