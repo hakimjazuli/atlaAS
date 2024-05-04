@@ -7,23 +7,20 @@ use HtmlFirst\atlaAS\Utils\hasPrivateApp_;
 class Temp_ {
     use hasPrivateApp_;
     /**
-     * shuffle
+     * var
      *
-     * @param  mixed &$variable
+     * @param  mixed &$var_reference
      * - temporary change this varibal;
      * - argument as reference;
      * @param  mixed $temp_value
      * @return callable
      * - call this returned function to reset the value;
      */
-    public static function shuffle(mixed &$variable, mixed $temp_value): callable {
-        $temp_placeholder = $variable;
-        $variable = $temp_value;
-        return function () use (&$variable, $temp_placeholder) {
-            $variable = $temp_placeholder;
+    public static function var(mixed &$var_reference, mixed $temp_value): callable {
+        $temp_placeholder = $var_reference;
+        $var_reference = $temp_value;
+        return function () use (&$var_reference, $temp_placeholder) {
+            $var_reference = $temp_placeholder;
         };
-    }
-    public static function reseter(callable ...$shufflers) {
-        return fn () => FunctionHelpers::run_array_functions($shufflers);
     }
 }

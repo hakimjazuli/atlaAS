@@ -3,6 +3,7 @@
 namespace HtmlFirst\atlaAS;
 
 use HtmlFirst\atlaAS\Router\FSRouter;
+use HtmlFirst\atlaAS\Utils\FunctionHelpers;
 use HtmlFirst\atlaAS\Utils\Request;
 use HtmlFirst\atlaAS\Utils\Temp_;
 use HtmlFirst\atlaAS\Vars\AppSettings_;
@@ -39,13 +40,13 @@ class App_ {
      * @return void
      */
     public function render_get(null|array $route_array_path = null, false|array $query_parameter = false) {
-        $reseter = Temp_::reseter(
-            Temp_::shuffle($this->request->method, 'get'),
-            Temp_::shuffle($this->request->overwrite_param, $query_parameter),
-            Temp_::shuffle($this->request->uri_array, $route_array_path)
+        $reseters = FunctionHelpers::callable_collections(
+            Temp_::var($this->request->method, 'get'),
+            Temp_::var($this->request->overwrite_param, $query_parameter),
+            Temp_::var($this->request->uri_array, $route_array_path)
         );
         $this->fs_router->render($route_array_path, $query_parameter);
-        $reseter();
+        $reseters();
     }
     /**
      * follow_up_params
