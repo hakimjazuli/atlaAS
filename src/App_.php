@@ -4,6 +4,7 @@ namespace HtmlFirst\atlaAS;
 
 use HtmlFirst\atlaAS\Router\FSRouter;
 use HtmlFirst\atlaAS\Utils\Request;
+use HtmlFirst\atlaAS\Utils\Temp_;
 use HtmlFirst\atlaAS\Vars\AppSettings_;
 use HtmlFirst\atlaAS\Vars\AppEnv_;
 
@@ -32,13 +33,26 @@ class App_ {
      * @param  null|array $route_array_path
      * - null: base routing;
      * - array: one dimentional array to route url;
-     * @param  null|array $query_parameter
+     * @param  false|array $query_parameter
      * - associative array, assigned to route class property if any (for best practice);
      * - null do nothing;
      * @return void
      */
-    public function render_get(null|array $route_array_path = null, null|array $query_parameter = null) {
-        $this->fs_router->render('get', $route_array_path, $query_parameter);
+    public function render_get(null|array $route_array_path = null, false|array $query_parameter = false) {
+        Temp_::temp_var(
+            fn () => $this->fs_router->render($route_array_path, $query_parameter),
+            [$this->request->method, 'get'],
+            [$this->request->overwrite_param, $query_parameter]
+        );
+        // $reset_method = Temp_::shuffle($this->request->method, 'get');
+        // if ($query_parameter !== null) {
+        //     $reset_param = Temp_::shuffle($this->request->overwrite_param, $query_parameter);
+        // }
+        // $this->fs_router->render($route_array_path, $query_parameter);
+        // $reset_method();
+        // if (isset($reset_param)) {
+        //     $reset_param();
+        // }
     }
     /**
      * follow_up_params

@@ -3,6 +3,7 @@
 namespace HtmlFirst\atlaAS\Router;
 
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
+use HtmlFirst\atlaAS\Temp\Shuffler;
 use HtmlFirst\atlaAS\Utils\FileServer;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
 use HtmlFirst\atlaAS\Utils\hasPublicApp_;
@@ -13,27 +14,9 @@ class FSRouter extends FSMiddleware {
         $this->render();
     }
     private int $routes_length = 0;
-    private string $previous_method;
-    private string $previous_param;
-    private function get_previous_method() {
-        $this->previous_method = $this->app->request->method;
-    }
-    private function reset_method_to(string|null $set = null) {
-        $this->app->request->method = $set ?? $this->previous_param;
-    }
-    private function get_previous_param() {
-        $this->previous_param = $this->app->request->overwrite_param;
-    }
-    private function reset_param_to(array|false $set = false) {
-        $this->app->request->overwrite_param = $set ?? $this->previous_method;
-    }
     public function render(
-        null|string $render_method = null,
         null|array $url = null,
-        null|array $query_parameter = null
     ) {
-        $this->get_previous_method();
-        $this->get_previous_param();
         $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings::$routes_path;
         $this->current_route = '\\' . $this->app->app_settings::$routes_class;
         $url = $url ?? $this->app->request->uri_array;
@@ -55,15 +38,7 @@ class FSRouter extends FSMiddleware {
             $this->app->reroute_error(404);
             return;
         }
-        if ($render_method !== null) {
-            $this->reset_method_to($render_method);
-        }
-        if ($query_parameter !== null) {
-            $this->reset_param_to($query_parameter);
-        }
         $this->run_real_route();
-        $this->reset_method_to();
-        $this->reset_param_to();
     }
     private string $current_route;
     private object|string|false $real_route = false;
@@ -145,7 +120,7 @@ class FSRouter extends FSMiddleware {
         }
         if (!$match) {
             if (\is_array($fallback)) {
-                $this->render('get', $fallback, $query_parameter);
+                $this->app->render_get($fallback, $query_parameter);
             } elseif (\is_callable($fallback)) {
                 $fallback($query_parameter);
             }
