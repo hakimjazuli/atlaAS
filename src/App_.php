@@ -10,6 +10,8 @@ use HtmlFirst\atlaAS\Vars\AppSettings_;
 use HtmlFirst\atlaAS\Vars\AppEnv_;
 
 class App_ {
+    public array $global = [];
+
     public Request $request;
     public string $app_root;
     public string $public_url_root;
