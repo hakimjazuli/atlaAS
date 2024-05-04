@@ -19,13 +19,13 @@ class FSRouter extends FSMiddleware {
         $this->previous_method = $this->app->request->method;
     }
     private function reset_method_to(string|null $set = null) {
-        $this->app->request->overwrite_param = $set ?? $this->previous_param;
+        $this->app->request->method = $set ?? $this->previous_param;
     }
     private function get_previous_param() {
         $this->previous_param = $this->app->request->overwrite_param;
     }
-    private function reset_param_to(array|null $set = null) {
-        $this->app->request->method = $set ?? $this->previous_method;
+    private function reset_param_to(array|false $set = false) {
+        $this->app->request->overwrite_param = $set ?? $this->previous_method;
     }
     public function render(
         null|string $render_method = null,
