@@ -21,18 +21,18 @@ class Conn {
         };
     }
     private function connection_start(string $mode) {
-        if (!isset($_ENV[$conn = App_::$instance->app_settings::$_ENV_conn_name][$mode])) {
+        if (!isset($_ENV[$conn = App_::$app->app_settings::$_ENV_conn_name][$mode])) {
             return $_ENV[$conn][$mode] = self::connect($mode);
         }
     }
     private function connection_close(string $mode) {
-        if (isset($_ENV[$conn = App_::$instance->app_settings::$_ENV_conn_name][$mode])) {
+        if (isset($_ENV[$conn = App_::$app->app_settings::$_ENV_conn_name][$mode])) {
             return $_ENV[$conn][$mode] = null;
         }
     }
     private function connect(string $mode) {
-        $conn_ = App_::$instance->app_env::$conn;
-        $httpmode = App_::$instance->request->http_mode;
+        $conn_ = App_::$app->app_env::$conn;
+        $httpmode = App_::$app->request->http_mode;
         $host = $conn_[$httpmode][$mode]['host'];
         $username = $conn_[$httpmode][$mode]['username'];
         $password = $conn_[$httpmode][$mode]['password'];
@@ -61,8 +61,8 @@ class Conn {
         return $conn;
     }
     private function get_api_key($METHOD) {
-        if ($_SERVER['REMOTE_ADDR'] === App_::$instance->app_settings::server_ip()) {
-            return App_::$instance->get_api_key();
+        if ($_SERVER['REMOTE_ADDR'] === App_::$app->app_settings::server_ip()) {
+            return App_::$app->get_api_key();
         }
         return $METHOD['api_key'];
     }
@@ -94,10 +94,10 @@ class Conn {
         array|null $bind = null,
         bool $check_csrf = true
     ): atlaASQuery_ {
-        if (!\is_file($sql_relative_path = App_::$instance->app_settings::system_path(
-            App_::$instance->app_root . '/' . App_::$instance->app_settings::$sqls_path . '/' . $sql_relative_path
+        if (!\is_file($sql_relative_path = App_::$app->app_settings::system_path(
+            App_::$app->app_root . '/' . App_::$app->app_settings::$sqls_path . '/' . $sql_relative_path
         ))) {
-            App_::$instance->set_error_header(500);
+            App_::$app->set_error_header(500);
             Response::header_json();
             return new class() extends atlaASQuery_ {
                 public $data = [
@@ -106,12 +106,12 @@ class Conn {
                 public $count = 0;
             };
         }
-        $method = App_::$instance->request->method;
-        $METHOD = App_::$instance->request->method_params($method);
-        $_api = App_::$instance->app_env::$api;
+        $method = App_::$app->request->method;
+        $METHOD = App_::$app->request->method_params($method);
+        $_api = App_::$app->app_env::$api;
         $api_key = $this->get_api_key($METHOD);
         if (!$_api['check'][$api_key]) {
-            App_::$instance->set_error_header(403);
+            App_::$app->set_error_header(403);
             Response::header_json();
             return new class() extends atlaASQuery_ {
                 public $data = [
@@ -120,7 +120,7 @@ class Conn {
                 public $count = 0;
             };
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
-            App_::$instance->set_error_header(403);
+            App_::$app->set_error_header(403);
             Response::header_json();
             return new class() extends atlaASQuery_ {
                 public $data = [
@@ -129,11 +129,11 @@ class Conn {
                 public $count = 0;
             };
         }
-        $hasher = new Hasher(App_::$instance);
+        $hasher = new Hasher(App_::$app);
         if (($method !== 'get' || $csrf_key) && $check_csrf) {
             $hasher->csrf_check($csrf_key);
         }
-        $connection = $connection ?? App_::$instance->app_env::$connections[0];
+        $connection = $connection ?? App_::$app->app_env::$connections[0];
         $pdo = self::connection_start($connection);
         $stmt = $pdo->prepare(
             \file_get_contents($sql_relative_path)

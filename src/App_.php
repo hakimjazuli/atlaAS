@@ -25,9 +25,9 @@ class App_ {
         $this->public_url_root = $this->request->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
         $this->set_as_global();
     }
-    public App_ $instance;
+    public static App_ $app;
     private function set_as_global() {
-        static::$instance = $this;
+        static::$app = $this;
     }
     private FSRouter $fs_router;
     public function run(): void {
@@ -61,7 +61,7 @@ class App_ {
      * - fallback using render(...args);
      *
      * @param callable|array $fallback : upon failing any $conditionals it will run:
-     * - array: $this->app->render_get(array $fallback, array $generated_query_parameter);
+     * - array: App_::$app->render_get(array $fallback, array $generated_query_parameter);
      * - callable: $fallback(array $generated_fallback_arguments);
      * - after running any of the $fallback above, App will run exit(0);
      * @param  array $conditionals
@@ -71,7 +71,7 @@ class App_ {
      *          bool, ['param_name' => 'warning message']
      *      ]
      * ]
-     * - consider use $this->app->param_match(...args);
+     * - consider use App_::$app->param_match(...args);
      * @param  array $add_to_fallback_args associative :
      * - [
      *      ... $new_param_name_to_send_as => $prop_of_the_class

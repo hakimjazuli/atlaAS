@@ -2,13 +2,12 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
+use HtmlFirst\atlaAS\App_;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\FileServer;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
-use HtmlFirst\atlaAS\Utils\hasPublicApp_;
 
 class FSRouter extends FSMiddleware {
-    use hasPublicApp_;
     public function run() {
         $this->render();
     }
@@ -17,14 +16,14 @@ class FSRouter extends FSMiddleware {
     private object|string|false $real_route = false;
     private int $request_length = 0;
     public function render() {
-        $uri_array = $this->app->request->uri_array;
+        $uri_array = App_::$app->request->uri_array;
         $this->request_length = \count($uri_array);
-        $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings::$routes_path;
-        $this->current_route = '\\' . $this->app->app_settings::$routes_class;
+        $this->current_folder = App_::$app->app_root . \DIRECTORY_SEPARATOR . App_::$app->app_settings::$routes_path;
+        $this->current_route = '\\' . App_::$app->app_settings::$routes_class;
         $routes_length = 0;
         foreach ($uri_array as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
-            $this->current_middleware = $this->current_route . '\\' . $this->app->app_settings::$middleware_name;
+            $this->current_middleware = $this->current_route . '\\' . App_::$app->app_settings::$middleware_name;
             $this->check_mw();
             $routes_length++;
             $this->current_route .= '\\' . $uri;
@@ -35,7 +34,7 @@ class FSRouter extends FSMiddleware {
             }
         }
         if (!$this->real_route) {
-            $this->app->reroute_error(404);
+            App_::$app->reroute_error(404);
             return;
         }
         $this->run_real_route();
@@ -51,7 +50,7 @@ class FSRouter extends FSMiddleware {
         $this->check_middleware_exist_in_route();
         if (!\method_exists(
             $route = $this->real_route,
-            $this->app->request->method
+            App_::$app->request->method
         )) {
             return;
         }
@@ -63,40 +62,40 @@ class FSRouter extends FSMiddleware {
     private function check_middleware_exist_in_route(): void {
         if (!\method_exists(
             $middleware = $this->real_route,
-            $mw_method = $this->app->app_settings::$middleware_name
+            $mw_method = App_::$app->app_settings::$middleware_name
         )) {
             return;
         };
-        (new $middleware($this->app))->$mw_method($this->app->request->method);
+        (new $middleware(App_::$app))->$mw_method(App_::$app->request->method);
     }
     private function run_method_with_input_logic(string $class_name): void {
         $num_params = FunctionHelpers::url_input_length(
             $class_name,
-            $method = $this->app->request->method
+            $method = App_::$app->request->method
         );
         if ($num_params !== $this->request_length - $this->routes_length) {
-            $this->app->reroute_error(404);
+            App_::$app->reroute_error(404);
             return;
         }
-        $url_inputs = \array_slice($this->app->request->uri_array, -$num_params);
-        $route_ = new $class_name($this->app);
+        $url_inputs = \array_slice(App_::$app->request->uri_array, -$num_params);
+        $route_ = new $class_name(App_::$app);
         $route_->$method(...$url_inputs);
     }
     private function check_method_with_spread_input_logic(string $class_name): bool {
         if ($this->is_map_resource($class_name)) {
-            $url_inputs = \array_slice($this->app->request->uri_array, $this->routes_length);
-            (new $class_name($this->app))->get(...$url_inputs);
-            $handler = new FileServer($this->app);
-            $handler->map_resource($url_inputs, $this->app->app_root . $class_name);
+            $url_inputs = \array_slice(App_::$app->request->uri_array, $this->routes_length);
+            (new $class_name(App_::$app))->get(...$url_inputs);
+            $handler = new FileServer(App_::$app);
+            $handler->map_resource($url_inputs, App_::$app->app_root . $class_name);
             return true;
         };
         return false;
     }
     private function is_map_resource(string $class_name) {
-        if ($this->app->request->method !== 'get') {
+        if (App_::$app->request->method !== 'get') {
             return false;
         }
-        return FunctionHelpers::is_first_parameter_spread($class_name, $this->app->request->method);
+        return FunctionHelpers::is_first_parameter_spread($class_name, App_::$app->request->method);
     }
     public function follow_up_params(
         array|callable $fallback,
@@ -113,7 +112,7 @@ class FSRouter extends FSMiddleware {
         }
         if (!$match) {
             if (\is_array($fallback)) {
-                $this->app->render_get($fallback, $query_parameter);
+                App_::$app->render_get($fallback, $query_parameter);
             } elseif (\is_callable($fallback)) {
                 $fallback($query_parameter);
             }

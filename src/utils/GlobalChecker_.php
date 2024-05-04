@@ -2,17 +2,18 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
+use HtmlFirst\atlaAS\App_;
+
 abstract class GlobalChecker_ {
     protected string $global = 'global';
 
-    use hasProtectedApp_;
     protected function global(string $name, mixed $initial_value) {
         if (!\is_string($this->global)) {
             return null;
         }
-        if (isset($this->app->global[$this->global][$name])) {
-            return $this->app->global[$this->global][$name];
+        if (isset(App_::$app->global[$this->global][$name])) {
+            return App_::$app->global[$this->global][$name];
         }
-        return ($this->app->global[$this->global][$name] = $initial_value);
+        return (App_::$app->global[$this->global][$name] = $initial_value);
     }
 }
