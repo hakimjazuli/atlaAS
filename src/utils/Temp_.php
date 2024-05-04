@@ -2,8 +2,6 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-use HtmlFirst\atlaAS\Utils\hasPrivateApp_;
-
 class Temp_ {
     /**
      * var

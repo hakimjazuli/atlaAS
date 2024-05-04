@@ -2,7 +2,15 @@
 
 namespace HtmlFirst\atlaAS\Vars;
 
+use HtmlFirst\atlaAS\Utils\hasSetGlobal;
+
 abstract class AppEnv_ {
+    public static AppEnv_ $instance;
+    use hasSetGlobal;
+    public function __construct() {
+        $this->set_as_global();
+    }
+
     public static bool $is_in_production = false;
 
     public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';

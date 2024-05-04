@@ -11,9 +11,9 @@ abstract class GlobalChecker_ {
         if (!\is_string($this->global)) {
             return null;
         }
-        if (isset(App_::$app->global[$this->global][$name])) {
-            return App_::$app->global[$this->global][$name];
+        if (isset(App_::$instance->global[$this->global][$name])) {
+            return App_::$instance->global[$this->global][$name];
         }
-        return (App_::$app->global[$this->global][$name] = $initial_value);
+        return (App_::$instance->global[$this->global][$name] = $initial_value);
     }
 }

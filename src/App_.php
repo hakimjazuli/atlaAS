@@ -4,30 +4,28 @@ namespace HtmlFirst\atlaAS;
 
 use HtmlFirst\atlaAS\Router\FSRouter;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
-use HtmlFirst\atlaAS\Utils\Request;
+use HtmlFirst\atlaAS\Utils\hasSetGlobal;
+use HtmlFirst\atlaAS\Utils\Request_;
 use HtmlFirst\atlaAS\Utils\Temp_;
-use HtmlFirst\atlaAS\Vars\AppSettings_;
 use HtmlFirst\atlaAS\Vars\AppEnv_;
+use HtmlFirst\atlaAS\Vars\AppSettings_;
 
 class App_ {
     public array $global = [];
 
-    public Request $request;
     public string $app_root;
     public string $public_url_root;
-    public AppEnv_ $app_env;
-    public AppSettings_ $app_settings;
+
+    use hasSetGlobal;
+    public static App_ $instance;
+
     public function __construct(string $app_env_ref, string $app_settings_ref) {
-        $this->app_env = new $app_env_ref;
-        $this->app_settings = new $app_settings_ref($this->app_env);
-        $this->request = new Request;
-        $this->app_root = \dirname($this->request->public_path);
-        $this->public_url_root = $this->request->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
+        new $app_env_ref;
+        new $app_settings_ref;
+        new Request_;
+        $this->app_root = \dirname(Request_::$instance->public_path);
+        $this->public_url_root = Request_::$instance->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
         $this->set_as_global();
-    }
-    public static App_ $app;
-    private function set_as_global() {
-        static::$app = $this;
     }
     private FSRouter $fs_router;
     public function run(): void {
@@ -48,9 +46,9 @@ class App_ {
      */
     public function render_get(null|array $route_array_path = null, null|array $query_parameter = null) {
         $reseters = FunctionHelpers::callable_collections(
-            Temp_::var($this->request->method, 'get'),
-            Temp_::var($this->request->uri_array, $route_array_path),
-            Temp_::var($this->request->query_params_arrray, $query_parameter)
+            Temp_::var(Request_::$instance->method, 'get'),
+            Temp_::var(Request_::$instance->uri_array, $route_array_path),
+            Temp_::var(Request_::$instance->query_params_arrray, $query_parameter)
         );
         $this->fs_router->render();
         $reseters();
@@ -61,7 +59,7 @@ class App_ {
      * - fallback using render(...args);
      *
      * @param callable|array $fallback : upon failing any $conditionals it will run:
-     * - array: App_::$app->render_get(array $fallback, array $generated_query_parameter);
+     * - array: App_::$instance->render_get(array $fallback, array $generated_query_parameter);
      * - callable: $fallback(array $generated_fallback_arguments);
      * - after running any of the $fallback above, App will run exit(0);
      * @param  array $conditionals
@@ -71,7 +69,7 @@ class App_ {
      *          bool, ['param_name' => 'warning message']
      *      ]
      * ]
-     * - consider use App_::$app->param_match(...args);
+     * - consider use App_::$instance->param_match(...args);
      * @param  array $add_to_fallback_args associative :
      * - [
      *      ... $new_param_name_to_send_as => $prop_of_the_class
@@ -93,7 +91,7 @@ class App_ {
      * @return bool
      */
     public function param_match(string $regex, string $param_name): bool {
-        return \preg_match($regex, $this->request->query_params_arrray[$param_name]);
+        return \preg_match($regex, Request_::$instance->query_params_arrray[$param_name]);
     }
     public static function reroute(string $path): void {
         \header("location: $path");
@@ -123,9 +121,9 @@ class App_ {
                 break;
         }
         self::set_error_header($code);
-        self::reroute($this->app_settings::$routes_errors_prefix . $code);
+        self::reroute(AppSettings_::$instance::$routes_errors_prefix . $code);
     }
     public function get_api_key(): string {
-        return \array_keys($this->app_env::$api['check'])[0];
+        return \array_keys(AppEnv_::$instance::$api['check'])[0];
     }
 }

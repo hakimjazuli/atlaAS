@@ -4,7 +4,10 @@ namespace HtmlFirst\atlaAS\Connection;
 
 use HtmlFirst\atlaAS\App_;
 use HtmlFirst\atlaAS\Utils\Hasher;
-use HtmlFirst\atlaAS\Utils\Response;
+use HtmlFirst\atlaAS\Utils\Request_;
+use HtmlFirst\atlaAS\Utils\Response_;
+use HtmlFirst\atlaAS\Vars\AppEnv_;
+use HtmlFirst\atlaAS\Vars\AppSettings_;
 use PDO;
 use PDOException;
 use PDOStatement;
@@ -21,18 +24,18 @@ class Conn {
         };
     }
     private function connection_start(string $mode) {
-        if (!isset($_ENV[$conn = App_::$app->app_settings::$_ENV_conn_name][$mode])) {
+        if (!isset($_ENV[$conn = AppSettings_::$instance::$_ENV_conn_name][$mode])) {
             return $_ENV[$conn][$mode] = self::connect($mode);
         }
     }
     private function connection_close(string $mode) {
-        if (isset($_ENV[$conn = App_::$app->app_settings::$_ENV_conn_name][$mode])) {
+        if (isset($_ENV[$conn = AppSettings_::$instance::$_ENV_conn_name][$mode])) {
             return $_ENV[$conn][$mode] = null;
         }
     }
     private function connect(string $mode) {
-        $conn_ = App_::$app->app_env::$conn;
-        $httpmode = App_::$app->request->http_mode;
+        $conn_ = AppEnv_::$instance::$conn;
+        $httpmode = Request_::$instance->http_mode;
         $host = $conn_[$httpmode][$mode]['host'];
         $username = $conn_[$httpmode][$mode]['username'];
         $password = $conn_[$httpmode][$mode]['password'];
@@ -61,8 +64,8 @@ class Conn {
         return $conn;
     }
     private function get_api_key($METHOD) {
-        if ($_SERVER['REMOTE_ADDR'] === App_::$app->app_settings::server_ip()) {
-            return App_::$app->get_api_key();
+        if ($_SERVER['REMOTE_ADDR'] === AppSettings_::$instance::server_ip()) {
+            return App_::$instance->get_api_key();
         }
         return $METHOD['api_key'];
     }
@@ -94,11 +97,11 @@ class Conn {
         array|null $bind = null,
         bool $check_csrf = true
     ): atlaASQuery_ {
-        if (!\is_file($sql_relative_path = App_::$app->app_settings::system_path(
-            App_::$app->app_root . '/' . App_::$app->app_settings::$sqls_path . '/' . $sql_relative_path
+        if (!\is_file($sql_relative_path = AppSettings_::$instance::system_path(
+            App_::$instance->app_root . '/' . AppSettings_::$instance::$sqls_path . '/' . $sql_relative_path
         ))) {
-            App_::$app->set_error_header(500);
-            Response::header_json();
+            App_::$instance->set_error_header(500);
+            Response_::header_json();
             return new class() extends atlaASQuery_ {
                 public $data = [
                     ['sql_file' => 'not found']
@@ -106,13 +109,13 @@ class Conn {
                 public $count = 0;
             };
         }
-        $method = App_::$app->request->method;
-        $METHOD = App_::$app->request->method_params($method);
-        $_api = App_::$app->app_env::$api;
+        $method = Request_::$instance->method;
+        $METHOD = Request_::$instance->method_params($method);
+        $_api = AppEnv_::$instance::$api;
         $api_key = $this->get_api_key($METHOD);
         if (!$_api['check'][$api_key]) {
-            App_::$app->set_error_header(403);
-            Response::header_json();
+            App_::$instance->set_error_header(403);
+            Response_::header_json();
             return new class() extends atlaASQuery_ {
                 public $data = [
                     ['api_key' => 'wrong key']
@@ -120,8 +123,8 @@ class Conn {
                 public $count = 0;
             };
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
-            App_::$app->set_error_header(403);
-            Response::header_json();
+            App_::$instance->set_error_header(403);
+            Response_::header_json();
             return new class() extends atlaASQuery_ {
                 public $data = [
                     ['api_key' => 'key status is not active']
@@ -133,7 +136,7 @@ class Conn {
         if (($method !== 'get' || $csrf_key) && $check_csrf) {
             $hasher->csrf_check($csrf_key);
         }
-        $connection = $connection ?? App_::$app->app_env::$connections[0];
+        $connection = $connection ?? AppEnv_::$instance::$connections[0];
         $pdo = self::connection_start($connection);
         $stmt = $pdo->prepare(
             \file_get_contents($sql_relative_path)

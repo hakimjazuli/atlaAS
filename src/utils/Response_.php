@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-class Response {
+class Response_ {
     use hasAppRegex;
     private static function preprocess(callable $html_function, bool $html_document = true) {
         if ($html_document) {
