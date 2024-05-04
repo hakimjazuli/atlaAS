@@ -4,8 +4,8 @@ namespace HtmlFirst\atlaAS\Vars;
 
 use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 
-abstract class AppEnv_ {
-    public static AppEnv_ $instance;
+abstract class Env_ {
+    public static Env_ $instance;
     use hasSetGlobal;
     public function __construct() {
         $this->set_as_global();

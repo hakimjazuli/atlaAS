@@ -3,17 +3,17 @@
 namespace HtmlFirst\atlaAS\Utils;
 
 use HtmlFirst\atlaAS\App_;
-use HtmlFirst\atlaAS\Vars\AppEnv_;
+use HtmlFirst\atlaAS\Vars\Env_;
 
 class Hasher {
     public function password_generate(string $value): string {
-        return password_hash(AppEnv_::$instance::$app_key . $value, PASSWORD_DEFAULT);
+        return password_hash(Env_::$instance::$app_key . $value, PASSWORD_DEFAULT);
     }
     public function password_check(string $value, string $dbpassword): bool {
-        return password_verify(AppEnv_::$instance::$app_key . $value, $dbpassword);
+        return password_verify(Env_::$instance::$app_key . $value, $dbpassword);
     }
     public function generate_token(): string {
-        $token_handler = AppEnv_::$instance::$app_key . \random_bytes(32);
+        $token_handler = Env_::$instance::$app_key . \random_bytes(32);
         $token_handler = \unpack('H*', $token_handler)[1];
         $token_handler = \str_shuffle($token_handler);
         return \substr($token_handler, 0, 75);

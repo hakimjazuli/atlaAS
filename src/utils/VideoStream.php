@@ -2,8 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-use HtmlFirst\atlaAS\App_;
-use HtmlFirst\atlaAS\Vars\AppSettings_;
+use HtmlFirst\atlaAS\Vars\Settings_;
 
 /**
  * Description of VideoStream
@@ -20,7 +19,7 @@ class VideoStream {
 
     function __construct(private string $path) {
         /** HS */
-        $this->buffer = AppSettings_::$instance::$chunk_sizes;
+        $this->buffer = Settings_::$instance::$chunk_sizes;
         /** HS */
     }
 
@@ -112,7 +111,7 @@ class VideoStream {
             $data = fread($this->stream, $bytesToRead);
 
             /** HS */
-            usleep(AppSettings_::$instance::$refresh_micro_second);
+            usleep(Settings_::$instance::$refresh_micro_second);
             /** HS */
 
             echo $data;

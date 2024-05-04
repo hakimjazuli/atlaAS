@@ -7,7 +7,7 @@ use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\FileServer;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
 use HtmlFirst\atlaAS\Utils\Request_;
-use HtmlFirst\atlaAS\Vars\AppSettings_;
+use HtmlFirst\atlaAS\Vars\Settings_;
 
 class FSRouter extends FSMiddleware {
     public function run() {
@@ -20,12 +20,12 @@ class FSRouter extends FSMiddleware {
     public function render() {
         $uri_array = Request_::$instance->uri_array;
         $this->request_length = \count($uri_array);
-        $this->current_folder = App_::$instance->app_root . \DIRECTORY_SEPARATOR . AppSettings_::$instance::$routes_path;
-        $this->current_route = '\\' . AppSettings_::$instance::$routes_class;
+        $this->current_folder = App_::$instance->app_root . \DIRECTORY_SEPARATOR . Settings_::$instance::$routes_path;
+        $this->current_route = '\\' . Settings_::$instance::$routes_class;
         $routes_length = 0;
         foreach ($uri_array as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
-            $this->current_middleware = $this->current_route . '\\' . AppSettings_::$instance::$middleware_name;
+            $this->current_middleware = $this->current_route . '\\' . Settings_::$instance::$middleware_name;
             $this->check_mw();
             $routes_length++;
             $this->current_route .= '\\' . $uri;
@@ -64,7 +64,7 @@ class FSRouter extends FSMiddleware {
     private function check_middleware_exist_in_route(): void {
         if (!\method_exists(
             $middleware = $this->real_route,
-            $mw_method = AppSettings_::$instance::$middleware_name
+            $mw_method = Settings_::$instance::$middleware_name
         )) {
             return;
         };

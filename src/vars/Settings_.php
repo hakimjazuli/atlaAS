@@ -4,9 +4,9 @@ namespace HtmlFirst\atlaAS\Vars;
 
 use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 
-abstract class AppSettings_ {
+abstract class Settings_ {
     use hasSetGlobal;
-    public static AppSettings_ $instance;
+    public static Settings_ $instance;
     public function __construct() {
         $this->set_as_global();
     }
@@ -35,6 +35,6 @@ abstract class AppSettings_ {
         return [$this->if_in_production(true, false), 60/* days */];
     }
     public function if_in_production(bool $in_production_value, bool $not_in_production_value): bool {
-        return AppEnv_::$instance::$is_in_production ? $in_production_value : $not_in_production_value;
+        return Env_::$is_in_production ? $in_production_value : $not_in_production_value;
     }
 }

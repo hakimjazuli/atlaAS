@@ -8,8 +8,8 @@ use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 use HtmlFirst\atlaAS\Utils\Request_;
 use HtmlFirst\atlaAS\Utils\Response_;
 use HtmlFirst\atlaAS\Utils\Temp_;
-use HtmlFirst\atlaAS\Vars\AppEnv_;
-use HtmlFirst\atlaAS\Vars\AppSettings_;
+use HtmlFirst\atlaAS\Vars\Env_;
+use HtmlFirst\atlaAS\Vars\Settings_;
 
 class App_ {
     public array $global = [];
@@ -123,9 +123,9 @@ class App_ {
                 break;
         }
         self::set_error_header($code);
-        self::reroute(AppSettings_::$instance::$routes_errors_prefix . $code);
+        self::reroute(Settings_::$instance::$routes_errors_prefix . $code);
     }
     public function get_api_key(): string {
-        return \array_keys(AppEnv_::$instance::$api['check'])[0];
+        return \array_keys(Env_::$instance::$api['check'])[0];
     }
 }
