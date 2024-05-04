@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-abstract class globalChecker_ {
+abstract class GlobalChecker_ {
     protected string $global = 'global';
 
     use hasProtectedApp_;
