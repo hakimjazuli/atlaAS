@@ -3,7 +3,7 @@
 namespace HtmlFirst\atlaAS\Utils;
 
 abstract class GlobalChecker_ {
-    protected string $global = 'global';
+    protected string|null $global = null;
 
     use hasProtectedApp_;
     protected function global(string $name, mixed $initial_value) {
