@@ -3,6 +3,6 @@
 namespace HtmlFirst\atlaAS\Connection;
 
 class FieldType {
-    public function __construct(public int $type, public string $regex, public string $regex_html) {
+    public function __construct(public int $type, public string|null $regex = null, public string|null $regex_html = null) {
     }
 }
