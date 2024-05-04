@@ -45,25 +45,30 @@ class App {
      * - generate followup for ParamsReceiver and
      * - fallback using render(...args);
      *
+     * @param callable|array $fallback : upon failing any $conditionals it will run:
+     * - array: $this->app->render_get(array $fallback, array $generated_query_parameter);
+     * - callable: $fallback(array $generated_fallback_arguments);
+     * - after running any of the $fallback above, App will run exit(0);
      * @param  array $conditionals
-     * - conditional will be triggered when bool are false;
-     * - consider use $this->app->param_match(...args);
+     * - $fallback will be triggered when any $conditionals bool are false;
      * - [
      *      ...[
-     *          bool, ['param_warning_receiver_name' => 'warning message']
+     *          bool, ['param_name' => 'warning message']
      *      ]
      * ]
-     * @param  array $add_to associative :
+     * - consider use $this->app->param_match(...args);
+     * @param  array $add_to_fallback_args associative :
      * - [
      *      ... $new_param_name_to_send_as => $prop_of_the_class
      * ]
-     * @param bool $url_fallback :
-     * - null: use it's own class route to render as fallback;
-     * - array: use public uri array;
      * @return array
      */
-    public function follow_up_params(array $conditionals, array $add_to = [], array|null $url_fallback = null): void {
-        $this->fs_router->follow_up_params($conditionals, $add_to, $url_fallback);
+    public function follow_up_params(
+        array|callable $fallback,
+        array $conditionals,
+        array $add_to_fallback_args = [],
+    ): void {
+        $this->fs_router->follow_up_params($fallback, $conditionals, $add_to_fallback_args);
     }
     /**
      * param_match

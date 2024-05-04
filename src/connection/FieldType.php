@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Connection;
 
-class FieldTableType {
+class FieldType {
     public function __construct(public int $type, public string $regex, public string $regex_html) {
     }
 }
