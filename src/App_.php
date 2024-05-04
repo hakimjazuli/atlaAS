@@ -6,6 +6,7 @@ use HtmlFirst\atlaAS\Router\FSRouter;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
 use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 use HtmlFirst\atlaAS\Utils\Request_;
+use HtmlFirst\atlaAS\Utils\Response_;
 use HtmlFirst\atlaAS\Utils\Temp_;
 use HtmlFirst\atlaAS\Vars\AppEnv_;
 use HtmlFirst\atlaAS\Vars\AppSettings_;
@@ -25,6 +26,7 @@ class App_ {
         new Request_;
         $this->app_root = \dirname(Request_::$instance->public_path);
         $this->public_url_root = Request_::$instance->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
+        new Response_;
         $this->set_as_global();
     }
     private FSRouter $fs_router;

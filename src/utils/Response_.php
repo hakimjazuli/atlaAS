@@ -4,6 +4,12 @@ namespace HtmlFirst\atlaAS\Utils;
 
 class Response_ {
     use hasAppRegex;
+    use hasSetGlobal;
+    public Response_ $instance;
+    public function __construct() {
+        $this->set_as_global();
+    }
+
     private static function preprocess(callable $html_function, bool $html_document = true) {
         if ($html_document) {
             \header('Content-Type: text/html; charset=UTF-8');
