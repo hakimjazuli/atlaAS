@@ -23,6 +23,6 @@ abstract class FunctionHelpers {
         }
     }
     public static function callable_collections(callable ...$functions): callable {
-        return fn () => self::run_array_functions($functions);
+        return fn () => self::run_array_functions(...$functions);
     }
 }
