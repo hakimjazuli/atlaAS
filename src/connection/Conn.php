@@ -95,10 +95,9 @@ class Conn {
         array|null $bind = null,
         bool $check_csrf = true
     ): atlaASQuery_ {
-        $sql_relative_path = $this->app->app_settings::system_path(
+        if (!\is_file($sql_relative_path = $this->app->app_settings::system_path(
             $this->app->app_root . '/' . $this->app->app_settings::$sqls_path . '/' . $sql_relative_path
-        );
-        if (!\is_file($sql_relative_path)) {
+        ))) {
             $this->app->set_error_header(500);
             Response::header_json();
             return new class() extends atlaASQuery_ {

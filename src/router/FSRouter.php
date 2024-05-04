@@ -13,6 +13,9 @@ class FSRouter extends FSMiddleware {
         $this->render();
     }
     private int $routes_length = 0;
+    private string $current_route;
+    private object|string|false $real_route = false;
+    private int $request_length = 0;
     public function render(
         null|array $url = null,
     ) {
@@ -39,9 +42,6 @@ class FSRouter extends FSMiddleware {
         }
         $this->run_real_route();
     }
-    private string $current_route;
-    private object|string|false $real_route = false;
-    private int $request_length = 0;
     private function check_route(): bool {
         if (!\class_exists($this->current_route)) {
             return false;
@@ -82,9 +82,6 @@ class FSRouter extends FSMiddleware {
         }
         $url_inputs = \array_slice($this->app->request->uri_array, -$num_params);
         $route_ = new $class_name($this->app);
-        if ($this->app->request->overwrite_param) {
-            $this->app->request->generate_query_param($this->app->request->overwrite_param, $route_);
-        }
         $route_->$method(...$url_inputs);
     }
     private function check_method_with_spread_input_logic(string $class_name): bool {
@@ -106,10 +103,9 @@ class FSRouter extends FSMiddleware {
     public function follow_up_params(
         array|callable $fallback,
         array $conditionals,
-        array $add_to_fallback_args = [],
+        array $query_parameter = [],
     ): void {
         $match = true;
-        $query_parameter = $this->app->request->generate_query_param($add_to_fallback_args);
         foreach ($conditionals as $data) {
             [$conditional, $if_meet_merge] = $data;
             if (!$conditional) {
