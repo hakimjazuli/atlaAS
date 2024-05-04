@@ -96,9 +96,13 @@ class Conn {
         bool $check_csrf = true
     ): atlaASQuery_ {
         if (!\is_file($sql_relative_path =
-            $this->app->app_root . \DIRECTORY_SEPARATOR .
-            $this->app->app_settings::$sqls_path . \DIRECTORY_SEPARATOR .
-            $sql_relative_path)) {
+            \str_replace(
+                '/',
+                \DIRECTORY_SEPARATOR,
+                $this->app->app_root . \DIRECTORY_SEPARATOR .
+                    $this->app->app_settings::$sqls_path . \DIRECTORY_SEPARATOR .
+                    $sql_relative_path
+            ))) {
             $this->app->set_error_header(500);
             Response::header_json();
             return new class() extends atlaASQuery_ {
