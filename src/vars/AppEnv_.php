@@ -7,7 +7,7 @@ abstract class AppEnv_ {
 
     public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
     public static array $connection = [
-        'site', 'app'
+        'app', 'site'
     ];
     public static array $conn = [
         'http' => [
