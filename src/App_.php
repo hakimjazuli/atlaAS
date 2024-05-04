@@ -42,8 +42,8 @@ class App_ {
     public function render_get(null|array $route_array_path = null, null|array $query_parameter = null) {
         $reseters = FunctionHelpers::callable_collections(
             Temp_::var($this->request->method, 'get'),
-            Temp_::var($this->request->query_params_arrray, $query_parameter),
-            Temp_::var($this->request->uri_array, $route_array_path)
+            Temp_::var($this->request->uri_array, $route_array_path),
+            Temp_::var($this->request->query_params_arrray, $query_parameter)
         );
         $this->fs_router->render();
         $reseters();
