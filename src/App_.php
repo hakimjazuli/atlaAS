@@ -23,12 +23,17 @@ class App_ {
         $this->request = new Request;
         $this->app_root = \dirname($this->request->public_path);
         $this->public_url_root = $this->request->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
+        $this->set_as_global();
     }
     private FSRouter $fs_router;
     public function run(): void {
         $this->fs_router = new FSRouter($this);
         $this->fs_router->run();
         exit(0);
+    }
+    public App_ $instance;
+    private function set_as_global() {
+        static::$instance = $this;
     }
     /**
      * render_get
