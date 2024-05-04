@@ -6,7 +6,7 @@ abstract class AppEnv_ {
     public static bool $is_in_production = false;
 
     public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
-    public static array $connection = [
+    public static array $connections = [
         'app',
         'site'
     ];
