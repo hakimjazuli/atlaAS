@@ -10,8 +10,8 @@ use PDOStatement;
 
 class Conn {
     use hasPrivateApp;
-    private static function normalize_array(PDOStatement $stmts): atlaASQuery {
-        return new class($stmts) extends atlaASQuery {
+    private static function normalize_array(PDOStatement $stmts): atlaASQuery_ {
+        return new class($stmts) extends atlaASQuery_ {
             public $data;
             public $count;
             public function __construct(PDOStatement $stmts) {
@@ -75,7 +75,7 @@ class Conn {
      *    'field_name'=>[?PDO::PARAM_type, ?$value],
      *]
      * @param bool $override_csrf = false
-     * @return atlaASQuery
+     * @return atlaASQuery_
      */
     public function sql_query(
         string $sql_relative_path,
@@ -83,14 +83,14 @@ class Conn {
         string|null $connection = null,
         array|null $bind = null,
         bool $override_csrf = false
-    ): atlaASQuery {
+    ): atlaASQuery_ {
         if (!\is_file($sql_relative_path =
             $this->app->app_root . \DIRECTORY_SEPARATOR .
             $this->app->app_settings->sqls_path . \DIRECTORY_SEPARATOR .
             $sql_relative_path)) {
             $this->app->set_error_header(500);
             \header('Content-Type: application/json');
-            return new class() extends atlaASQuery {
+            return new class() extends atlaASQuery_ {
                 public $data = [
                     ['sql_file' => 'not found']
                 ];
@@ -108,7 +108,7 @@ class Conn {
         if (!$_api['check'][$api_key]) {
             $this->app->set_error_header(403);
             \header('Content-Type: application/json');
-            return new class() extends atlaASQuery {
+            return new class() extends atlaASQuery_ {
                 public $data = [
                     ['api_key' => 'wrong key']
                 ];
@@ -117,7 +117,7 @@ class Conn {
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
             $this->app->set_error_header(403);
             \header('Content-Type: application/json');
-            return new class() extends atlaASQuery {
+            return new class() extends atlaASQuery_ {
                 public $data = [
                     ['api_key' => 'key status is not active']
                 ];

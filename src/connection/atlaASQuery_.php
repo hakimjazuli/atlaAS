@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Connection;
 
-class atlaASQuery {
+class atlaASQuery_ {
     public $data;
     public $count;
 }
