@@ -15,7 +15,7 @@ abstract class TableRegex_ {
         return new FieldType(
             $pdo_param_type,
             $regex,
-            $regex ? $this->regex_php_to_html($regex) : null
+            $regex !== null ? $this->regex_php_to_html($regex) : null
         );
     }
 }
