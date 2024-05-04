@@ -2,8 +2,8 @@
 
 namespace HtmlFirst\atlaAS\Vars;
 
-abstract class AppSettings {
-    public function __construct(private AppEnv $app_env) {
+abstract class AppSettings_ {
+    public function __construct(private AppEnv_ $app_env) {
     }
 
     public string $middleware_name = 'mw';

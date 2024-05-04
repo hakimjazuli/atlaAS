@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Vars;
 
-abstract class AppEnv {
+abstract class AppEnv_ {
     public static bool $is_in_production = false;
 
     public static string $app_key = '4arrW44EN4T5YIYTytcyrbuAERbrIb5e48Y7Ro8y9WYEY8b69';

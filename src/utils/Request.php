@@ -2,7 +2,6 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-use HtmlFirst\atlaAS\App;
 use HtmlFirst\atlaAS\Router\Route_;
 
 class Request {

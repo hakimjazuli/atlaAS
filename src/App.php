@@ -4,15 +4,15 @@ namespace HtmlFirst\atlaAS;
 
 use HtmlFirst\atlaAS\Router\FSRouter;
 use HtmlFirst\atlaAS\Utils\Request;
-use HtmlFirst\atlaAS\Vars\AppSettings;
-use HtmlFirst\atlaAS\Vars\AppEnv;
+use HtmlFirst\atlaAS\Vars\AppSettings_;
+use HtmlFirst\atlaAS\Vars\AppEnv_;
 
-class App {
+class App_ {
     public Request $request;
     public string $app_root;
     public string $public_url_root;
-    public AppEnv $app_env;
-    public AppSettings $app_settings;
+    public AppEnv_ $app_env;
+    public AppSettings_ $app_settings;
     public function __construct(string $app_env_ref, string $app_settings_ref) {
         $this->app_env = new $app_env_ref;
         $this->app_settings = new $app_settings_ref($this->app_env);
