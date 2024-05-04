@@ -18,7 +18,7 @@ abstract class FSMiddleware {
         };
         if (\method_exists(
             $mw,
-            $method = $this->app->app_settings->middleware_name
+            $method = $this->app->app_settings::$middleware_name
         )) {
             (new $mw($this->app))->$method($this->app->request->method);
         }

@@ -8,7 +8,7 @@ use RecursiveIteratorIterator;
 class FileServer {
     use hasPrivateApp_;
     public function file_version(string $public_uri): string {
-        $version = $public_uri . '?t=' . \filemtime($this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path . \DIRECTORY_SEPARATOR . trim($public_uri, '/'));
+        $version = $public_uri . '?t=' . \filemtime($this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings::$routes_path . \DIRECTORY_SEPARATOR . trim($public_uri, '/'));
         return $version;
     }
     /**

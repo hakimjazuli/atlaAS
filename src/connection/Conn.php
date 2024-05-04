@@ -22,13 +22,13 @@ class Conn {
         };
     }
     private function connection_start(string $mode) {
-        if (!isset($_ENV['_CONN'][$mode])) {
-            return $_ENV['_CONN'][$mode] = self::connect($mode);
+        if (!isset($_ENV[$conn = $this->app->app_settings::$_ENV_conn_name][$mode])) {
+            return $_ENV[$conn][$mode] = self::connect($mode);
         }
     }
     private function connection_close(string $mode) {
-        if (isset($_ENV['_CONN'][$mode])) {
-            return $_ENV['_CONN'][$mode] = null;
+        if (isset($_ENV[$conn = $this->app->app_settings::$_ENV_conn_name][$mode])) {
+            return $_ENV[$conn][$mode] = null;
         }
     }
     private function connect(string $mode) {
@@ -79,8 +79,10 @@ class Conn {
      * - null : do nothing;
      * - [
      *    ...
-     *    'field_name'=>[?PDO::PARAM_type, ?$value],
-     *]
+     *    $field_name => [?PDO::PARAM_type, ?$value],
+     *  ]
+     * -- in case of key <string> $field_name starts with 'hash_',
+     * -- the value will be hashed before being executed;
      * @param bool $override_csrf = false
      * @return atlaASQuery_
      */
@@ -93,7 +95,7 @@ class Conn {
     ): atlaASQuery_ {
         if (!\is_file($sql_relative_path =
             $this->app->app_root . \DIRECTORY_SEPARATOR .
-            $this->app->app_settings->sqls_path . \DIRECTORY_SEPARATOR .
+            $this->app->app_settings::$sqls_path . \DIRECTORY_SEPARATOR .
             $sql_relative_path)) {
             $this->app->set_error_header(500);
             Response::header_json();

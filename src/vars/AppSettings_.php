@@ -6,11 +6,13 @@ abstract class AppSettings_ {
     public function __construct(private AppEnv_ $app_env) {
     }
 
-    public string $middleware_name = 'mw';
-    public string $routes_path = 'routes';
-    public string $sqls_path = 'sqls';
-    public string $routes_class = 'Routes';
-    public string $routes_errors_prefix = '/errors/';
+    public static string $_ENV_conn_name = '_CONN';
+
+    public static string $middleware_name = 'mw';
+    public static string $routes_path = 'routes';
+    public static string $sqls_path = 'sqls';
+    public static string $routes_class = 'Routes';
+    public static string $routes_errors_prefix = '/errors/';
 
     public static int $chunk_sizes = 204_800;
     public static int $refresh_micro_second = 500_000;

@@ -108,7 +108,7 @@ class App_ {
                 break;
         }
         self::set_error_header($code);
-        self::reroute($this->app_settings->routes_errors_prefix . $code);
+        self::reroute($this->app_settings::$routes_errors_prefix . $code);
     }
     public function get_api_key(): string {
         return \array_keys($this->app_env::$api['check'])[0];

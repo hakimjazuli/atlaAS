@@ -34,14 +34,14 @@ class FSRouter extends FSMiddleware {
     ) {
         $this->get_previous_method();
         $this->get_previous_param();
-        $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings->routes_path;
-        $this->current_route = '\\' . $this->app->app_settings->routes_class;
+        $this->current_folder = $this->app->app_root . \DIRECTORY_SEPARATOR . $this->app->app_settings::$routes_path;
+        $this->current_route = '\\' . $this->app->app_settings::$routes_class;
         $url = $url ?? $this->app->request->uri_array;
         $this->request_length = \count($url);
         $routes_length = 0;
         foreach ($url as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
-            $this->current_middleware = $this->current_route . '\\' . $this->app->app_settings->middleware_name;
+            $this->current_middleware = $this->current_route . '\\' . $this->app->app_settings::$middleware_name;
             $this->check_mw();
             $routes_length++;
             $this->current_route .= '\\' . $uri;
@@ -91,7 +91,7 @@ class FSRouter extends FSMiddleware {
     private function check_middleware_exist_in_route(): void {
         if (!\method_exists(
             $middleware = $this->real_route,
-            $mw_method = $this->app->app_settings->middleware_name
+            $mw_method = $this->app->app_settings::$middleware_name
         )) {
             return;
         };
