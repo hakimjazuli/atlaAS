@@ -3,7 +3,6 @@
 namespace HtmlFirst\atlaAS\Router;
 
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
-use HtmlFirst\atlaAS\Temp\Shuffler;
 use HtmlFirst\atlaAS\Utils\FileServer;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
 use HtmlFirst\atlaAS\Utils\hasPublicApp_;

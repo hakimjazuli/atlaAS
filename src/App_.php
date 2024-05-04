@@ -42,7 +42,8 @@ class App_ {
         Temp_::temp_var(
             fn () => $this->fs_router->render($route_array_path, $query_parameter),
             [$this->request->method, 'get'],
-            [$this->request->overwrite_param, $query_parameter]
+            [$this->request->overwrite_param, $query_parameter],
+            [$this->request->uri_array, $route_array_path]
         );
         // $reset_method = Temp_::shuffle($this->request->method, 'get');
         // if ($query_parameter !== null) {
