@@ -81,9 +81,11 @@ class Conn {
      *    ...
      *    $field_name => [?PDO::PARAM_type, ?$value],
      *  ]
-     * -- in case of key <string> $field_name starts with 'hash_',
-     * -- the value will be hashed before being executed;
-     * @param bool $override_csrf = false
+     * >- in case of key <string> $field_name starts with 'hash_':
+     * >>-the value will be hashed before being executed;
+     * >- to save the param type and regex for client and server validation:
+     * >>- consider extending our \HtmlFirst\atlaAS\Connection\TableRegex_ for each table you have;
+     * @param bool $check_csrf = false
      * @return atlaASQuery_
      */
     public function sql_query(
@@ -91,7 +93,7 @@ class Conn {
         string|null $csrf_key = null,
         string|null $connection = null,
         array|null $bind = null,
-        bool $override_csrf = false
+        bool $check_csrf = true
     ): atlaASQuery_ {
         if (!\is_file($sql_relative_path =
             $this->app->app_root . \DIRECTORY_SEPARATOR .
@@ -130,7 +132,7 @@ class Conn {
             };
         }
         $hasher = new Hasher($this->app);
-        if (($method !== 'get' || $csrf_key !== null) && !$override_csrf) {
+        if (($method !== 'get' || $csrf_key !== null) && $check_csrf) {
             $hasher->csrf_check($csrf_key);
         }
         $connection = $connection ?? $this->app->app_env::$default_connection;
