@@ -101,7 +101,7 @@ class Conn {
         $METHOD = $this->app->request->method_params($method);
         $_api = $this->app->app_env::$api;
         if ($_SERVER['REMOTE_ADDR'] === $this->app->app_settings::server_ip()) {
-            $api_key = $_api['key'];
+            $api_key = $this->app->app_settings->get_api_key();
         } else {
             $api_key = $METHOD['api_key'];
         }

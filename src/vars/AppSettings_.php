@@ -30,4 +30,7 @@ abstract class AppSettings_ {
     public function if_in_production(bool $in_production_value, bool $not_in_production_value): bool {
         return $this->app_env::$is_in_production ? $in_production_value : $not_in_production_value;
     }
+    public function get_api_key() {
+        return \array_keys($this->app_env::$api['check'])[0];
+    }
 }

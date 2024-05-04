@@ -5,7 +5,7 @@ namespace HtmlFirst\atlaAS\Vars;
 abstract class AppEnv_ {
     public static bool $is_in_production = false;
 
-    public static string $app_key = '4arrW44EN4T5YIYTytcyrbuAERbrIb5e48Y7Ro8y9WYEY8b69';
+    public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
     public static string $default_connection = 'site';
     public static array $conn = [
         'http' => [
@@ -34,9 +34,12 @@ abstract class AppEnv_ {
         ]
     ];
     public static $api = [
-        'key' => 'c9b87345734563vb7UAER86bTEx46wIOu65Ebgvdf4tvy487',
+        /**
+         * array key of the [0] index of 'check' is your api_key;
+         * make sure the 'status' is 'active';
+         */
         'check' => [
-            'c9b87345734563vb7UAER86bTEx46wIOu65Ebgvdf4tvy487' => [
+            'your#$@#@$%#$%KEY' => [
                 'status' => 'active',
             ],
         ]
