@@ -3,11 +3,16 @@
 namespace HtmlFirst\atlaAS\Utils;
 
 trait hasGlobalChecker_ {
+    protected string $identiefier;
+
     use hasProtectedApp_;
-    protected function global(string $identifier, string $prop, mixed $overwrite_value) {
-        if (isset($this->app->global[$identifier][$prop])) {
-            return $this->app->global[$identifier][$prop];
+    protected function global(string $name, mixed $initial_value) {
+        if (!\is_string($this->identiefier)) {
+            return null;
         }
-        return ($this->app->global[$identifier][$prop] = $overwrite_value);
+        if (isset($this->app->global[$this->identifier][$name])) {
+            return $this->app->global[$this->identifier][$name];
+        }
+        return ($this->app->global[$this->identifier][$name] = $initial_value);
     }
 }
