@@ -9,7 +9,7 @@ use HtmlFirst\atlaAS\Utils\hasAppRegex;
  * eg. public FieldType user_name;
  * then on constructor assign it by calling $this->column(...$neccessary_args);
  */
-abstract class TableRegex_ {
+abstract class Table_ {
     use hasAppRegex;
     protected function column(int $pdo_param_type, string|null $regex = null): FieldType {
         return new FieldType(

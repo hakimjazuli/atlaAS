@@ -84,7 +84,7 @@ class Conn {
      * >- in case of key <string> $field_name starts with 'hash_':
      * >>-the value will be hashed before being executed;
      * >- to save the param type and regex for client and server validation:
-     * >>- consider extending our \HtmlFirst\atlaAS\Connection\TableRegex_ for each table you have;
+     * >>- consider extending our \HtmlFirst\atlaAS\Connection\Table_ for each table you have;
      * @param bool $check_csrf = false
      * @return atlaASQuery_
      */
