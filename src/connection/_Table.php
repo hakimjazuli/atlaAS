@@ -7,7 +7,7 @@ use HtmlFirst\atlaAS\Utils\hasAppRegex;
 /**
  * assign all parameter type as \HtmlFirst\atlaAS\Connection\_FieldType;
  * eg. public _FieldType $field_name_alias;
- * then on constructor assign it by calling $this->column(...$neccessary_args);
+ * then on constructor assign it by calling self::column(...$neccessary_args);
  */
 abstract class _Table {
     use hasAppRegex;
