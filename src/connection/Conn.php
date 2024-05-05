@@ -5,7 +5,7 @@ namespace HtmlFirst\atlaAS\Connection;
 use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\__Response;
-use HtmlFirst\atlaAS\Utils\Hasher;
+use HtmlFirst\atlaAS\Utils\_Hasher;
 use HtmlFirst\atlaAS\Vars\__Env;
 use HtmlFirst\atlaAS\Vars\__Settings;
 use PDO;
@@ -63,7 +63,7 @@ class Conn {
         }
         return $conn;
     }
-    private function get_api_key($METHOD) {
+    private static function get_api_key($METHOD) {
         if ($_SERVER['REMOTE_ADDR'] === __Settings::server_ip()) {
             return __atlaAS::$__->get_api_key();
         }
@@ -87,12 +87,12 @@ class Conn {
      * >>-the value will be hashed before being executed;
      * >- to save the param type and regex for client and server validation:
      * >>- consider extending our \HtmlFirst\atlaAS\Connection\Table_ for each table you have;
-     * @param bool $check_csrf = false
-     * @param string $binder_character = ":"
+     * @param bool $check_csrf
+     * @param string $binder_character
      * - bind query string that are start with the $binder_character;
      * @return _atlaASQuery
      */
-    public function sql_query(
+    public static function sql_query(
         string $sql_relative_path,
         string|null $csrf_key = null,
         string|null $connection = null,
@@ -103,7 +103,7 @@ class Conn {
         if (!\is_file($sql_relative_path = __Settings::system_path(
             __atlaAS::$__->app_root . '/' . __Settings::$sqls_path . '/' . $sql_relative_path
         ))) {
-            __atlaAS::$__->set_error_header(500);
+            __atlaAS::set_error_header(500);
             __Response::header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
@@ -113,11 +113,11 @@ class Conn {
             };
         }
         $method = __Request::$__->method;
-        $METHOD = __Request::$__->method_params($method);
+        $METHOD = __Request::method_params($method);
         $_api = __Env::$api;
-        $api_key = $this->get_api_key($METHOD);
+        $api_key = self::get_api_key($METHOD);
         if (!$_api['check'][$api_key]) {
-            __atlaAS::$__->set_error_header(403);
+            __atlaAS::set_error_header(403);
             __Response::header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
@@ -126,7 +126,7 @@ class Conn {
                 public $count = 0;
             };
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
-            __atlaAS::$__->set_error_header(403);
+            __atlaAS::set_error_header(403);
             __Response::header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
@@ -135,9 +135,8 @@ class Conn {
                 public $count = 0;
             };
         }
-        $hasher = new Hasher();
         if (($method !== 'get' || $csrf_key) && $check_csrf) {
-            $hasher->csrf_check($csrf_key);
+            _Hasher::csrf_check($csrf_key);
         }
         $connection = $connection ?? __Env::$connections[0];
         $pdo = self::connection_start($connection);
@@ -157,7 +156,7 @@ class Conn {
                     $value = $METHOD[$parameter];
                 }
                 if (\str_starts_with($parameter, 'hash_')) {
-                    $hashed = $hasher->password_generate($value);
+                    $hashed = _Hasher::password_generate($value);
                     $stmt->bindValue("$binder_character$parameter", $hashed, $pdo_param_type);
                 } else {
                     $stmt->bindValue("$binder_character$parameter", $value, $pdo_param_type);

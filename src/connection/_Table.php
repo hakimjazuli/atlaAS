@@ -11,11 +11,11 @@ use HtmlFirst\atlaAS\Utils\hasAppRegex;
  */
 abstract class _Table {
     use hasAppRegex;
-    protected function column(int $pdo_param_type, string|null $regex = null): _FieldType {
+    protected static function column(int $pdo_param_type, string|null $regex = null): _FieldType {
         return new _FieldType(
             $pdo_param_type,
             $regex,
-            $regex ? $this->regex_php_to_html($regex) : null
+            $regex ? self::regex_php_to_html($regex) : null
         );
     }
 }

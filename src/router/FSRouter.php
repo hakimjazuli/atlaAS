@@ -88,7 +88,7 @@ class FSRouter extends FSMiddleware {
             $url_inputs = \array_slice(__Request::$__->uri_array, $this->routes_length);
             (new $class_name)->get(...$url_inputs);
             $handler = new FileServer;
-            $handler->map_resource($url_inputs, __atlaAS::$__->app_root . $class_name);
+            $handler::map_resource($url_inputs, __atlaAS::$__->app_root . $class_name);
             return true;
         };
         return false;
@@ -99,7 +99,7 @@ class FSRouter extends FSMiddleware {
         }
         return _FunctionHelpers::is_first_parameter_spread($class_name, __Request::$__->method);
     }
-    public function follow_up_params(
+    public static function follow_up_params(
         array|callable $fallback,
         array $conditionals,
         array $query_parameter = [],

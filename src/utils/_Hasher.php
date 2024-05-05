@@ -5,14 +5,14 @@ namespace HtmlFirst\atlaAS\Utils;
 use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Vars\__Env;
 
-class Hasher {
-    public function password_generate(string $value): string {
+abstract class _Hasher {
+    public static function password_generate(string $value): string {
         return password_hash(__Env::$app_key . $value, PASSWORD_DEFAULT);
     }
-    public function password_check(string $value, string $dbpassword): bool {
+    public static function password_check(string $value, string $dbpassword): bool {
         return password_verify(__Env::$app_key . $value, $dbpassword);
     }
-    public function generate_token(): string {
+    public static function generate_token(): string {
         $token_handler = __Env::$app_key . \random_bytes(32);
         $token_handler = \unpack('H*', $token_handler)[1];
         $token_handler = \str_shuffle($token_handler);
@@ -29,12 +29,12 @@ class Hasher {
             return $_SESSION["csrf_$key"] = self::generate_token();
         }
     }
-    public function csrf_check(string $key): void {
+    public static function csrf_check(string $key): void {
         if (!self::csrf_compare($key)) {
             __atlaAS::$__->reroute_error(403);
         }
     }
-    private function csrf_compare(string $key) {
+    private static function csrf_compare(string $key) {
         $csrf = "csrf_$key";
         if (($stored_token = isset($_SESSION[$csrf]) ? $_SESSION[$csrf] : null) === null) {
             return false;

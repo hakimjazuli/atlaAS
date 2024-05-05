@@ -8,7 +8,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 class FileServer {
-    public function file_version(string $public_uri): string {
+    public static function file_version(string $public_uri): string {
         $version = $public_uri . '?t=' . \filemtime(__atlaAS::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path . \DIRECTORY_SEPARATOR . trim($public_uri, '/'));
         return $version;
     }
@@ -25,7 +25,7 @@ class FileServer {
      * - array: if $callback_file AND $callback_dir is null;
      * - void: if $callback_file OR $callback_dir is callable
      */
-    public function recurse_dir_and_path(string $path, null|callable $callback_file = null, null|callable $callback_dir = null) {
+    public static function recurse_dir_and_path(string $path, null|callable $callback_file = null, null|callable $callback_dir = null) {
         $recurvecontainer = new RecursiveDirectoryIterator($path);
         $files_and_dirs = new RecursiveIteratorIterator($recurvecontainer);
         if ($callback_file === null && $callback_dir === null) {
@@ -46,7 +46,7 @@ class FileServer {
      * @param  bool $force_download
      * @return void
      */
-    public function map_resource(array $relative_path, string $mapper_directory, $force_download = false): void {
+    public static function map_resource(array $relative_path, string $mapper_directory, $force_download = false): void {
         $file = __Settings::system_path($mapper_directory . '/' . join('/', $relative_path));
         $resource = self::page_resource_handler($file, $force_download);
         switch ($resource) {
@@ -218,8 +218,8 @@ class FileServer {
         \header("Content-Type: $content_type");
         return $content_type;
     }
-    private function caching(float $days = 60, bool $force_cache = false): void {
-        if (__Settings::$__->use_caching()[0] || $force_cache) {
+    private static function caching(float $days = 60, bool $force_cache = false): void {
+        if (__Settings::use_caching()[0] || $force_cache) {
             $expires = self::unix_unit_to_days($days);
             \header('Pragma: public');
             \header("Cache-Control: max-age=$expires");
@@ -232,8 +232,8 @@ class FileServer {
         \header('Content-Transfer-Encoding: Binary');
         \header("Content-disposition: filename=$path");
     }
-    private function file_handler(string $filename, bool $use_stream = false, bool $force_download = false): void {
-        self::caching(__Settings::$__->use_caching()[1]);
+    private static function file_handler(string $filename, bool $use_stream = false, bool $force_download = false): void {
+        self::caching(__Settings::use_caching()[1]);
         $content_type = self::header_file_type($filename);
         \header('Accept-Ranges: bytes');
         $file_size = filesize($filename);

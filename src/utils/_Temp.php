@@ -7,7 +7,7 @@ class _Temp {
      * var
      *
      * @param  mixed &$var_reference
-     * - temporary change this varibal;
+     * - temporary change this variable;
      * - argument as reference;
      * @param  mixed $temp_value
      * @return callable

@@ -84,7 +84,7 @@ class __atlaAS {
         array $conditionals,
         array $add_to_fallback_args = [],
     ): void {
-        $this->fs_router->follow_up_params($fallback, $conditionals, $add_to_fallback_args);
+        FSRouter::follow_up_params($fallback, $conditionals, $add_to_fallback_args);
     }
     /**
      * param_match
