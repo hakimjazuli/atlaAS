@@ -246,11 +246,11 @@ class FileServer {
         } else {
             \header("Content-Length: $file_size");
         }
+        /** readfile|require will automatically echo the result */
         if (__Settings::$load_file_with_php_require) {
             require $filename;
             return;
         }
-        /** readfile|require will automatically echo the result */
         readfile($filename);
     }
     private static function page_resource_handler(string $file, bool $force_download = false): string {
