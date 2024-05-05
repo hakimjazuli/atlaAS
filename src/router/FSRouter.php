@@ -5,7 +5,7 @@ namespace HtmlFirst\atlaAS\Router;
 use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\__Request;
-use HtmlFirst\atlaAS\Utils\FileServer;
+use HtmlFirst\atlaAS\Utils\_FileServer;
 use HtmlFirst\atlaAS\Utils\_FunctionHelpers;
 use HtmlFirst\atlaAS\Vars\__Settings;
 
@@ -87,8 +87,7 @@ class FSRouter extends FSMiddleware {
         if ($this->is_map_resource($class_name)) {
             $url_inputs = \array_slice(__Request::$__->uri_array, $this->routes_length);
             (new $class_name)->get(...$url_inputs);
-            $handler = new FileServer;
-            $handler::map_resource($url_inputs, __atlaAS::$__->app_root . $class_name);
+            _FileServer::map_resource($url_inputs, __atlaAS::$__->app_root . $class_name);
             return true;
         };
         return false;

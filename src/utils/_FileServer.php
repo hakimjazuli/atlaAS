@@ -7,7 +7,7 @@ use HtmlFirst\atlaAS\Vars\__Settings;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class FileServer {
+class _FileServer {
     public static function file_version(string $public_uri): string {
         $version = $public_uri . '?t=' . \filemtime(__atlaAS::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path . \DIRECTORY_SEPARATOR . trim($public_uri, '/'));
         return $version;
