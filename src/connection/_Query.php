@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Connection;
 
-abstract class Query_ {
+abstract class _Query {
     protected Conn $conn;
     public function __construct() {
         $this->conn = new Conn();

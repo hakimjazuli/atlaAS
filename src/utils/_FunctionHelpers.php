@@ -4,7 +4,7 @@ namespace HtmlFirst\atlaAS\Utils;
 
 use ReflectionMethod;
 
-abstract class FunctionHelpers {
+abstract class _FunctionHelpers {
     public static function is_first_parameter_spread(string $class_name, string $method_name): bool {
         $reflection = new ReflectionMethod($class_name, $method_name);
         $parameters = $reflection->getParameters();

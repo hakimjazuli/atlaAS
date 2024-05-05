@@ -4,7 +4,7 @@ namespace HtmlFirst\atlaAS\Utils;
 
 use HtmlFirst\atlaAS\__App;
 
-abstract class GlobalChecker_ {
+abstract class _GlobalVar {
     protected string $global = 'global';
 
     protected function global(string $name, mixed $initial_value) {

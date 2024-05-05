@@ -13,8 +13,8 @@ use PDOException;
 use PDOStatement;
 
 class Conn {
-    private static function normalize_array(PDOStatement $stmts): atlaASQuery_ {
-        return new class($stmts) extends atlaASQuery_ {
+    private static function normalize_array(PDOStatement $stmts): _atlaASQuery {
+        return new class($stmts) extends _atlaASQuery {
             public $data;
             public $count;
             public function __construct(PDOStatement $stmts) {
@@ -88,7 +88,7 @@ class Conn {
      * >- to save the param type and regex for client and server validation:
      * >>- consider extending our \HtmlFirst\atlaAS\Connection\Table_ for each table you have;
      * @param bool $check_csrf = false
-     * @return atlaASQuery_
+     * @return _atlaASQuery
      */
     public function sql_query(
         string $sql_relative_path,
@@ -96,13 +96,13 @@ class Conn {
         string|null $connection = null,
         array|null $bind = null,
         bool $check_csrf = true
-    ): atlaASQuery_ {
+    ): _atlaASQuery {
         if (!\is_file($sql_relative_path = __Settings::system_path(
             __App::$__->app_root . '/' . __Settings::$sqls_path . '/' . $sql_relative_path
         ))) {
             __App::$__->set_error_header(500);
             __Response::header_json();
-            return new class() extends atlaASQuery_ {
+            return new class() extends _atlaASQuery {
                 public $data = [
                     ['sql_file' => 'not found']
                 ];
@@ -116,7 +116,7 @@ class Conn {
         if (!$_api['check'][$api_key]) {
             __App::$__->set_error_header(403);
             __Response::header_json();
-            return new class() extends atlaASQuery_ {
+            return new class() extends _atlaASQuery {
                 public $data = [
                     ['api_key' => 'wrong key']
                 ];
@@ -125,7 +125,7 @@ class Conn {
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
             __App::$__->set_error_header(403);
             __Response::header_json();
-            return new class() extends atlaASQuery_ {
+            return new class() extends _atlaASQuery {
                 public $data = [
                     ['api_key' => 'key status is not active']
                 ];

@@ -2,6 +2,6 @@
 
 namespace HtmlFirst\atlaAS\Middlewares;
 
-abstract class Middleware_ {
+abstract class _Middleware {
     use hasMiddleware;
 }

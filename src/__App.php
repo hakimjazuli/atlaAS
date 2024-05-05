@@ -2,13 +2,13 @@
 
 namespace HtmlFirst\atlaAS;
 
-use HtmlFirst\atlaAS\Router\FSRouter;
-use HtmlFirst\atlaAS\Utils\FunctionHelpers;
 use HtmlFirst\atlaAS\Utils\hasSetGlobal;
+use HtmlFirst\atlaAS\Router\FSRouter;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\__Response;
+use HtmlFirst\atlaAS\Utils\_FunctionHelpers;
+use HtmlFirst\atlaAS\Utils\_Temp;
 use HtmlFirst\atlaAS\Vars\__Settings;
-use HtmlFirst\atlaAS\Utils\Temp_;
 use HtmlFirst\atlaAS\Vars\__Env;
 
 class __App {
@@ -48,10 +48,10 @@ class __App {
      * @return void
      */
     public function render_get(null|array $route_array_path = null, null|array $query_parameter = null) {
-        $reseters = FunctionHelpers::callable_collections(
-            Temp_::var(__Request::$__->method, 'get'),
-            Temp_::var(__Request::$__->uri_array, $route_array_path),
-            Temp_::var(__Request::$__->query_params_arrray, $query_parameter)
+        $reseters = _FunctionHelpers::callable_collections(
+            _Temp::var(__Request::$__->method, 'get'),
+            _Temp::var(__Request::$__->uri_array, $route_array_path),
+            _Temp::var(__Request::$__->query_params_arrray, $query_parameter)
         );
         $this->fs_router->render();
         $reseters();
