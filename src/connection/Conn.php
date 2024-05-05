@@ -33,7 +33,7 @@ class Conn {
             return $_ENV[$conn][$mode] = null;
         }
     }
-    private function connect(string $mode) {
+    private static function connect(string $mode) {
         $conn_ = __Env::$conn;
         $httpmode = __Request::$__->http_mode;
         $host = $conn_[$httpmode][$mode]['host'];
