@@ -2,10 +2,11 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-class Response_ {
-    use hasAppRegex;
+class __Response {
     use hasSetGlobal;
-    public static Response_|null $instance = null;
+    public static __Response $__;
+
+    use hasAppRegex;
     public function __construct() {
         $this->set_as_global();
     }

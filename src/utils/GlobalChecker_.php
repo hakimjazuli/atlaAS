@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-use HtmlFirst\atlaAS\App_;
+use HtmlFirst\atlaAS\__App;
 
 abstract class GlobalChecker_ {
     protected string $global = 'global';
@@ -11,9 +11,9 @@ abstract class GlobalChecker_ {
         if (!\is_string($this->global)) {
             return null;
         }
-        if (isset(App_::$instance->global[$this->global][$name])) {
-            return App_::$instance->global[$this->global][$name];
+        if (isset(__App::$__->global[$this->global][$name])) {
+            return __App::$__->global[$this->global][$name];
         }
-        return (App_::$instance->global[$this->global][$name] = $initial_value);
+        return (__App::$__->global[$this->global][$name] = $initial_value);
     }
 }

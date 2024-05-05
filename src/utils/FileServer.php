@@ -2,14 +2,14 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-use HtmlFirst\atlaAS\App_;
-use HtmlFirst\atlaAS\Vars\Settings_;
+use HtmlFirst\atlaAS\__App;
+use HtmlFirst\atlaAS\Vars\__Settings;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 class FileServer {
     public function file_version(string $public_uri): string {
-        $version = $public_uri . '?t=' . \filemtime(App_::$instance->app_root . \DIRECTORY_SEPARATOR . Settings_::$instance::$routes_path . \DIRECTORY_SEPARATOR . trim($public_uri, '/'));
+        $version = $public_uri . '?t=' . \filemtime(__App::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path . \DIRECTORY_SEPARATOR . trim($public_uri, '/'));
         return $version;
     }
     /**
@@ -32,9 +32,9 @@ class FileServer {
             return $files_and_dirs;
         }
         foreach ($files_and_dirs as $file_or_dir) {
-            if (\is_file(Settings_::$instance::system_path($file_or_dir))) {
+            if (\is_file(__Settings::system_path($file_or_dir))) {
                 $callback_file($file_or_dir);
-            } elseif (\is_dir(Settings_::$instance::system_path($file_or_dir))) {
+            } elseif (\is_dir(__Settings::system_path($file_or_dir))) {
                 $callback_dir($file_or_dir);
             }
         }
@@ -47,14 +47,14 @@ class FileServer {
      * @return void
      */
     public function map_resource(array $relative_path, string $mapper_directory, $force_download = false): void {
-        $file = Settings_::$instance::system_path($mapper_directory . '/' . join('/', $relative_path));
+        $file = __Settings::system_path($mapper_directory . '/' . join('/', $relative_path));
         $resource = self::page_resource_handler($file, $force_download);
         switch ($resource) {
             case 'is_resource_file':
                 break;
             case 'is_system_file':
             case 'not_found':
-                App_::$instance->reroute_error(404);
+                __App::$__->reroute_error(404);
                 break;
         }
     }
@@ -219,7 +219,7 @@ class FileServer {
         return $content_type;
     }
     private function caching(float $days = 60, bool $force_cache = false): void {
-        if (Settings_::$instance->use_caching()[0] || $force_cache) {
+        if (__Settings::$__->use_caching()[0] || $force_cache) {
             $expires = self::unix_unit_to_days($days);
             \header('Pragma: public');
             \header("Cache-Control: max-age=$expires");
@@ -233,7 +233,7 @@ class FileServer {
         \header("Content-disposition: filename=$path");
     }
     private function file_handler(string $filename, bool $use_stream = false, bool $force_download = false): void {
-        self::caching(Settings_::$instance->use_caching()[1]);
+        self::caching(__Settings::$__->use_caching()[1]);
         $content_type = self::header_file_type($filename);
         \header('Accept-Ranges: bytes');
         $file_size = filesize($filename);
@@ -246,7 +246,7 @@ class FileServer {
         } else {
             \header("Content-Length: $file_size");
         }
-        if (Settings_::$instance::$load_file_with_php_require) {
+        if (__Settings::$load_file_with_php_require) {
             require $filename;
             return;
         }
@@ -255,11 +255,11 @@ class FileServer {
     }
     private function page_resource_handler(string $file, bool $force_download = false): string {
         $file_ext = pathinfo($file, PATHINFO_EXTENSION);
-        if ($file_ext == Settings_::$instance::$system_file) {
+        if ($file_ext == __Settings::$system_file) {
             return 'is_system_file';
         }
-        if (is_file(Settings_::$instance::system_path($file))) {
-            self::file_handler($file, Settings_::$instance::$use_stream, $force_download);
+        if (is_file(__Settings::system_path($file))) {
+            self::file_handler($file, __Settings::$use_stream, $force_download);
             return 'is_resource_file';
         }
         return 'not_found';

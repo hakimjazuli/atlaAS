@@ -5,28 +5,29 @@ namespace HtmlFirst\atlaAS;
 use HtmlFirst\atlaAS\Router\FSRouter;
 use HtmlFirst\atlaAS\Utils\FunctionHelpers;
 use HtmlFirst\atlaAS\Utils\hasSetGlobal;
-use HtmlFirst\atlaAS\Utils\Request_;
-use HtmlFirst\atlaAS\Utils\Response_;
+use HtmlFirst\atlaAS\Utils\__Request;
+use HtmlFirst\atlaAS\Utils\__Response;
+use HtmlFirst\atlaAS\Vars\__Settings;
 use HtmlFirst\atlaAS\Utils\Temp_;
-use HtmlFirst\atlaAS\Vars\Env_;
-use HtmlFirst\atlaAS\Vars\Settings_;
+use HtmlFirst\atlaAS\Vars\__Env;
 
-class App_ {
+class __App {
+    use hasSetGlobal;
+    public static __App $__;
+
     public array $global = [];
 
     public string $app_root;
     public string $public_url_root;
 
-    use hasSetGlobal;
-    public static App_|null $instance = null;
 
     public function __construct(string $app_env_ref, string $app_settings_ref) {
         new $app_env_ref;
         new $app_settings_ref;
-        new Request_;
-        $this->app_root = \dirname(Request_::$instance->public_path);
-        $this->public_url_root = Request_::$instance->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
-        new Response_;
+        new __Request;
+        $this->app_root = \dirname(__Request::$__->public_path);
+        $this->public_url_root = __Request::$__->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
+        new __Response;
         $this->set_as_global();
     }
     private FSRouter $fs_router;
@@ -48,9 +49,9 @@ class App_ {
      */
     public function render_get(null|array $route_array_path = null, null|array $query_parameter = null) {
         $reseters = FunctionHelpers::callable_collections(
-            Temp_::var(Request_::$instance->method, 'get'),
-            Temp_::var(Request_::$instance->uri_array, $route_array_path),
-            Temp_::var(Request_::$instance->query_params_arrray, $query_parameter)
+            Temp_::var(__Request::$__->method, 'get'),
+            Temp_::var(__Request::$__->uri_array, $route_array_path),
+            Temp_::var(__Request::$__->query_params_arrray, $query_parameter)
         );
         $this->fs_router->render();
         $reseters();
@@ -93,7 +94,7 @@ class App_ {
      * @return bool
      */
     public function param_match(string $regex, string $param_name): bool {
-        return \preg_match($regex, Request_::$instance->query_params_arrray[$param_name]);
+        return \preg_match($regex, __Request::$__->query_params_arrray[$param_name]);
     }
     public static function reroute(string $path): void {
         \header("location: $path");
@@ -123,9 +124,9 @@ class App_ {
                 break;
         }
         self::set_error_header($code);
-        self::reroute(Settings_::$instance::$routes_errors_prefix . $code);
+        self::reroute(__Settings::$routes_errors_prefix . $code);
     }
     public function get_api_key(): string {
-        return \array_keys(Env_::$instance::$api['check'])[0];
+        return \array_keys(__Env::$api['check'])[0];
     }
 }
