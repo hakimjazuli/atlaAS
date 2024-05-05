@@ -9,11 +9,16 @@ use HtmlFirst\atlaAS\Utils\_Hasher;
 use HtmlFirst\atlaAS\Vars\__Env;
 use HtmlFirst\atlaAS\Vars\__Settings;
 use PDO;
-use PDOException;
 use PDOStatement;
 
-abstract class _Conn {
-    private static function normalize_array(PDOStatement $stmts): _atlaASQuery {
+abstract class _Query {
+    private static function get_api_key($METHOD) {
+        if ($_SERVER['REMOTE_ADDR'] === __Settings::server_ip()) {
+            return __atlaAS::$__->get_api_key();
+        }
+        return $METHOD['api_key'];
+    }
+    private static function normalize_query_return(PDOStatement $stmts): _atlaASQuery {
         return new class($stmts) extends _atlaASQuery {
             public $data;
             public $count;
@@ -22,52 +27,6 @@ abstract class _Conn {
                 $this->count = \count($this->data);
             }
         };
-    }
-    private static function connection_start(string $mode) {
-        if (!isset($_ENV[$conn = __Settings::$_ENV_conn_name][$mode])) {
-            return $_ENV[$conn][$mode] = self::connect($mode);
-        }
-    }
-    private static function connection_close(string $mode) {
-        if (isset($_ENV[$conn = __Settings::$_ENV_conn_name][$mode])) {
-            return $_ENV[$conn][$mode] = null;
-        }
-    }
-    private static function connect(string $mode) {
-        $conn_ = __Env::$conn;
-        $httpmode = __Request::$__->http_mode;
-        $host = $conn_[$httpmode][$mode]['host'];
-        $username = $conn_[$httpmode][$mode]['username'];
-        $password = $conn_[$httpmode][$mode]['password'];
-        $db = $conn_[$httpmode][$mode]['db'];
-        $type = $conn_[$httpmode][$mode]['type'];
-        $filename = $conn_[$httpmode][$mode]['file_name'];
-        $encoding = $conn_[$httpmode][$mode]['encoding'];
-        try {
-            switch ($type) {
-                case 'mdb':
-                case 'accdb':
-                    $conn = new PDO('odbc:DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};charset=' . $encoding . '; DBQ=' . $filename . '; Uid=' . $username . '; Pwd=' . $password . ';');
-                    break;
-                case 'sqlite':
-                    $conn = new PDO($type . ':' . $filename);
-                    break;
-                default:
-                    $conn = new PDO($type . ':host=' . $host . ';dbname=' . $db, $username, $password);
-                    break;
-            }
-            $conn->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
-        } catch (PDOException $e) {
-            print "Connection failed!: " . $e->getMessage() . "<br/>";
-            die();
-        }
-        return $conn;
-    }
-    private static function get_api_key($METHOD) {
-        if ($_SERVER['REMOTE_ADDR'] === __Settings::server_ip()) {
-            return __atlaAS::$__->get_api_key();
-        }
-        return $METHOD['api_key'];
     }
     /**
      * sql_query
@@ -92,7 +51,7 @@ abstract class _Conn {
      * - bind query string that are start with the $binder_character;
      * @return _atlaASQuery
      */
-    public static function sql_query(
+    protected static function sql_query(
         string $sql_relative_path,
         string|null $csrf_key = null,
         string|null $connection = null,
@@ -139,7 +98,7 @@ abstract class _Conn {
             _Hasher::csrf_check($csrf_key);
         }
         $connection = $connection ?? __Env::$connections[0];
-        $pdo = self::connection_start($connection);
+        $pdo = Conn::connection_start($connection);
         $stmt = $pdo->prepare(
             \file_get_contents($sql_relative_path)
         );
@@ -164,9 +123,9 @@ abstract class _Conn {
             }
         }
         $stmt->execute();
-        $result = self::normalize_array($stmt);
+        $result = self::normalize_query_return($stmt);
         $stmt->closeCursor();
-        self::connection_close($connection);
+        Conn::connection_close($connection);
         return $result;
     }
 }
