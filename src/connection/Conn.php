@@ -88,6 +88,8 @@ class Conn {
      * >- to save the param type and regex for client and server validation:
      * >>- consider extending our \HtmlFirst\atlaAS\Connection\Table_ for each table you have;
      * @param bool $check_csrf = false
+     * @param string $binder_character = ":"
+     * - bind query string that are start with the $binder_character;
      * @return _atlaASQuery
      */
     public function sql_query(
@@ -95,7 +97,8 @@ class Conn {
         string|null $csrf_key = null,
         string|null $connection = null,
         array|null $bind = null,
-        bool $check_csrf = true
+        bool $check_csrf = true,
+        string $binder_character = ':'
     ): _atlaASQuery {
         if (!\is_file($sql_relative_path = __Settings::system_path(
             __atlaAS::$__->app_root . '/' . __Settings::$sqls_path . '/' . $sql_relative_path
@@ -155,9 +158,9 @@ class Conn {
                 }
                 if (\str_starts_with($parameter, 'hash_')) {
                     $hashed = $hasher->password_generate($value);
-                    $stmt->bindValue(":$parameter", $hashed, $pdo_param_type);
+                    $stmt->bindValue("$binder_character$parameter", $hashed, $pdo_param_type);
                 } else {
-                    $stmt->bindValue(":$parameter", $value, $pdo_param_type);
+                    $stmt->bindValue("$binder_character$parameter", $value, $pdo_param_type);
                 }
             }
         }
