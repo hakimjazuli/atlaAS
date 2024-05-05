@@ -6,7 +6,7 @@ use HtmlFirst\atlaAS\__App;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\FileServer;
-use HtmlFirst\atlaAS\Utils\FunctionHelpers;
+use HtmlFirst\atlaAS\Utils\_FunctionHelpers;
 use HtmlFirst\atlaAS\Vars\__Settings;
 
 class FSRouter extends FSMiddleware {
@@ -71,7 +71,7 @@ class FSRouter extends FSMiddleware {
         (new $middleware)->$mw_method(__Request::$__->method);
     }
     private function run_method_with_input_logic(string $class_name): void {
-        $num_params = FunctionHelpers::url_input_length(
+        $num_params = _FunctionHelpers::url_input_length(
             $class_name,
             $method = __Request::$__->method
         );
@@ -97,7 +97,7 @@ class FSRouter extends FSMiddleware {
         if (__Request::$__->method !== 'get') {
             return false;
         }
-        return FunctionHelpers::is_first_parameter_spread($class_name, __Request::$__->method);
+        return _FunctionHelpers::is_first_parameter_spread($class_name, __Request::$__->method);
     }
     public function follow_up_params(
         array|callable $fallback,
