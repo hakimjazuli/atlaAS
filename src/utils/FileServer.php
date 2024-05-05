@@ -253,7 +253,7 @@ class FileServer {
         /** readfile|require will automatically echo the result */
         readfile($filename);
     }
-    private function page_resource_handler(string $file, bool $force_download = false): string {
+    private static function page_resource_handler(string $file, bool $force_download = false): string {
         $file_ext = pathinfo($file, PATHINFO_EXTENSION);
         if ($file_ext == __Settings::$system_file) {
             return 'is_system_file';
