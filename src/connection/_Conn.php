@@ -12,7 +12,7 @@ use PDO;
 use PDOException;
 use PDOStatement;
 
-class Conn {
+abstract class _Conn {
     private static function normalize_array(PDOStatement $stmts): _atlaASQuery {
         return new class($stmts) extends _atlaASQuery {
             public $data;
