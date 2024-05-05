@@ -11,9 +11,9 @@ use HtmlFirst\atlaAS\Utils\_Temp;
 use HtmlFirst\atlaAS\Vars\__Settings;
 use HtmlFirst\atlaAS\Vars\__Env;
 
-class __App {
+class __atlaAS {
     use hasSetGlobal;
-    public static __App $__;
+    public static __atlaAS $__;
 
     public array $global = [];
 

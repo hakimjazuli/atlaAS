@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
-use HtmlFirst\atlaAS\__App;
+use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\FileServer;
@@ -20,7 +20,7 @@ class FSRouter extends FSMiddleware {
     public function render() {
         $uri_array = __Request::$__->uri_array;
         $this->request_length = \count($uri_array);
-        $this->current_folder = __App::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path;
+        $this->current_folder = __atlaAS::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path;
         $this->current_route = '\\' . __Settings::$routes_class;
         $routes_length = 0;
         foreach ($uri_array as $uri) {
@@ -36,7 +36,7 @@ class FSRouter extends FSMiddleware {
             }
         }
         if (!$this->real_route) {
-            __App::$__->reroute_error(404);
+            __atlaAS::$__->reroute_error(404);
             return;
         }
         $this->run_real_route();
@@ -76,7 +76,7 @@ class FSRouter extends FSMiddleware {
             $method = __Request::$__->method
         );
         if ($num_params !== $this->request_length - $this->routes_length) {
-            __App::$__->reroute_error(404);
+            __atlaAS::$__->reroute_error(404);
             return;
         }
         $url_inputs = \array_slice(__Request::$__->uri_array, -$num_params);
@@ -88,7 +88,7 @@ class FSRouter extends FSMiddleware {
             $url_inputs = \array_slice(__Request::$__->uri_array, $this->routes_length);
             (new $class_name)->get(...$url_inputs);
             $handler = new FileServer;
-            $handler->map_resource($url_inputs, __App::$__->app_root . $class_name);
+            $handler->map_resource($url_inputs, __atlaAS::$__->app_root . $class_name);
             return true;
         };
         return false;
@@ -114,7 +114,7 @@ class FSRouter extends FSMiddleware {
         }
         if (!$match) {
             if (\is_array($fallback)) {
-                __App::$__->render_get($fallback, $query_parameter);
+                __atlaAS::$__->render_get($fallback, $query_parameter);
             } elseif (\is_callable($fallback)) {
                 $fallback($query_parameter);
             }

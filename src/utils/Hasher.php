@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-use HtmlFirst\atlaAS\__App;
+use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Vars\__Env;
 
 class Hasher {
@@ -31,7 +31,7 @@ class Hasher {
     }
     public function csrf_check(string $key): void {
         if (!self::csrf_compare($key)) {
-            __App::$__->reroute_error(403);
+            __atlaAS::$__->reroute_error(403);
         }
     }
     private function csrf_compare(string $key) {

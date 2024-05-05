@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-use HtmlFirst\atlaAS\__App;
+use HtmlFirst\atlaAS\__atlaAS;
 
 abstract class _GlobalVar {
     protected string $global = 'global';
@@ -11,9 +11,9 @@ abstract class _GlobalVar {
         if (!\is_string($this->global)) {
             return null;
         }
-        if (isset(__App::$__->global[$this->global][$name])) {
-            return __App::$__->global[$this->global][$name];
+        if (isset(__atlaAS::$__->global[$this->global][$name])) {
+            return __atlaAS::$__->global[$this->global][$name];
         }
-        return (__App::$__->global[$this->global][$name] = $initial_value);
+        return (__atlaAS::$__->global[$this->global][$name] = $initial_value);
     }
 }

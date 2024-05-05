@@ -2,14 +2,14 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-use HtmlFirst\atlaAS\__App;
+use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Vars\__Settings;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 class FileServer {
     public function file_version(string $public_uri): string {
-        $version = $public_uri . '?t=' . \filemtime(__App::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path . \DIRECTORY_SEPARATOR . trim($public_uri, '/'));
+        $version = $public_uri . '?t=' . \filemtime(__atlaAS::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path . \DIRECTORY_SEPARATOR . trim($public_uri, '/'));
         return $version;
     }
     /**
@@ -54,7 +54,7 @@ class FileServer {
                 break;
             case 'is_system_file':
             case 'not_found':
-                __App::$__->reroute_error(404);
+                __atlaAS::$__->reroute_error(404);
                 break;
         }
     }

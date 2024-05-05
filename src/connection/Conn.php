@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Connection;
 
-use HtmlFirst\atlaAS\__App;
+use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\__Response;
 use HtmlFirst\atlaAS\Utils\Hasher;
@@ -65,7 +65,7 @@ class Conn {
     }
     private function get_api_key($METHOD) {
         if ($_SERVER['REMOTE_ADDR'] === __Settings::server_ip()) {
-            return __App::$__->get_api_key();
+            return __atlaAS::$__->get_api_key();
         }
         return $METHOD['api_key'];
     }
@@ -98,9 +98,9 @@ class Conn {
         bool $check_csrf = true
     ): _atlaASQuery {
         if (!\is_file($sql_relative_path = __Settings::system_path(
-            __App::$__->app_root . '/' . __Settings::$sqls_path . '/' . $sql_relative_path
+            __atlaAS::$__->app_root . '/' . __Settings::$sqls_path . '/' . $sql_relative_path
         ))) {
-            __App::$__->set_error_header(500);
+            __atlaAS::$__->set_error_header(500);
             __Response::header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
@@ -114,7 +114,7 @@ class Conn {
         $_api = __Env::$api;
         $api_key = $this->get_api_key($METHOD);
         if (!$_api['check'][$api_key]) {
-            __App::$__->set_error_header(403);
+            __atlaAS::$__->set_error_header(403);
             __Response::header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
@@ -123,7 +123,7 @@ class Conn {
                 public $count = 0;
             };
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
-            __App::$__->set_error_header(403);
+            __atlaAS::$__->set_error_header(403);
             __Response::header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
