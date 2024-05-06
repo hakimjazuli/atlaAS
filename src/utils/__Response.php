@@ -11,7 +11,7 @@ class __Response {
         $this->set_as_global();
     }
 
-    private static function preprocess(callable $html_function, bool $html_document = true) {
+    private function preprocess(callable $html_function, bool $html_document = true) {
         if ($html_document) {
             \header('Content-Type: text/html; charset=UTF-8');
         }
@@ -19,21 +19,21 @@ class __Response {
         $html_function();
         return \ob_get_clean();
     }
-    public static function echo_no_indent(callable $html_function, bool $html_document = true) {
-        $output = self::preprocess($html_function, $html_document);
-        echo \preg_replace(self::$regex_no_indents, '', $output);
+    public function echo_no_indent(callable $html_function, bool $html_document = true) {
+        $output = $this->preprocess($html_function, $html_document);
+        echo \preg_replace($this->regex_no_indents, '', $output);
     }
-    public static function echo_single_line(callable $html_function, bool $html_document = true) {
-        $output = self::preprocess($html_function, $html_document);
+    public function echo_single_line(callable $html_function, bool $html_document = true) {
+        $output = $this->preprocess($html_function, $html_document);
         echo trim(\preg_replace(
-            [self::$regex_single_line, self::$regex_excesive_spacing, '/> /', '/ </'],
+            [$this->regex_single_line, $this->regex_excesive_spacing, '/> /', '/ </'],
             [' ', ' ', '>', '<'],
             $output
         ), ' ');
     }
-    public static function echo_json_api(array|object $array): void {
+    public function echo_json_api(array|object $array): void {
         if ($json = \json_encode($array)) {
-            self::header_json();
+            $this->header_json();
             echo $json;
             return;
         }
@@ -44,7 +44,7 @@ class __Response {
         ]);
         exit(0);
     }
-    public static function header_json() {
+    public function header_json() {
         \header('Content-Type: application/json');
     }
 }

@@ -96,11 +96,11 @@ class __atlaAS {
     public function param_match(string $regex, string $param_name): bool {
         return \preg_match($regex, __Request::$__->query_params_arrray[$param_name]);
     }
-    public static function reroute(string $path): void {
+    public function reroute(string $path): void {
         \header("location: $path");
         exit(0);
     }
-    public static function set_error_header(int $code = 404): void {
+    public function set_error_header(int $code = 404): void {
         switch ($code) {
             case 403:
                 \header("HTTP/1.1 403 Forbidden");
@@ -123,10 +123,10 @@ class __atlaAS {
                 $code = 404;
                 break;
         }
-        self::set_error_header($code);
-        self::reroute(__Settings::$routes_errors_prefix . $code);
+        $this->set_error_header($code);
+        $this->reroute(__Settings::$__->routes_errors_prefix . $code);
     }
     public function get_api_key(): string {
-        return \array_keys(__Env::$api['check'])[0];
+        return \array_keys(__Env::$__->api['check'])[0];
     }
 }

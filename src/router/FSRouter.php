@@ -20,12 +20,12 @@ class FSRouter extends FSMiddleware {
     public function render() {
         $uri_array = __Request::$__->uri_array;
         $this->request_length = \count($uri_array);
-        $this->current_folder = __atlaAS::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path;
-        $this->current_route = '\\' . __Settings::$routes_class;
+        $this->current_folder = __atlaAS::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$__->routes_path;
+        $this->current_route = '\\' . __Settings::$__->routes_class;
         $routes_length = 0;
         foreach ($uri_array as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
-            $this->current_middleware = $this->current_route . '\\' . __Settings::$middleware_name;
+            $this->current_middleware = $this->current_route . '\\' . __Settings::$__->middleware_name;
             $this->check_mw();
             $routes_length++;
             $this->current_route .= '\\' . $uri;
@@ -64,7 +64,7 @@ class FSRouter extends FSMiddleware {
     private function check_middleware_exist_in_route(): void {
         if (!\method_exists(
             $middleware = $this->real_route,
-            $mw_method = __Settings::$middleware_name
+            $mw_method = __Settings::$__->middleware_name
         )) {
             return;
         };

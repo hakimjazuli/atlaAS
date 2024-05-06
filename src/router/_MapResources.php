@@ -3,7 +3,7 @@
 namespace HtmlFirst\atlaAS\Router;
 
 /**
- * special routes to map the resoruces of the same name folder:
+ * special routes to map the resources of the same name folder:
  * - route file: $routename.php;
  * - resource path: "./$routename/*";
  */

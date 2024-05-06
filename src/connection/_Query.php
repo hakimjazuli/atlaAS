@@ -13,7 +13,7 @@ use PDOStatement;
 
 abstract class _Query {
     private static function get_api_key($METHOD) {
-        if ($_SERVER['REMOTE_ADDR'] === __Settings::server_ip()) {
+        if ($_SERVER['REMOTE_ADDR'] === __Settings::$__->server_ip()) {
             return __atlaAS::$__->get_api_key();
         }
         return $METHOD['api_key'];
@@ -59,11 +59,11 @@ abstract class _Query {
         bool $check_csrf = true,
         string $binder_character = ':'
     ): _atlaASQuery {
-        if (!\is_file($sql_relative_path = __Settings::system_path(
-            __atlaAS::$__->app_root . '/' . __Settings::$sqls_path . '/' . $sql_relative_path
+        if (!\is_file($sql_relative_path = __Settings::$__->system_path(
+            __atlaAS::$__->app_root . '/' . __Settings::$__->sqls_path . '/' . $sql_relative_path
         ))) {
-            __atlaAS::set_error_header(500);
-            __Response::header_json();
+            __atlaAS::$__->set_error_header(500);
+            __Response::$__->header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
                     ['sql_file' => 'not found']
@@ -72,12 +72,12 @@ abstract class _Query {
             };
         }
         $method = __Request::$__->method;
-        $METHOD = __Request::method_params($method);
-        $_api = __Env::$api;
+        $METHOD = __Request::$__->method_params($method);
+        $_api = __Env::$__->api;
         $api_key = self::get_api_key($METHOD);
         if (!$_api['check'][$api_key]) {
-            __atlaAS::set_error_header(403);
-            __Response::header_json();
+            __atlaAS::$__->set_error_header(403);
+            __Response::$__->header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
                     ['api_key' => 'wrong key']
@@ -85,8 +85,8 @@ abstract class _Query {
                 public $count = 0;
             };
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
-            __atlaAS::set_error_header(403);
-            __Response::header_json();
+            __atlaAS::$__->set_error_header(403);
+            __Response::$__->header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
                     ['api_key' => 'key status is not active']
@@ -97,7 +97,7 @@ abstract class _Query {
         if (($method !== 'get' || $csrf_key) && $check_csrf) {
             _Hasher::csrf_check($csrf_key);
         }
-        $connection = $connection ?? __Env::$connections[0];
+        $connection = $connection ?? __Env::$__->connections[0];
         $pdo = Conn::connection_start($connection);
         $stmt = $pdo->prepare(
             \file_get_contents($sql_relative_path)

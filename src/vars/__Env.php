@@ -12,14 +12,14 @@ abstract class __Env {
         $this->set_as_global();
     }
 
-    public static bool $is_in_production = false;
+    public bool $is_in_production = false;
 
-    public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
-    public static array $connections = [
+    public string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
+    public array $connections = [
         'app',
         'site'
     ];
-    public static array $conn = [
+    public array $conn = [
         'http' => [
             'app' =>
             [
@@ -65,7 +65,7 @@ abstract class __Env {
             ]
         ]
     ];
-    public static $api = [
+    public $api = [
         /**
          * array key of the [0] index of 'check' is your api_key;
          * make sure the 'status' is 'active';

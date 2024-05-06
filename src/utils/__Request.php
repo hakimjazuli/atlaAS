@@ -63,16 +63,16 @@ class __Request {
         }
         return $uri;
     }
-    public static function method_params(string $method): array {
+    public function method_params(string $method): array {
         switch ($method) {
             case 'get':
             case 'post':
                 return $GLOBALS['_' . strtoupper($method)];
             default:
-                return self::parse_other_method();
+                return $this->parse_other_method();
         }
     }
-    private static function parse_other_method() {
+    private function parse_other_method() {
         $data = file_get_contents('php://input');
         $boundary = "--" . explode("boundary=", $_SERVER["CONTENT_TYPE"])[1];
         $form_data = explode($boundary, $data);

@@ -9,7 +9,7 @@ abstract class FSMiddleware {
     public string $current_middleware;
     public string $current_folder;
     public function is_folder_exist(): bool {
-        return \is_dir(__Settings::system_path($this->current_folder));
+        return \is_dir(__Settings::$__->system_path($this->current_folder));
     }
     public function check_mw(): void {
         $mw = $this->current_middleware;
@@ -18,7 +18,7 @@ abstract class FSMiddleware {
         };
         if (\method_exists(
             $mw,
-            $method = __Settings::$middleware_name
+            $method = __Settings::$__->middleware_name
         )) {
             (new $mw)->$method(__Request::$__->method);
         }
