@@ -19,11 +19,11 @@ class __Response {
         $html_function();
         return \ob_get_clean();
     }
-    public function echo_no_indent(callable $html_function, bool $html_document = true) {
+    public function html_no_indent(callable $html_function, bool $html_document = true) {
         $output = $this->preprocess($html_function, $html_document);
         echo \preg_replace($this::$regex_no_indents, '', $output);
     }
-    public function echo_single_line(callable $html_function, bool $html_document = true) {
+    public function html_single_line(callable $html_function, bool $html_document = true) {
         $output = $this->preprocess($html_function, $html_document);
         echo trim(\preg_replace(
             [$this::$regex_single_line, $this::$regex_excesive_spacing, '/> /', '/ </'],
