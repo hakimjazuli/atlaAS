@@ -69,13 +69,10 @@ class __Request {
         return $uri;
     }
     public function method_params(string $method): array {
-        switch ($method) {
-            case 'get':
-            case 'post':
-                return $GLOBALS['_' . strtoupper($method)];
-            default:
-                return $this->parse_other_method();
-        }
+        return match ($method) {
+            'get', 'post' => $GLOBALS['_' . strtoupper($method)],
+            default => $this->parse_other_method(),
+        };
     }
     private function parse_other_method() {
         $data = file_get_contents('php://input');

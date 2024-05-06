@@ -30,18 +30,11 @@ abstract class Conn {
         $filename = $conn_[$httpmode][$mode]['file_name'];
         $encoding = $conn_[$httpmode][$mode]['encoding'];
         try {
-            switch ($type) {
-                case 'mdb':
-                case 'accdb':
-                    $conn = new PDO('odbc:DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};charset=' . $encoding . '; DBQ=' . $filename . '; Uid=' . $username . '; Pwd=' . $password . ';');
-                    break;
-                case 'sqlite':
-                    $conn = new PDO($type . ':' . $filename);
-                    break;
-                default:
-                    $conn = new PDO($type . ':host=' . $host . ';dbname=' . $db, $username, $password);
-                    break;
-            }
+            $conn = match ($type) {
+                'mdb', 'accdb' => new PDO('odbc:DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};charset=' . $encoding . '; DBQ=' . $filename . '; Uid=' . $username . '; Pwd=' . $password . ';'),
+                'sqlite' => new PDO($type . ':' . $filename),
+                default => new PDO($type . ':host=' . $host . ';dbname=' . $db, $username, $password),
+            };
             $conn->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
         } catch (PDOException $e) {
             print "Connection failed!: " . $e->getMessage() . "<br/>";

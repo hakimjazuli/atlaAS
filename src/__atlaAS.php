@@ -124,28 +124,19 @@ class __atlaAS {
         exit(0);
     }
     public function set_error_header(int $code = 404): void {
-        switch ($code) {
-            case 403:
-                \header("HTTP/1.1 403 Forbidden");
-                break;
-            case 404:
-                \header("HTTP/1.0 404 Not Found");
-                break;
-            case 500:
-                \header("HTTP/1.0 500 Internal Server Error");
-                break;
-        }
+        $header = match ($code) {
+            403 => 'HTTP/1.1 403 Forbidden',
+            500 => 'HTTP/1.0 500 Internal Server Error',
+            404 => 'HTTP/1.0 404 Not Found',
+            default => 'HTTP/1.0 404 Not Found'
+        };
+        \header($header);
     }
     public function reroute_error(int $code = 404): void {
-        switch ($code) {
-            case 403:
-            case 404:
-            case 500:
-                break;
-            default:
-                $code = 404;
-                break;
-        }
+        $code = match ($code) {
+            403, 404, 500 => $code,
+            default => 404,
+        };
         $this->set_error_header($code);
         $this->reroute(__Settings::$__->routes_errors_prefix . $code);
     }
