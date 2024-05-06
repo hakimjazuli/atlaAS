@@ -11,6 +11,11 @@ use HtmlFirst\atlaAS\Utils\_Temp;
 use HtmlFirst\atlaAS\Vars\__Settings;
 use HtmlFirst\atlaAS\Vars\__Env;
 
+/**
+ * use this class as entry point;
+ * instantiate it, with extended __Env and __Settings as arguments;
+ * then call run method;
+ */
 class __atlaAS {
     use hasSetGlobal;
     public static __atlaAS $__;
