@@ -14,12 +14,13 @@ abstract class _GlobalVar {
     protected static string $global = 'global';
 
     protected static function global(string $name, mixed $initial_value) {
+        $atlaAS = __atlaAS::$__;
         if (!\is_string(self::$global)) {
             return null;
         }
-        if (isset(__atlaAS::$__->global[self::$global][$name])) {
-            return __atlaAS::$__->global[self::$global][$name];
+        if (isset($atlaAS->global[self::$global][$name])) {
+            return $atlaAS->global[self::$global][$name];
         }
-        return (__atlaAS::$__->global[self::$global][$name] = $initial_value);
+        return ($atlaAS->global[self::$global][$name] = $initial_value);
     }
 }
