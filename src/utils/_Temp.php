@@ -10,12 +10,14 @@ class _Temp {
      * - temporary change this variable;
      * - argument as reference;
      * @param  mixed $temp_value
+     * - null: assign $var_reference value;
+     * - not_null: temporary assign $temp_value to $var_reference;
      * @return callable
      * - call this returned function to reset the value;
      */
-    public static function var(mixed &$var_reference, mixed $temp_value): callable {
+    public static function var(mixed &$var_reference, mixed $temp_value = null): callable {
         $temp_placeholder = $var_reference;
-        $var_reference = $temp_value;
+        $var_reference = $temp_value ?? $var_reference;
         return function () use (&$var_reference, $temp_placeholder) {
             $var_reference = $temp_placeholder;
         };
