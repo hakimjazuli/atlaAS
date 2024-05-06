@@ -107,7 +107,7 @@ class __atlaAS {
     /**
      * param_match
      *
-     * @param  string $param_name : key of method parameter
+     * @param  string $param_name: key of method parameter
      * @param  string $regex
      * @return bool
      */

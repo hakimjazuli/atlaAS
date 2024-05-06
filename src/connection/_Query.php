@@ -37,7 +37,7 @@ abstract class _Query {
      * - string: chose from env;
      * - null: default from env;
      * @param array|null $bind
-     * - null : do nothing;
+     * - null: do nothing;
      * - [
      *    ...
      *    $field_name => [?PDO::PARAM_type, ?$value],
