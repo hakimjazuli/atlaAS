@@ -21,7 +21,7 @@ class __Response {
     }
     public function echo_no_indent(callable $html_function, bool $html_document = true) {
         $output = $this->preprocess($html_function, $html_document);
-        echo \preg_replace($this->regex_no_indents, '', $output);
+        echo \preg_replace($this::$regex_no_indents, '', $output);
     }
     public function echo_single_line(callable $html_function, bool $html_document = true) {
         $output = $this->preprocess($html_function, $html_document);
