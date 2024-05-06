@@ -26,7 +26,7 @@ class __Response {
     public function echo_single_line(callable $html_function, bool $html_document = true) {
         $output = $this->preprocess($html_function, $html_document);
         echo trim(\preg_replace(
-            [$this->regex_single_line, $this->regex_excesive_spacing, '/> /', '/ </'],
+            [$this::$regex_single_line, $this::$regex_excesive_spacing, '/> /', '/ </'],
             [' ', ' ', '>', '<'],
             $output
         ), ' ');
