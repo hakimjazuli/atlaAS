@@ -97,7 +97,7 @@ abstract class _Query {
         if (($method !== 'get' || $csrf_key) && $check_csrf) {
             _Hasher::csrf_check($csrf_key);
         }
-        $connection = $connection ?? __Env::$__->connections[0];
+        $connection ??= __Env::$__->connections[0];
         $pdo = Conn::connection_start($connection);
         $stmt = $pdo->prepare(
             \file_get_contents($sql_relative_path)
