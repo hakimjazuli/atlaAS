@@ -12,5 +12,6 @@ abstract class _MapResources {
      * overwrite this get method to use it as this route middleware;
      */
     public function get(string ...$uri_array) {
+        /** your middleware script goes here */
     }
 }
