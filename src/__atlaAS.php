@@ -42,19 +42,36 @@ class __atlaAS {
      * @param  null|array $route_array_path
      * - null: base routing;
      * - array: one dimentional array to route url;
-     * @param  null|array $query_parameter
+     * @param  array $query_parameters
      * - associative array, assigned to route class property if any (for best practice);
-     * - null do nothing;
+     * @param  bool $inherit_query_parameters
+     * - true: ;
+     * - false: 
      * @return void
      */
-    public function render_get(null|array $route_array_path = null, null|array $query_parameter = null) {
+    public function render_get(
+        null|array $route_array_path = null,
+        array $query_parameters = [],
+        bool $inherit_query_parameters = true
+    ) {
+        if ($inherit_query_parameters) {
+            $query_parameters = \array_merge(__Request::$__->query_params_arrray, $query_parameters);
+        }
         $reseters = _FunctionHelpers::callable_collections(
             _Temp::var(__Request::$__->method, 'get'),
             _Temp::var(__Request::$__->uri_array, $route_array_path),
-            _Temp::var(__Request::$__->query_params_arrray, $query_parameter)
+            _Temp::var(__Request::$__->query_params_arrray, $query_parameters)
         );
         $this->fs_router->render();
         $reseters();
+    }
+    public function assign_query_param_to_class_property(object $class_instance) {
+        $query_params = __Request::$__->query_params_arrray;
+        foreach ($query_params as $name => $value) {
+            if (\property_exists($class_instance, $name)) {
+                $class_instance->$name = $value;
+            }
+        }
     }
     /**
      * follow_up_params

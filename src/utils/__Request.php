@@ -12,7 +12,16 @@ class __Request {
     public string $uri;
     public array $uri_array;
     public string|null $query_params = null;
+
+    /**
+     * atlaAS best practice is to add $query_name to the route class;
+     * so it can be accessed using $this->$$query_name;
+     */
     public array|null $query_params_arrray = null;
+    public function generate_query_param(): array {;
+        return $this->query_params_arrray = $_GET;
+    }
+
     public string $public_path;
     public string $method;
     public string $base;
@@ -51,9 +60,6 @@ class __Request {
                 return false;
             }
         }
-    }
-    public function generate_query_param(): array {;
-        return $this->query_params_arrray = $_GET;
     }
     private function get_uri(): array {
         $uri = \explode('/', $this->uri);

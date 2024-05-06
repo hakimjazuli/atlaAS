@@ -48,14 +48,6 @@ class FSRouter extends FSMiddleware {
         $this->real_route = $this->current_route;
         return true;
     }
-    private function assign_query_param_to_route(object $route) {
-        $query_params = __Request::$__->query_params_arrray;
-        foreach ($query_params as $name => $value) {
-            if (\property_exists($route, $name)) {
-                $route->$name = $value;
-            }
-        }
-    }
     private function run_real_route() {
         $this->check_middleware_exist_in_route();
         if (!\method_exists(
@@ -65,7 +57,7 @@ class FSRouter extends FSMiddleware {
             return;
         }
         $route_ref = new $route;
-        $this->assign_query_param_to_route($route_ref);
+        __atlaAS::$__->assign_query_param_to_class_property($route_ref);
         if ($this->check_method_with_spread_input_logic($route, $route_ref)) {
             return;
         }
@@ -78,7 +70,9 @@ class FSRouter extends FSMiddleware {
         )) {
             return;
         };
-        (new $middleware)->$mw_method(__Request::$__->method);
+        $mw_ref = new $middleware;
+        __atlaAS::$__->assign_query_param_to_class_property($mw_ref);
+        $mw_ref->$mw_method(__Request::$__->method);
     }
     private function check_method_with_spread_input_logic(string $class_name, object $route_ref): bool {
         if ($this->is_map_resource($class_name)) {
