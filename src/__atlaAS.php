@@ -44,9 +44,10 @@ class __atlaAS {
      * - array: one dimentional array to route url;
      * @param  array $query_parameters
      * - associative array, assigned to route class property if any (for best practice);
-     * @param  bool $inherit_query_parameters
-     * - true: ;
-     * - false: 
+     * @param  bool $inherit_query_parameters 
+     * - rendered route will:
+     * >- true:  inherit parent query parameter;
+     * >- false: use $query_parameters as new query parameters;
      * @return void
      */
     public function render_get(
