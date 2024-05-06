@@ -48,6 +48,14 @@ class FSRouter extends FSMiddleware {
         $this->real_route = $this->current_route;
         return true;
     }
+    private function assign_query_param_to_route(object $route) {
+        $query_params = __Request::$__->query_params_arrray;
+        foreach ($query_params as $name => $value) {
+            if (\property_exists($route, $name)) {
+                $route->$name = $value;
+            }
+        }
+    }
     private function run_real_route() {
         $this->check_middleware_exist_in_route();
         if (!\method_exists(
@@ -56,10 +64,12 @@ class FSRouter extends FSMiddleware {
         )) {
             return;
         }
-        if ($this->check_method_with_spread_input_logic($route)) {
+        $route_ref = new $route;
+        $this->assign_query_param_to_route($route_ref);
+        if ($this->check_method_with_spread_input_logic($route, $route_ref)) {
             return;
         }
-        $this->run_method_with_input_logic($route);
+        $this->run_method_with_input_logic($route, $route_ref);
     }
     private function check_middleware_exist_in_route(): void {
         if (!\method_exists(
@@ -70,7 +80,16 @@ class FSRouter extends FSMiddleware {
         };
         (new $middleware)->$mw_method(__Request::$__->method);
     }
-    private function run_method_with_input_logic(string $class_name): void {
+    private function check_method_with_spread_input_logic(string $class_name, object $route_ref): bool {
+        if ($this->is_map_resource($class_name)) {
+            $url_inputs = \array_slice(__Request::$__->uri_array, $this->routes_length);
+            $route_ref->get(...$url_inputs);
+            _FileServer::map_resource($url_inputs, __atlaAS::$__->app_root . $class_name);
+            return true;
+        };
+        return false;
+    }
+    private function run_method_with_input_logic(string $class_name, object $route_ref): void {
         $num_params = _FunctionHelpers::url_input_length(
             $class_name,
             $method = __Request::$__->method
@@ -80,17 +99,7 @@ class FSRouter extends FSMiddleware {
             return;
         }
         $url_inputs = \array_slice(__Request::$__->uri_array, -$num_params);
-        $route_ = new $class_name;
-        $route_->$method(...$url_inputs);
-    }
-    private function check_method_with_spread_input_logic(string $class_name): bool {
-        if ($this->is_map_resource($class_name)) {
-            $url_inputs = \array_slice(__Request::$__->uri_array, $this->routes_length);
-            (new $class_name)->get(...$url_inputs);
-            _FileServer::map_resource($url_inputs, __atlaAS::$__->app_root . $class_name);
-            return true;
-        };
-        return false;
+        $route_ref->$method(...$url_inputs);
     }
     private function is_map_resource(string $class_name) {
         if (__Request::$__->method !== 'get') {

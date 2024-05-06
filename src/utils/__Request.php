@@ -27,8 +27,8 @@ class __Request {
         $this->uri_array = $this->get_uri();
         if (\count($request_uri) > 1) {
             $this->query_params = $request_uri[1];
-            $this->generate_query_param();
         }
+        $this->generate_query_param();
         $this->method = \strtolower($_SERVER['REQUEST_METHOD']);
         $this->public_path = $_SERVER['DOCUMENT_ROOT'];
         $this->set_as_global();
@@ -53,8 +53,7 @@ class __Request {
         }
     }
     public function generate_query_param(): array {;
-        $this->query_params_arrray = $val = $_GET;
-        return $val;
+        return $this->query_params_arrray = $_GET;
     }
     private function get_uri(): array {
         $uri = \explode('/', $this->uri);
