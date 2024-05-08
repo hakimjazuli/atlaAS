@@ -2,6 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Connection;
 
+use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Vars\__Env;
 use HtmlFirst\atlaAS\Vars\__Settings;
@@ -30,6 +31,7 @@ abstract class Conn {
         $filename = $conn_[$httpmode][$mode]['file_name'];
         $encoding = $conn_[$httpmode][$mode]['encoding'];
         try {
+            $filename = __Settings::$__->system_path(__atlaAS::$__::$app_root . '/' . $filename);
             $conn = match ($type) {
                 'mdb', 'accdb' => new PDO('odbc:DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};charset=' . $encoding . '; DBQ=' . $filename . '; Uid=' . $username . '; Pwd=' . $password . ';'),
                 'sqlite' => new PDO($type . ':' . $filename),
