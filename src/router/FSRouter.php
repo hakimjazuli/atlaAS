@@ -117,7 +117,7 @@ class FSRouter extends FSMiddleware {
         if (!$match) {
             if (\is_array($fallback)) {
                 __atlaAS::$__->render_get($fallback, $query_parameter);
-            } elseif (\is_callable($fallback)) {
+            } else {
                 $fallback($query_parameter);
             }
             exit(0);

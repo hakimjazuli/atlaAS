@@ -25,4 +25,11 @@ abstract class _FunctionHelpers {
     public static function callable_collections(callable ...$functions): callable {
         return fn () => self::run_array_functions(...$functions);
     }
+    public static function class_name_as_array(string $class_name, array|null $delete_from_array = null): array {
+        $class_array = \explode('\\', $class_name);
+        if (!$delete_from_array) {
+            return $class_array;
+        }
+        return array_diff($class_array, $delete_from_array);
+    }
 }

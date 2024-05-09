@@ -44,9 +44,9 @@ class __atlaAS {
     /**
      * render_get
      *
-     * @param  null|array $route_array_path
-     * - null: base routing;
-     * - array: one dimentional array to route url;
+     * @param  null|array $clas_ref_and_uri_input
+     * - null: use the same __Request::$\_\_->uri_array where this method is called;
+     * - array: [class_ref::class, ...$arguments_for_the_class_get_method];
      * @param  array $query_parameters
      * - associative array, assigned to route class property if any (for best practice);
      * @param  bool $inherit_query_parameters 
@@ -56,16 +56,19 @@ class __atlaAS {
      * @return void
      */
     public function render_get(
-        null|array $route_array_path = null,
+        null|array $clas_ref_and_uri_input = null,
         array $query_parameters = [],
         bool $inherit_query_parameters = true
     ) {
+        $class_reference = _FunctionHelpers::class_name_as_array($clas_ref_and_uri_input[0], [__Settings::$__->routes_class]);
+        \array_shift($clas_ref_and_uri_input);
+        $clas_ref_and_uri_input = \array_merge($class_reference, $clas_ref_and_uri_input);
         if ($inherit_query_parameters) {
             $query_parameters = \array_merge(__Request::$__->query_params_arrray, $query_parameters);
         }
         $reseters = _FunctionHelpers::callable_collections(
             _Temp::var(__Request::$__->method, 'get'),
-            _Temp::var(__Request::$__->uri_array, $route_array_path),
+            _Temp::var(__Request::$__->uri_array, $clas_ref_and_uri_input),
             _Temp::var(__Request::$__->query_params_arrray, $query_parameters)
         );
         $this->fs_router->render();
@@ -85,7 +88,7 @@ class __atlaAS {
      * - fallback using render(...args);
      *
      * @param callable|array $fallback : upon failing any $conditionals it will run:
-     * - array: App_::$instance->render_get(array $fallback, array $generated_query_parameter);
+     * - array: [route_class_ref::class, ...$arguments_for_the_class_get_method];
      * - callable: $fallback(array $generated_fallback_arguments);
      * - after running any of the $fallback above, App will run exit(0);
      * @param  array $conditionals
@@ -95,7 +98,7 @@ class __atlaAS {
      *          bool, ['param_name' => 'warning message']
      *      ]
      * ]
-     * - consider use App_::$instance->param_match(...args);
+     * - consider use __atlaAS::$\_\_->param_match(...args);
      * @param  array $add_to_fallback_args associative :
      * - [
      *      ... $new_param_name_to_send_as => $prop_of_the_class
