@@ -49,7 +49,7 @@ class __atlaAS {
      * - array: [class_ref::class, ...$arguments_for_the_class_get_method];
      * @param  array $query_parameters
      * - associative array, assigned to route class property if any (for best practice);
-     * @param  bool $inherit_query_parameters 
+     * @param  bool $pass_query_parameters 
      * - rendered route will:
      * >- true:  inherit parent query parameter;
      * >- false: use $query_parameters as new query parameters;
@@ -58,12 +58,12 @@ class __atlaAS {
     public function render_get(
         null|array $class_ref_and_uri_input = null,
         array $query_parameters = [],
-        bool $inherit_query_parameters = true
+        bool $pass_query_parameters = true
     ) {
         $class_reference = _FunctionHelpers::class_name_as_array($class_ref_and_uri_input[0], [__Settings::$__->routes_class]);
         \array_shift($class_ref_and_uri_input);
         $uri_array = \array_merge($class_reference, $class_ref_and_uri_input);
-        if ($inherit_query_parameters) {
+        if ($pass_query_parameters) {
             $query_parameters = \array_merge(__Request::$__->query_params_arrray, $query_parameters);
         }
         $reseters = _FunctionHelpers::callable_collections(
