@@ -44,7 +44,7 @@ class __atlaAS {
     /**
      * render_get
      *
-     * @param  null|array $clas_ref_and_uri_input
+     * @param  null|array $class_ref_and_uri_input
      * - null: use the same __Request::$\_\_->uri_array where this method is called;
      * - array: [class_ref::class, ...$arguments_for_the_class_get_method];
      * @param  array $query_parameters
@@ -56,19 +56,19 @@ class __atlaAS {
      * @return void
      */
     public function render_get(
-        null|array $clas_ref_and_uri_input = null,
+        null|array $class_ref_and_uri_input = null,
         array $query_parameters = [],
         bool $inherit_query_parameters = true
     ) {
-        $class_reference = _FunctionHelpers::class_name_as_array($clas_ref_and_uri_input[0], [__Settings::$__->routes_class]);
-        \array_shift($clas_ref_and_uri_input);
-        $clas_ref_and_uri_input = \array_merge($class_reference, $clas_ref_and_uri_input);
+        $class_reference = _FunctionHelpers::class_name_as_array($class_ref_and_uri_input[0], [__Settings::$__->routes_class]);
+        \array_shift($class_ref_and_uri_input);
+        $uri_array = \array_merge($class_reference, $class_ref_and_uri_input);
         if ($inherit_query_parameters) {
             $query_parameters = \array_merge(__Request::$__->query_params_arrray, $query_parameters);
         }
         $reseters = _FunctionHelpers::callable_collections(
             _Temp::var(__Request::$__->method, 'get'),
-            _Temp::var(__Request::$__->uri_array, $clas_ref_and_uri_input),
+            _Temp::var(__Request::$__->uri_array, $uri_array),
             _Temp::var(__Request::$__->query_params_arrray, $query_parameters)
         );
         $this->fs_router->render();
