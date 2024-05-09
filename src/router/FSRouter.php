@@ -105,6 +105,7 @@ class FSRouter extends FSMiddleware {
         array|callable $fallback,
         array $conditionals,
         array $query_parameter = [],
+        bool $inherit_query_parameter = true
     ): void {
         $match = true;
         foreach ($conditionals as $data) {
@@ -116,7 +117,7 @@ class FSRouter extends FSMiddleware {
         }
         if (!$match) {
             if (\is_array($fallback)) {
-                __atlaAS::$__->render_get($fallback, $query_parameter);
+                __atlaAS::$__->render_get($fallback, $query_parameter, $inherit_query_parameter);
             } else {
                 $fallback($query_parameter);
             }

@@ -49,21 +49,21 @@ class __atlaAS {
      * - array: [class_ref::class, ...$arguments_for_the_class_get_method];
      * @param  array $query_parameters
      * - associative array, assigned to route class property if any (for best practice);
-     * @param  bool $pass_query_parameters 
+     * @param  bool $inherit_query_parameters 
      * - rendered route will:
-     * >- true:  inherit parent query parameter;
+     * >- true:  inherit parent query parameter merge with $query_parameters;
      * >- false: use $query_parameters as new query parameters;
      * @return void
      */
     public function render_get(
         null|array $class_ref_and_uri_input = null,
         array $query_parameters = [],
-        bool $pass_query_parameters = true
+        bool $inherit_query_parameters = true
     ) {
         $class_reference = _FunctionHelpers::class_name_as_array($class_ref_and_uri_input[0], [__Settings::$__->routes_class]);
         \array_shift($class_ref_and_uri_input);
         $uri_array = \array_merge($class_reference, $class_ref_and_uri_input);
-        if ($pass_query_parameters) {
+        if ($inherit_query_parameters) {
             $query_parameters = \array_merge(__Request::$__->query_params_arrray, $query_parameters);
         }
         $reseters = _FunctionHelpers::callable_collections(
@@ -103,14 +103,19 @@ class __atlaAS {
      * - [
      *      ... $new_param_name_to_send_as => $prop_of_the_class
      * ]
+     * @param  bool $inherit_query_parameters 
+     * - rendered route will:
+     * >- true:  inherit parent query parameter merge with $query_parameters;
+     * >- false: use $query_parameters as new query parameters;
      * @return array
      */
     public function follow_up_params(
         array|callable $fallback,
         array $conditionals,
         array $add_to_fallback_args = [],
+        bool $inherit_query_parameters = true
     ): void {
-        FSRouter::follow_up_params($fallback, $conditionals, $add_to_fallback_args);
+        FSRouter::follow_up_params($fallback, $conditionals, $add_to_fallback_args, $inherit_query_parameters);
     }
     /**
      * param_match
