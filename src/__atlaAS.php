@@ -26,9 +26,7 @@ class __atlaAS {
     public string $public_url_root;
 
 
-    public function __construct(string $app_env_ref, string $app_settings_ref) {
-        new $app_env_ref;
-        new $app_settings_ref;
+    public function __construct(__Env $env, __Settings $settings) {
         new __Request;
         $this->app_root = \dirname(__Request::$__->public_path);
         $this->public_url_root = __Request::$__->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
