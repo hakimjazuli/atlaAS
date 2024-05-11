@@ -18,8 +18,8 @@ class __Request {
      * so it can be accessed using $this->$$query_name;
      */
     public static array|null $query_params_arrray = null;
-    public function generate_query_param(): array {;
-        return $this::$query_params_arrray = $_GET;
+    public static function generate_query_param(): array {;
+        return self::$__::$query_params_arrray = $_GET;
     }
 
     public static string $public_path;
