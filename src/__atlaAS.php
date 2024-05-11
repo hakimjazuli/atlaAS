@@ -95,7 +95,7 @@ class __atlaAS {
      *          bool, ['param_name' => 'warning message']
      *      ]
      * ]
-     * - consider use __atlaAS::$\_\_->param_match(...args);
+     * - consider use __atlaAS::param_match(...args);
      * @param  array $add_to_fallback_args associative :
      * - [
      *      ... $new_param_name_to_send_as => $prop_of_the_class
