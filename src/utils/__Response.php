@@ -35,13 +35,14 @@ class __Response {
         if ($json = \json_encode($array)) {
             self::$__::header_json();
             echo $json;
-            return;
+        } else {
+            \header("HTTP/1.0 500 Internal Server Error");
+            \print_r([
+                'status' => 'error',
+                'code' => '500',
+                'message' => 'failed to encode to json'
+            ]);
         }
-        \header("HTTP/1.0 500 Internal Server Error");
-        \print_r([
-            'status' => 'error',
-            'message' => 'failed to encode to json'
-        ]);
         exit(0);
     }
     public static function header_json() {

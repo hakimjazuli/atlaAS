@@ -13,6 +13,8 @@ abstract class __Settings {
     }
 
     public static string $_ENV_conn_name = '_CONN';
+    public static string $client_reroute_key = 'reroute';
+    public static string $atlaAS_client_request_header = 'atlaAS_client_from';
 
     public static string $routes_path = 'routes';
     public static string $sqls_path = 'sqls';

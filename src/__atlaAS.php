@@ -34,8 +34,8 @@ abstract class __atlaAS {
     }
     private static FSRouter $fs_router;
     public static function run(): void {
-        self::$fs_router = new FSRouter();
-        self::$fs_router->run();
+        self::$__::$fs_router = new FSRouter();
+        self::$__::$fs_router->run();
         exit(0);
     }
     /**
@@ -124,7 +124,12 @@ abstract class __atlaAS {
     public static function param_match(string $regex, string $param_name): bool {
         return \preg_match($regex, __Request::$query_params_arrray[$param_name]);
     }
-    public static function reroute(string $path): void {
+    public static function reroute(string $path, $use_client_side_routing = false): void {
+        if ($use_client_side_routing) {
+            __Response::echo_json_api([
+                __Settings::$client_reroute_key => $path
+            ]);
+        }
         \header("location: $path");
         exit(0);
     }
