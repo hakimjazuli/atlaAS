@@ -7,13 +7,13 @@ use HtmlFirst\atlaAS\Vars\__Env;
 
 abstract class _Hasher {
     public static function password_generate(string $value): string {
-        return password_hash(__Env::$__->app_key . $value, PASSWORD_DEFAULT);
+        return password_hash(__Env::$app_key . $value, PASSWORD_DEFAULT);
     }
     public static function password_check(string $value, string $dbpassword): bool {
-        return password_verify(__Env::$__->app_key . $value, $dbpassword);
+        return password_verify(__Env::$app_key . $value, $dbpassword);
     }
     public static function generate_token(): string {
-        $token_handler = __Env::$__->app_key . \random_bytes(32);
+        $token_handler = __Env::$app_key . \random_bytes(32);
         $token_handler = \unpack('H*', $token_handler)[1];
         $token_handler = \str_shuffle($token_handler);
         return \substr($token_handler, 0, 75);
@@ -31,7 +31,7 @@ abstract class _Hasher {
     }
     public static function csrf_check(string $key): void {
         if (!self::csrf_compare($key)) {
-            __atlaAS::$__->reroute_error(403);
+            __atlaAS::reroute_error(403);
         }
     }
     private static function csrf_compare(string $key) {
@@ -39,7 +39,7 @@ abstract class _Hasher {
         if (($stored_token = isset($_SESSION[$csrf]) ? $_SESSION[$csrf] : null) === null) {
             return false;
         }
-        $METHOD = __Request::$__->generate_query_param();
+        $METHOD = __Request::generate_query_param();
         if (($submitted_token = isset($METHOD[$csrf]) ? $METHOD[$csrf] : null) === null) {
             return false;
         }

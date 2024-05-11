@@ -18,24 +18,23 @@ use HtmlFirst\atlaAS\Vars\__Env;
  */
 class __atlaAS {
     use hasSetGlobal;
-    public static __atlaAS $__;
+    protected static __atlaAS $__;
 
-    public array $global = [];
+    public static array $global = [];
 
-    public string $app_root;
-    public string $public_url_root;
-
+    public static string $app_root;
+    public static string $public_url_root;
 
     public function __construct(__Env $env, __Settings $settings) {
         new __Request;
-        $this->app_root = \dirname(__Request::$__->public_path);
-        $this->public_url_root = __Request::$__->http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
+        $this::$app_root = \dirname(__Request::$public_path);
+        $this::$public_url_root = __Request::$http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
         new __Response;
         $this->set_as_global();
     }
     private FSRouter $fs_router;
     public function run(): void {
-        $this->fs_router = new FSRouter($this);
+        $this->fs_router = new FSRouter();
         $this->fs_router->run();
         exit(0);
     }
@@ -43,7 +42,7 @@ class __atlaAS {
      * render_get
      *
      * @param  null|array $class_ref_and_uri_input
-     * - null: use the same __Request::$\_\_->uri_array where this method is called;
+     * - null: use the same __Request::uri_array where this method is called;
      * - array: [class_ref::class, ...$arguments_for_the_class_get_method];
      * @param  array $query_parameters
      * - associative array, assigned to route class property if any (for best practice);
@@ -53,27 +52,27 @@ class __atlaAS {
      * >- false: use $query_parameters as new query parameters;
      * @return void
      */
-    public function render_get(
+    public static function render_get(
         null|array $class_ref_and_uri_input = null,
         array $query_parameters = [],
         bool $inherit_query_parameters = true
     ) {
-        $class_reference = _FunctionHelpers::class_name_as_array($class_ref_and_uri_input[0], [__Settings::$__->routes_class]);
+        $class_reference = _FunctionHelpers::class_name_as_array($class_ref_and_uri_input[0], [__Settings::$routes_class]);
         \array_shift($class_ref_and_uri_input);
         $uri_array = \array_merge($class_reference, $class_ref_and_uri_input);
         if ($inherit_query_parameters) {
-            $query_parameters = \array_merge(__Request::$__->query_params_arrray, $query_parameters);
+            $query_parameters = \array_merge(__Request::$query_params_arrray, $query_parameters);
         }
         $reseters = _FunctionHelpers::callable_collections(
-            _Temp::var(__Request::$__->method, 'get'),
-            _Temp::var(__Request::$__->uri_array, $uri_array),
-            _Temp::var(__Request::$__->query_params_arrray, $query_parameters)
+            _Temp::var(__Request::$method, 'get'),
+            _Temp::var(__Request::$uri_array, $uri_array),
+            _Temp::var(__Request::$query_params_arrray, $query_parameters)
         );
-        $this->fs_router->render();
+        self::$__->fs_router->render();
         $reseters();
     }
-    public function assign_query_param_to_class_property(object $class_instance) {
-        $query_params = __Request::$__->query_params_arrray;
+    public static function assign_query_param_to_class_property(object $class_instance) {
+        $query_params = __Request::$query_params_arrray;
         foreach ($query_params as $name => $value) {
             if (\property_exists($class_instance, $name)) {
                 $class_instance->$name = $value;
@@ -107,7 +106,7 @@ class __atlaAS {
      * >- false: use $query_parameters as new query parameters;
      * @return array
      */
-    public function follow_up_params(
+    public static function follow_up_params(
         array|callable $fallback,
         array $conditionals,
         array $add_to_fallback_args = [],
@@ -122,14 +121,14 @@ class __atlaAS {
      * @param  string $regex
      * @return bool
      */
-    public function param_match(string $regex, string $param_name): bool {
-        return \preg_match($regex, __Request::$__->query_params_arrray[$param_name]);
+    public static function param_match(string $regex, string $param_name): bool {
+        return \preg_match($regex, __Request::$query_params_arrray[$param_name]);
     }
-    public function reroute(string $path): void {
+    public static function reroute(string $path): void {
         \header("location: $path");
         exit(0);
     }
-    public function set_error_header(int $code = 404): void {
+    public static function set_error_header(int $code = 404): void {
         $header = match ($code) {
             403 => 'HTTP/1.1 403 Forbidden',
             500 => 'HTTP/1.0 500 Internal Server Error',
@@ -138,15 +137,15 @@ class __atlaAS {
         };
         \header($header);
     }
-    public function reroute_error(int $code = 404): void {
+    public static function reroute_error(int $code = 404): void {
         $code = match ($code) {
             403, 404, 500 => $code,
             default => 404,
         };
-        $this->set_error_header($code);
-        $this->reroute(__Settings::$__->routes_errors_prefix . $code);
+        self::$__::set_error_header($code);
+        self::$__::reroute(__Settings::$routes_errors_prefix . $code);
     }
-    public function get_api_key(): string {
-        return \array_keys(__Env::$__->api['check'])[0];
+    public static function get_api_key(): string {
+        return \array_keys(__Env::$api['check'])[0];
     }
 }

@@ -6,20 +6,20 @@ use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 
 abstract class __Env {
     use hasSetGlobal;
-    public static __Env $__;
+    protected static __Env $__;
 
     public function __construct() {
         $this->set_as_global();
     }
 
-    public bool $is_in_production = false;
+    public static bool $is_in_production = false;
 
-    public string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
-    public array $connections = [
+    public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
+    public static array $connections = [
         'app',
         'site'
     ];
-    public array $conn = [
+    public static array $conn = [
         'http' => [
             'app' =>
             [
@@ -65,7 +65,7 @@ abstract class __Env {
             ]
         ]
     ];
-    public $api = [
+    public static $api = [
         /**
          * array key of the [0] index of 'check' is your api_key;
          * make sure the 'status' is 'active';

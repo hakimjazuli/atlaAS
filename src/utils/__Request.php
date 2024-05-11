@@ -5,44 +5,44 @@ namespace HtmlFirst\atlaAS\Utils;
 
 class __Request {
     use hasSetGlobal;
-    public static __Request $__;
+    protected static __Request $__;
 
-    public bool $is_https;
-    public string $http_mode;
-    public string $uri;
-    public array $uri_array;
-    public string|null $query_params = null;
+    public static bool $is_https;
+    public static string $http_mode;
+    public static string $uri;
+    public static array $uri_array;
+    public static string|null $query_params = null;
 
     /**
      * atlaAS best practice is to add $query_name to the route class;
      * so it can be accessed using $this->$$query_name;
      */
-    public array|null $query_params_arrray = null;
+    public static array|null $query_params_arrray = null;
     public function generate_query_param(): array {;
-        return $this->query_params_arrray = $_GET;
+        return $this::$query_params_arrray = $_GET;
     }
 
-    public string $public_path;
-    public string $method;
-    public string $base;
+    public static string $public_path;
+    public static string $method;
+    public static string $base;
     public function __construct() {
-        if ($this->is_https = $this->assign_http()) {
-            $this->http_mode = 'https';
+        if ($this::$is_https = $this::assign_http()) {
+            $this::$http_mode = 'https';
         } else {
-            $this->http_mode = 'http';
+            $this::$http_mode = 'http';
         }
         $request_uri = \explode('?', $_SERVER['REQUEST_URI']);
-        $this->uri = \trim($request_uri[0], '/');
-        $this->uri_array = $this->get_uri();
+        $this::$uri = \trim($request_uri[0], '/');
+        $this::$uri_array = $this->get_uri();
         if (\count($request_uri) > 1) {
-            $this->query_params = $request_uri[1];
+            $this::$query_params = $request_uri[1];
         }
         $this->generate_query_param();
-        $this->method = \strtolower($_SERVER['REQUEST_METHOD']);
-        $this->public_path = $_SERVER['DOCUMENT_ROOT'];
+        $this::$method = \strtolower($_SERVER['REQUEST_METHOD']);
+        $this::$public_path = $_SERVER['DOCUMENT_ROOT'];
         $this->set_as_global();
     }
-    private function assign_http(): bool {
+    private static function assign_http(): bool {
         if (isset($_SERVER['REQUEST_SCHEME']) && !empty($_SERVER['REQUEST_SCHEME'])) {
             $https = ($_SERVER['REQUEST_SCHEME'] == 'https' ? true : false);
         }
@@ -62,19 +62,19 @@ class __Request {
         }
     }
     private function get_uri(): array {
-        $uri = \explode('/', $this->uri);
+        $uri = \explode('/', $this::$uri);
         if ($uri[0] === '') {
             $uri[0] = 'index';
         }
         return $uri;
     }
-    public function method_params(string $method): array {
+    public static function method_params(string $method): array {
         return match ($method) {
             'get', 'post' => $GLOBALS['_' . strtoupper($method)],
-            default => $this->parse_other_method(),
+            default => self::$__::parse_other_method(),
         };
     }
-    private function parse_other_method() {
+    private static function parse_other_method() {
         $data = file_get_contents('php://input');
         $boundary = "--" . explode("boundary=", $_SERVER["CONTENT_TYPE"])[1];
         $form_data = explode($boundary, $data);

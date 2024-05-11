@@ -11,18 +11,18 @@ use PDOException;
 
 abstract class Conn {
     public static function connection_start(string $mode) {
-        if (!isset($_ENV[$conn = __Settings::$__->_ENV_conn_name][$mode])) {
+        if (!isset($_ENV[$conn = __Settings::$_ENV_conn_name][$mode])) {
             return $_ENV[$conn][$mode] = self::connect($mode);
         }
     }
     public static function connection_close(string $mode) {
-        if (isset($_ENV[$conn = __Settings::$__->_ENV_conn_name][$mode])) {
+        if (isset($_ENV[$conn = __Settings::$_ENV_conn_name][$mode])) {
             return $_ENV[$conn][$mode] = null;
         }
     }
     public static function connect(string $mode) {
-        $conn_ = __Env::$__->conn;
-        $httpmode = __Request::$__->http_mode;
+        $conn_ = __Env::$conn;
+        $httpmode = __Request::$http_mode;
         $host = $conn_[$httpmode][$mode]['host'];
         $username = $conn_[$httpmode][$mode]['username'];
         $password = $conn_[$httpmode][$mode]['password'];
@@ -31,7 +31,7 @@ abstract class Conn {
         $filename = $conn_[$httpmode][$mode]['file_name'];
         $encoding = $conn_[$httpmode][$mode]['encoding'];
         try {
-            $filename = __Settings::$__->system_path(__atlaAS::$__->app_root . '/' . $filename);
+            $filename = __Settings::system_path(__atlaAS::$app_root . '/' . $filename);
             $conn = match ($type) {
                 'mdb', 'accdb' => new PDO('odbc:DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};charset=' . $encoding . '; DBQ=' . $filename . '; Uid=' . $username . '; Pwd=' . $password . ';'),
                 'sqlite' => new PDO($type . ':' . $filename),

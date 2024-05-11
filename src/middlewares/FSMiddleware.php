@@ -10,7 +10,7 @@ abstract class FSMiddleware {
     public string $current_middleware;
     public string $current_folder;
     public function is_folder_exist(): bool {
-        return \is_dir(__Settings::$__->system_path($this->current_folder));
+        return \is_dir(__Settings::system_path($this->current_folder));
     }
     public function check_mw(): void {
         $mw = $this->current_middleware;
@@ -19,11 +19,11 @@ abstract class FSMiddleware {
         };
         if (\method_exists(
             $mw,
-            $method = __Settings::$__->middleware_name
+            $method = __Settings::$middleware_name
         )) {
             $mw_ref = new $mw;
-            __atlaAS::$__->assign_query_param_to_class_property($mw_ref);
-            $mw_ref->$method(__Request::$__->method);
+            __atlaAS::assign_query_param_to_class_property($mw_ref);
+            $mw_ref->$method(__Request::$method);
         }
     }
 }

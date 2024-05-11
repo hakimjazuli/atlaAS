@@ -18,14 +18,14 @@ class FSRouter extends FSMiddleware {
     private object|string|false $real_route = false;
     private int $request_length = 0;
     public function render() {
-        $uri_array = __Request::$__->uri_array;
+        $uri_array = __Request::$uri_array;
         $this->request_length = \count($uri_array);
-        $this->current_folder = __atlaAS::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$__->routes_path;
-        $this->current_route = '\\' . __Settings::$__->routes_class;
+        $this->current_folder = __atlaAS::$app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path;
+        $this->current_route = '\\' . __Settings::$routes_class;
         $routes_length = 0;
         foreach ($uri_array as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
-            $this->current_middleware = $this->current_route . '\\' . __Settings::$__->middleware_name;
+            $this->current_middleware = $this->current_route . '\\' . __Settings::$middleware_name;
             $this->check_mw();
             $routes_length++;
             $this->current_route .= '\\' . $uri;
@@ -36,7 +36,7 @@ class FSRouter extends FSMiddleware {
             }
         }
         if (!$this->real_route) {
-            __atlaAS::$__->reroute_error(404);
+            __atlaAS::reroute_error(404);
             return;
         }
         $this->run_real_route();
@@ -52,12 +52,12 @@ class FSRouter extends FSMiddleware {
         $this->check_middleware_exist_in_route();
         if (!\method_exists(
             $route = $this->real_route,
-            __Request::$__->method
+            __Request::$method
         )) {
             return;
         }
         $route_ref = new $route;
-        __atlaAS::$__->assign_query_param_to_class_property($route_ref);
+        __atlaAS::assign_query_param_to_class_property($route_ref);
         if ($this->check_method_with_spread_input_logic($route, $route_ref)) {
             return;
         }
@@ -66,19 +66,19 @@ class FSRouter extends FSMiddleware {
     private function check_middleware_exist_in_route(): void {
         if (!\method_exists(
             $middleware = $this->real_route,
-            $mw_method = __Settings::$__->middleware_name
+            $mw_method = __Settings::$middleware_name
         )) {
             return;
         };
         $mw_ref = new $middleware;
-        __atlaAS::$__->assign_query_param_to_class_property($mw_ref);
-        $mw_ref->$mw_method(__Request::$__->method);
+        __atlaAS::assign_query_param_to_class_property($mw_ref);
+        $mw_ref->$mw_method(__Request::$method);
     }
     private function check_method_with_spread_input_logic(string $class_name, object $route_ref): bool {
         if ($this->is_map_resource($class_name)) {
-            $url_inputs = \array_slice(__Request::$__->uri_array, $this->routes_length);
+            $url_inputs = \array_slice(__Request::$uri_array, $this->routes_length);
             $route_ref->get(...$url_inputs);
-            _FileServer::map_resource($url_inputs, __atlaAS::$__->app_root . $class_name);
+            _FileServer::map_resource($url_inputs, __atlaAS::$app_root . $class_name);
             return true;
         };
         return false;
@@ -86,20 +86,20 @@ class FSRouter extends FSMiddleware {
     private function run_method_with_input_logic(string $class_name, object $route_ref): void {
         $num_params = _FunctionHelpers::url_input_length(
             $class_name,
-            $method = __Request::$__->method
+            $method = __Request::$method
         );
         if ($num_params !== $this->request_length - $this->routes_length) {
-            __atlaAS::$__->reroute_error(404);
+            __atlaAS::reroute_error(404);
             return;
         }
-        $url_inputs = \array_slice(__Request::$__->uri_array, -$num_params);
+        $url_inputs = \array_slice(__Request::$uri_array, -$num_params);
         $route_ref->$method(...$url_inputs);
     }
     private function is_map_resource(string $class_name) {
-        if (__Request::$__->method !== 'get') {
+        if (__Request::$method !== 'get') {
             return false;
         }
-        return _FunctionHelpers::is_first_parameter_spread($class_name, __Request::$__->method);
+        return _FunctionHelpers::is_first_parameter_spread($class_name, __Request::$method);
     }
     public static function follow_up_params(
         array|callable $fallback,
@@ -117,7 +117,7 @@ class FSRouter extends FSMiddleware {
         }
         if (!$match) {
             if (\is_array($fallback)) {
-                __atlaAS::$__->render_get($fallback, $query_parameter, $inherit_query_parameter);
+                __atlaAS::render_get($fallback, $query_parameter, $inherit_query_parameter);
             } else {
                 $fallback($query_parameter);
             }
