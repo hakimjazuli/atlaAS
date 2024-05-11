@@ -18,7 +18,7 @@ class __Request {
      * so it can be accessed using $this->$$query_name;
      */
     public static array|null $query_params_arrray = null;
-    public static function generate_query_param(): array {;
+    private static function generate_query_param(): array {;
         return self::$__::$query_params_arrray = $_GET;
     }
 
@@ -37,10 +37,10 @@ class __Request {
         if (\count($request_uri) > 1) {
             $this::$query_params = $request_uri[1];
         }
-        $this->generate_query_param();
         $this::$method = \strtolower($_SERVER['REQUEST_METHOD']);
         $this::$public_path = $_SERVER['DOCUMENT_ROOT'];
         $this->set_as_global();
+        $this::generate_query_param();
     }
     private static function assign_http(): bool {
         if (isset($_SERVER['REQUEST_SCHEME']) && !empty($_SERVER['REQUEST_SCHEME'])) {
