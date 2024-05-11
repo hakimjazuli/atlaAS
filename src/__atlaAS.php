@@ -16,7 +16,7 @@ use HtmlFirst\atlaAS\Vars\__Env;
  * instantiate it, with extended __Env and __Settings as arguments;
  * then call run method;
  */
-class __atlaAS {
+abstract class __atlaAS {
     use hasSetGlobal;
     protected static __atlaAS $__;
 
@@ -32,10 +32,10 @@ class __atlaAS {
         new __Response;
         $this->set_as_global();
     }
-    private FSRouter $fs_router;
-    public function run(): void {
-        $this->fs_router = new FSRouter();
-        $this->fs_router->run();
+    private static FSRouter $fs_router;
+    public static function run(): void {
+        self::$fs_router = new FSRouter();
+        self::$fs_router->run();
         exit(0);
     }
     /**
@@ -68,7 +68,7 @@ class __atlaAS {
             _Temp::var(__Request::$uri_array, $uri_array),
             _Temp::var(__Request::$query_params_arrray, $query_parameters)
         );
-        self::$__->fs_router->render();
+        self::$__::$fs_router->render();
         $reseters();
     }
     public static function assign_query_param_to_class_property(object $class_instance) {

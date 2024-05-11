@@ -21,12 +21,12 @@ class __Response {
     }
     public static function html_no_indent(callable $html_function, bool $html_document = true) {
         $output = self::$__::preprocess($html_function, $html_document);
-        echo \preg_replace(self::$regex_no_indents, '', $output);
+        echo \preg_replace(self::$__::$regex_no_indents, '', $output);
     }
     public static function html_single_line(callable $html_function, bool $html_document = true) {
-        $output = self::$__->preprocess($html_function, $html_document);
+        $output = self::$__::preprocess($html_function, $html_document);
         echo trim(\preg_replace(
-            [self::$regex_single_line, self::$regex_excesive_spacing, '/> /', '/ </'],
+            [self::$__::$regex_single_line, self::$__::$regex_excesive_spacing, '/> /', '/ </'],
             [' ', ' ', '>', '<'],
             $output
         ), ' ');
