@@ -32,4 +32,10 @@ abstract class _FunctionHelpers {
         }
         return array_diff($class_array, $delete_from_array);
     }
+    public static function instance_has_trait(string $class_name, string $trait_name) {
+        if (in_array($trait_name, class_uses($class_name))) {
+            return true;
+        }
+        return false;
+    }
 }

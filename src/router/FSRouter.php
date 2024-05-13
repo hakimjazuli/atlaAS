@@ -53,17 +53,14 @@ class FSRouter extends FSMiddleware {
         $route = $this->real_route;
         $route_ref = new $route($is_real_route);
         __atlaAS::assign_query_param_to_class_property($route_ref);
-        $this->check_middleware_exist_in_route($route_ref);
+        if ($route_ref instanceof _RoutesWithMiddleware) {
+            $route_ref->mw(__Request::$method);
+        }
         if ($route_ref instanceof _Routes) {
             if ($this->check_is_map_resources($route, $route_ref)) {
                 return;
             }
             $this->run_method_with_input_logic($route, $route_ref);
-        }
-    }
-    private function check_middleware_exist_in_route($route_ref): void {
-        if ($route_ref instanceof _RoutesWithMiddleware) {
-            $route_ref->mw(__Request::$method);
         }
     }
     private function check_is_map_resources(string $class_name, _Routes $route_ref): bool {
