@@ -94,6 +94,7 @@ your folder should then looks like this
 -   naming:
 
     > -   uses extended _\_\_Settings::$middleware_name_;
+    > -   `mw.php` by default;
 
 -   middleware file
 
@@ -117,7 +118,10 @@ class mw extends _Middleware {
     >     > -   `mw.php` <-- this is middleware file
     >     > -   `other_routes.php`
 
--   routes can also have middleware
+-   which in this case it will be applied to all routes(because it's on the root of your routes
+    folder)
+
+-   routes can also have its own middleware
 
 ```php
 <?php
@@ -128,7 +132,10 @@ use HtmlFirst\atlaAS\Router\_RoutesWithMiddleware;
 
 class test extends _RoutesWithMiddleware {
     public function mw(string $method){
-        // your middleware code
+        /**
+         * $method can be used for conditionals
+         * to apply in only on specific method
+        */
     }
     public function get(string $name, string $num) {
         echo "$name, $num";
@@ -138,7 +145,7 @@ class test extends _RoutesWithMiddleware {
 
 -   middleware are run like this
     > -   toppest parent `mw.php`;
-    > -   then parent bellow **until** routes folder;
+    > -   then parent bellow **UNTIL** routes folder;
     > -   then `mw.php` on the same folder;
     > -   then routes `mw` method (on _\_MapResources_ case, you can use its `get` method)
 
