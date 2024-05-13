@@ -242,10 +242,12 @@ $results = \Backend\Queries\Test::test_name_like('a');
 		{
 			"type": "vcs",
 			"url": "https://github.com/hakimjazuli/atlaAS"
-		}
+		},
+        ...
 	],
 	"require": {
-		"html_first/atla-as": "*"
+		"html_first/atla-as": "*",
+        ...
 	},
     ...
 }
