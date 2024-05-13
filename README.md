@@ -65,7 +65,7 @@ class test extends _Routes {
 
 namespace Routes;
 
-use HtmlFirst\atlaAS\Router\_Routes;
+use HtmlFirst\atlaAS\Router\_MapResources;
 
 class assets extends _MapResources {
 }
@@ -97,7 +97,6 @@ your folder should then looks like this
 
 namespace Routes;
 
-use Backend\Middlewares\Session;
 use HtmlFirst\atlaAS\Middlewares\_Middleware;
 
 class mw extends _Middleware {
