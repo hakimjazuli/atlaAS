@@ -12,9 +12,7 @@
     >     >     needed are easily split per routes file;
     >     > -   not to mention how php is a natural templateing language for html _(well... if
     >     >     there's any more natural language, php is still the most easiest to set up, "there's
-    >     >     no setup")_;
-    >     >     > -   you can just enter html mode using `?>` `<?php`, and you already have working
-    >     >     >     templates;
+    >     >     no setup", just use `?>` to enter front end and `<?php` to go back to backend)_
 
 ## assumption
 
