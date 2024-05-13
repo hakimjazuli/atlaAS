@@ -85,8 +85,8 @@ your folder should then looks like this
 
 -   overwrite get method to use it as middleware for this specific routes;
     > -   your intellisense warning is your friend;
-    > -   \_MapResources Routes's get method uses spread parameters;
--   don't worry it will **NOT** serve your `.php` files( or any file extentions, set using
+    > -   _\_MapResources_ Routes's get method uses spread parameters;
+-   don't worry it will **NOT** serve your `.php` files( or any file extentions, listed in extended
     _\_\_Settings::$system_file_);
 
 ## Middlewares
