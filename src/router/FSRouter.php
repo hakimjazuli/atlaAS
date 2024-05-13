@@ -3,6 +3,7 @@
 namespace HtmlFirst\atlaAS\Router;
 
 use HtmlFirst\atlaAS\__atlaAS;
+use HtmlFirst\atlaAS\Middlewares\_Middleware;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\_FileServer;
@@ -49,33 +50,24 @@ class FSRouter extends FSMiddleware {
         return true;
     }
     private function run_real_route($is_real_route) {
-        $this->check_middleware_exist_in_route();
-        if (!\method_exists(
-            $route = $this->real_route,
-            __Request::$method
-        )) {
-            return;
-        }
+        $route = $this->real_route;
         $route_ref = new $route($is_real_route);
         __atlaAS::assign_query_param_to_class_property($route_ref);
-        if ($this->check_method_with_spread_input_logic($route, $route_ref)) {
-            return;
+        $this->check_middleware_exist_in_route($route_ref);
+        if ($route_ref instanceof _Routes) {
+            if ($this->check_is_map_resources($route, $route_ref)) {
+                return;
+            }
+            $this->run_method_with_input_logic($route, $route_ref);
         }
-        $this->run_method_with_input_logic($route, $route_ref);
     }
-    private function check_middleware_exist_in_route(): void {
-        if (!\method_exists(
-            $middleware = $this->real_route,
-            $mw_method = __Settings::$middleware_name
-        )) {
-            return;
-        };
-        $mw_ref = new $middleware;
-        __atlaAS::assign_query_param_to_class_property($mw_ref);
-        $mw_ref->$mw_method(__Request::$method);
+    private function check_middleware_exist_in_route($route_ref): void {
+        if ($route_ref instanceof _RoutesWithMiddleware) {
+            $route_ref->mw(__Request::$method);
+        }
     }
-    private function check_method_with_spread_input_logic(string $class_name, object $route_ref): bool {
-        if ($this->is_map_resource($class_name)) {
+    private function check_is_map_resources(string $class_name, _Routes $route_ref): bool {
+        if ($route_ref instanceof _MapResources) {
             $url_inputs = \array_slice(__Request::$uri_array, $this->routes_length);
             $route_ref->get(...$url_inputs);
             _FileServer::map_resource($url_inputs, __atlaAS::$app_root . $class_name);
@@ -94,12 +86,6 @@ class FSRouter extends FSMiddleware {
         }
         $url_inputs = \array_slice(__Request::$uri_array, -$num_params);
         $route_ref->$method(...$url_inputs);
-    }
-    private function is_map_resource(string $class_name) {
-        if (__Request::$method !== 'get') {
-            return false;
-        }
-        return _FunctionHelpers::is_first_parameter_spread($class_name, __Request::$method);
     }
     public static function follow_up_params(
         array|callable $fallback,

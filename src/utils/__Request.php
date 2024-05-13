@@ -15,9 +15,10 @@ class __Request {
 
     /**
      * atlaAS best practice is to add $query_name to the route class;
-     * so it can be accessed using $this->$$query_name;
+     * so it can be accessed using $this->$$query_parameter_name;
      */
     public static array|null $query_params_arrray = null;
+
     private static function generate_query_param(): array {;
         return self::$__::$query_params_arrray = $_GET;
     }
