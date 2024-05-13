@@ -191,6 +191,24 @@ class Test extends _Query {
 $results = \Backend\Queries\Test::test_name_like(a);
 ```
 
+## composer setting
+
+```json
+{
+    ...
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/hakimjazuli/atlaAS"
+		}
+	],
+	"require": {
+		"html_first/atla-as": "*"
+	},
+    ...
+}
+```
+
 ## Library Naming Convinience
 
 -   classes that **ARE** prefixed with "**\_\_**" are globals, no need to instantiate it after the
