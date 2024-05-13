@@ -13,6 +13,7 @@
     >     > -   not to mention how php is a natural templateing language for html _(well... if
     >     >     there's any more natural language, php is still the most easiest to set up, "there's
     >     >     no setup", just use `?>` to enter front end and `<?php` to go back to backend)_
+    > -   serving files, using our "_HtmlFirst\atlaAS\Router\\\_MapResources;_";
 
 ## assumption
 
