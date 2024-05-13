@@ -1,13 +1,13 @@
 ﻿# atlaAS
 
 -   php file system routing, file serving, connection and SQL DB querying library;
--   it's designed to be used in the conjuction with our client side sister library
+-   it's designed to be used in the conjuction with our client side HATEOAS sister library
     *https://github.com/hakimjazuli/atlaAS_client* in mind;
--   however you can still uses like any Backend generally do, like:
+-   however you can still uses it like any Backend generally do, like:
     > -   building REST json api backend;
-    > -   building HATEOAS backend for htmx;
+    > -   building HATEOAS backend for htmx/other;
     >     > -   in fact you might be surprissed how good File
-    >         System Routing might fare for htmx due to the nature of its code splitting in general;
+    >         System Routing might fare for htmx due to the nature of atlaAS code splitting in general;
     >     > -   you can even opt out from using `hx-select` and/or `hx-target` as the returned html
     >     >     needed are easily split per routes file;
     >     > -   not to mention how php is a natural templateing language for html _(well... if
@@ -116,12 +116,13 @@ your folder should then looks like this
 ```php
 <?php
 
-namespace Routes;
+namespace Routes\api;
 
 use HtmlFirst\atlaAS\Middlewares\_Middleware;
 
 class mw extends _Middleware {
     public function mw(string $method) {
+        \header('Content-Type: application/json');
         }
 }
 ```
@@ -130,12 +131,10 @@ class mw extends _Middleware {
 
     > -   `routes`
     >     > -   `index.php`
-    >     > -   `mw.php` <-- this is middleware file
-    >     > -   `other_routes.php`
+    >     > -   `api`
+    >     >     > -   `mw.php` <-- this is middleware file
 
--   which in this case it will be applied to all routes(because it's on the root of your routes
-    folder)
-
+-   which then turns all of your `/api/**` routes suitable for json api server;
 -   routes can also have its own middleware
 
 ```php
