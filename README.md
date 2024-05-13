@@ -5,9 +5,9 @@
     *https://github.com/hakimjazuli/atlaAS_client* in mind;
 -   however you can still uses it like any Backend generally do, like:
     > -   building REST json api backend;
-    > -   building HATEOAS backend for htmx/other;
+    > -   building HATEOAS backend for htmx/other HATEOAS;
     >     > -   in fact you might be surprissed how good File
-    >         System Routing might fare for htmx due to the nature of atlaAS code splitting in general;
+    >         System Routing might fare for htmx/other HATEOAS library due to the nature of atlaAS code splitting in general;
     >     > -   you can even opt out from using `hx-select` and/or `hx-target` as the returned html
     >     >     needed are easily split per routes file;
     >     > -   not to mention how php is a natural templateing language for html _(well... if
