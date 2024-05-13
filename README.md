@@ -258,8 +258,8 @@ WHERE
 -   options:
     > -   install dependency for `.env`, or
     > -   put your extended `Env.php` on your `.gitignore` and make `EnvExample.php`, also
-    > -   if you have brainfarts to put `Env.php` on `./public/`, perhaps considers to
-    >     ![alt text](https://i.imgflip.com/4ajqpj.jpg?a475800)
+    > -   if you have brainfarts to put `.whatEverYourEnvFileIS` on `./public/`, perhaps considers
+    >     to ![alt text](https://i.imgflip.com/4ajqpj.jpg?a475800)
 
 ## Library Naming Convenience
 
