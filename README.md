@@ -4,7 +4,7 @@ php file system routing, file serving, connection and SQL DB querying library
 
 ## assumtion
 
-this library assume you are familiar with psr-4 autoloading using composer
+this library assumes you are familiar with psr-4 autoloading using composer
 
 ## how to initialize
 
@@ -54,7 +54,7 @@ class test extends _Routes {
 ```
 
 -   routes naming:
-    > -   you have to extends it from
+    > -   you have to extend it from
     >     > -   "_HtmlFirst\atlaAS\Router\\\_Routes;_"
     >     > -   "_HtmlFirst\atlaAS\Router\\\_RoutesWithMiddleware;_"
 
@@ -81,7 +81,7 @@ your folder should then looks like this
     >     > -   main.css
 
 -   overwrite get method to use it as middleware for this specific routes;
-    > -   your intellisenses warning is your friend;
+    > -   your intellisense warning is your friend;
     > -   \_MapResources Routes's get method uses spread parameters;
 
 ## Middlewares
@@ -132,9 +132,9 @@ class test extends _RoutesWithMiddleware {
 ```
 
 -   middleware are run like this
-    > -   topest parent `mw.php`;
-    > -   then parent bellow **until** routess folder;
-    > -   then `mw.php` on same folder;
+    > -   toppest parent `mw.php`;
+    > -   then parent bellow **until** routes folder;
+    > -   then `mw.php` on the same folder;
     > -   then routes `mw` method;
 
 ## DB Query
@@ -208,7 +208,7 @@ $results = \Backend\Queries\Test::test_name_like('a');
 }
 ```
 
-## Library Naming Convinience
+## Library Naming Convenience
 
 -   classes that **ARE** prefixed with "**\_\_**" are globals, no need to instantiate it after the
     `/public/index.php` script;
