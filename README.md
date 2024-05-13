@@ -209,8 +209,6 @@ class Test extends _Query {
 }
 ```
 
--   then you can call it anywhere on your _\_Routes_ method like
-
 ```php
 <?php
 
@@ -229,6 +227,7 @@ WHERE
     `test_name` LIKE :test_name;
 ```
 
+-   then you can call it anywhere on your _\_Routes_ method like
 -   yea... I know... we are doing raw sql with no orm here... so you need to edit your sql file
     using sql client software to type safe your query, like (including but not limited to) DBeaver,
     HeidiSQL, SQLite Expert, or many other;
