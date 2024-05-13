@@ -1,6 +1,15 @@
 ﻿# atlaAS
 
-php file system routing, file serving, connection and SQL DB querying library.
+-   php file system routing, file serving, connection and SQL DB querying library;
+-   it's designed to be used in the conjuction with our php sister library
+    *https://github.com/hakimjazuli/atlaAS_client* in mind;
+-   however you can still uses like any Backend generally do, like:
+    > -   building json api;
+    > -   building HATEOAS backend for htmx;
+    >     > -   in fact you might be surprissed how good File
+    >         System Routing might fare for htmx due to the nature of its code splitting in general;
+    >     > -   you can even opt out from using `hx-select` and/or `hx-target` as the returned html
+    >     >     needed are easily split per routes file;
 
 ## assumption
 
