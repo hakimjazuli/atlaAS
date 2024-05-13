@@ -10,7 +10,7 @@
     >         System Routing might fare for htmx/other HATEOAS library due to the nature of atlaAS code splitting in general;
     >     > -   you can even opt out from using `hx-select` and/or `hx-target` as the returned html
     >     >     needed are easily split per routes file;
-    >     > -   not to mention how php is a natural templateing language for html _(well... if
+    >     > -   not to mention how php is a natural templating language for html _(well... if
     >     >     there's any more natural language, php is still the most easiest to set up, "there's
     >     >     no setup", just use `?>` to enter front end and `<?php` to go back to backend)_
     > -   serving files, using our "_HtmlFirst\atlaAS\Router\\\_MapResources;_";
