@@ -4,7 +4,10 @@ php file system routing, file serving, connection and SQL DB querying library.
 
 ## assumption
 
-this library assumes you are familiar with psr-4 autoloading using composer
+this library assumes you are familiar with:
+
+-   php psr-4 auto-loading, using composer;
+-   php OOP syntax(for extending, and using our helper classes in general);
 
 ## how to initialize
 
@@ -31,8 +34,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 ## Routes
 
 -   using extended \_\_Settings class you can change
-    > -   folder: \$routes_path property
-    > -   namespace: \$routes_class property
+    > -   folder: _\_\_Settings class::\$routes_path_
+    > -   namespace: _\_\_Settings class::\$routes_class_
 -   routes naming:
     > -   have to be the same with the class name(case-sensitve), preferably lowercase
     > -   method are public function http-method(lower case) with parameters of the dynamic uri's;
@@ -83,12 +86,14 @@ your folder should then looks like this
 -   overwrite get method to use it as middleware for this specific routes;
     > -   your intellisense warning is your friend;
     > -   \_MapResources Routes's get method uses spread parameters;
+-   don't worry it will **NOT** serve your `.php` files( or any file extentions, set using
+    _\_\_Settings::$system_file_);
 
 ## Middlewares
 
 -   naming:
 
-    > -   uses extended \_\_Settings $middleware_name property;
+    > -   uses extended _\_\_Settings::$middleware_name_;
 
 -   middleware file
 
@@ -190,6 +195,23 @@ class Test extends _Query {
 $results = \Backend\Queries\Test::test_name_like('a');
 ```
 
+-   setting sql on _\_\_Settings::\$sqls_path_ `./views/test.sql`
+
+```sql
+SELECT
+	`id`,
+    test.test_name
+FROM
+    test
+WHERE
+    `test_name` LIKE :test_name;
+```
+
+-   yea... I know... we are doing raw sql with no orm here... so you need to edit your sql file
+    using sql client software to type safe your query, like (including but not limited to) DBeaver,
+    HeidiSQL, SQLite Expert, and many other;
+-   but fundamentally you can just opt out from raw sql, by installing your preffered orm;
+
 ## composer setting
 
 ```json
@@ -207,6 +229,14 @@ $results = \Backend\Queries\Test::test_name_like('a');
     ...
 }
 ```
+
+## what... no .env?
+
+-   yes, this library doesn't support `.env` by default;
+    > -   it's for type safe purposes;
+-   options:
+    > -   install dependency for `.env`, or
+    > -   put your extended `Env.php` on your `.gitignore` and make `EnvExample.php`;
 
 ## Library Naming Convenience
 

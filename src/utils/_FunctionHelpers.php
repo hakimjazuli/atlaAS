@@ -38,4 +38,12 @@ abstract class _FunctionHelpers {
         }
         return false;
     }
+    public static function merge_unique_1d_array(array ...$arrays): array {
+        $result = array();
+        foreach ($arrays as $arr) {
+            $result = array_merge($result, $arr);
+        }
+        $result = array_unique($result);
+        return $result;
+    }
 }

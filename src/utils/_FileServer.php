@@ -156,7 +156,7 @@ class _FileServer {
     }
     private static function page_resource_handler(string $file, bool $force_download = false): string {
         $file_ext = pathinfo($file, PATHINFO_EXTENSION);
-        if ($file_ext == __Settings::$system_file) {
+        if (in_array($file_ext, _FunctionHelpers::merge_unique_1d_array(__Settings::$system_file, ['php']))) {
             return 'is_system_file';
         }
         if (is_file(__Settings::system_path($file))) {

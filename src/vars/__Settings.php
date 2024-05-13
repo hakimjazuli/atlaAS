@@ -28,7 +28,7 @@ abstract class __Settings {
     public static int $chunk_sizes = 204_800;
     public static int $refresh_micro_second = 500_000;
     public static bool $load_file_with_php_require = false;
-    public static string $system_file = 'php';
+    public static array $system_file = ['php'];
     public static bool $use_stream = true;
 
     public static function server_ip() {
