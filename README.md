@@ -4,12 +4,17 @@
 -   it's designed to be used in the conjuction with our php sister library
     *https://github.com/hakimjazuli/atlaAS_client* in mind;
 -   however you can still uses like any Backend generally do, like:
-    > -   building json api;
+    > -   building REST json api backend;
     > -   building HATEOAS backend for htmx;
     >     > -   in fact you might be surprissed how good File
     >         System Routing might fare for htmx due to the nature of its code splitting in general;
     >     > -   you can even opt out from using `hx-select` and/or `hx-target` as the returned html
     >     >     needed are easily split per routes file;
+    >     > -   not to mention how php is a natural templateing language for html _(well... if
+    >     >     there's any more natural language, php is still the most easiest to set up, "there's
+    >     >     no setup")_;
+    >     >     > -   you can just enter html mode using `?>` `<?php`, and you already have working
+    >     >     >     templates;
 
 ## assumption
 
@@ -262,3 +267,13 @@ WHERE
     `/public/index.php` script;
 -   classes or traits that **ARE** prefixed "**\_**" are meant to be used in your app;
 -   classes or traits that **ARE NOT** prefixed with any "**\_**" are meant for framework internals;
+
+## Credit(s)
+
+this library is inspired by:
+
+-   htmx.js: *https://htmx.org/*
+    > -   more precisely it's HATEOAS paradigm in general;
+-   sveltekit: https://kit.svelte.dev/
+    > -   more precisely it's clean File System Routing in general;
+    > -   and many other js meta framework with FS Routing;
