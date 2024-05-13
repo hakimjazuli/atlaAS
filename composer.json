@@ -1,6 +1,6 @@
 {
 	"name": "html_first/atla-as",
-	"description": "php file system routing and file serving library",
+	"description": "php file system routing, file serving, connection and SQL DB querying library",
 	"license": "MIT",
 	"version": "0.1.0",
 	"autoload": {
