@@ -142,7 +142,7 @@ class test extends _RoutesWithMiddleware {
     > -   then `mw.php` on the same folder;
     > -   then routes `mw` method;
 
-## DB Query
+## SQL Query
 
 -   table helper
 
