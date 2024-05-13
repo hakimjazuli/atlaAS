@@ -212,5 +212,5 @@ $results = \Backend\Queries\Test::test_name_like('a');
 
 -   classes that **ARE** prefixed with "**\_\_**" are globals, no need to instantiate it after the
     `/public/index.php` script;
--   classes or traits that **ARE** prefixed "**\_**" are meant to be used in the your app;
+-   classes or traits that **ARE** prefixed "**\_**" are meant to be used in your app;
 -   objects that **ARE NOT** prefixed with any "**\_**" are meant for framework internals;
