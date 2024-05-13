@@ -1,6 +1,10 @@
 ﻿# atlaAS
 
--   php file system routing, file serving, connection and SQL DB querying library;
+-   php:
+    > -   file system routing;
+    > -   file serving;
+    > -   connection; and
+    > -   SQL DB querying library;
 -   it's designed to be used in the conjuction with our client side HATEOAS sister library
     *https://github.com/hakimjazuli/atlaAS_client* in mind;
 -   however you can still uses it like any Backend generally do, like:
