@@ -1,10 +1,10 @@
 ﻿# atlaAS
 
 -   php:
-    > -   file system routing;
-    > -   file serving;
-    > -   connection; and
-    > -   SQL DB querying library;
+    > -   [file system routing](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#routes);
+    > -   [setting up middleware](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#middlewares);
+    > -   [file serving](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#serving-files);
+    > -   [connection and SQL DB querying library](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#sql-query);
 -   it's designed to be used in the conjuction with our client side HATEOAS sister library
     *https://github.com/hakimjazuli/atlaAS_client* in mind;
 -   however you can still uses it like any Backend generally do, like:
@@ -50,7 +50,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 ```
 
-## Routes
+## Routing
 
 -   using extended \_\_Settings class you can change
     > -   folder: _\_\_Settings class::\$routes_path_
