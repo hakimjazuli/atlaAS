@@ -30,7 +30,7 @@ abstract class _FunctionHelpers {
         if (!$delete_from_array) {
             return $class_array;
         }
-        return array_diff($class_array, $delete_from_array);
+        return array_values(array_diff($class_array, $delete_from_array));
     }
     public static function instance_has_trait(string $class_name, string $trait_name) {
         if (in_array($trait_name, class_uses($class_name))) {
