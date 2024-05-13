@@ -1,7 +1,7 @@
 ﻿# atlaAS
 
 -   php file system routing, file serving, connection and SQL DB querying library;
--   it's designed to be used in the conjuction with our php sister library
+-   it's designed to be used in the conjuction with our client side sister library
     *https://github.com/hakimjazuli/atlaAS_client* in mind;
 -   however you can still uses like any Backend generally do, like:
     > -   building REST json api backend;
