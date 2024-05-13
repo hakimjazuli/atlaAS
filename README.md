@@ -216,7 +216,7 @@ WHERE
 
 -   yea... I know... we are doing raw sql with no orm here... so you need to edit your sql file
     using sql client software to type safe your query, like (including but not limited to) DBeaver,
-    HeidiSQL, SQLite Expert, and many other;
+    HeidiSQL, SQLite Expert, or many other;
 -   but fundamentally you can just opt out from raw sql, by installing your preffered orm;
 
 ## composer setting
