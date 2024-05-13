@@ -261,10 +261,10 @@ WHERE
 
 ## Library Naming Convenience
 
--   classes that **ARE** prefixed with "**\_\_**" are globals, no need to be instantiated after the
+-   classes that are **PREFIXED** with "\_\_" are globals, no need to be instantiated after the
     `/public/index.php` script;
--   classes or traits that **ARE** prefixed "**\_**" are meant to be used in your app;
--   classes or traits that **ARE NOT** prefixed with any "**\_**" are meant for framework internals;
+-   classes or traits that are **PREFIXED** "\_" are meant to be used in your app;
+-   classes or traits that are **NOT PREFIXED** with any "\_" are meant for framework internals;
 
 ## Credit(s)
 
