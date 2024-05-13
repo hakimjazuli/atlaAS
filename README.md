@@ -14,7 +14,7 @@ extends our
 -   _"HtmlFirst\atlaAS\Vars\\\_\_Env;"_
 -   _"HtmlFirst\atlaAS\Vars\\\_\_Settings;"_
 
-then run static method from extended \_\_atlaAs; your public then should looks this
+then run static method from extended \_\_atlaAs; your `/public/index.php` then should looks this
 
 ```php
 <?php
@@ -132,10 +132,10 @@ class test extends _RoutesWithMiddleware {
 ```
 
 -   middleware are run like this
-    > -   topest parent _"mw.php"_;
-    > -   then parrent bellow **until** routess folder;
-    > -   then mw.php on same folder;
-    > -   then routes mw method;
+    > -   topest parent `mw.php`;
+    > -   then parent bellow **until** routess folder;
+    > -   then `mw.php` on same folder;
+    > -   then routes `mw` method;
 
 ## DB Query
 
@@ -211,6 +211,6 @@ $results = \Backend\Queries\Test::test_name_like('a');
 ## Library Naming Convinience
 
 -   classes that **ARE** prefixed with "**\_\_**" are globals, no need to instantiate it after the
-    "_/public/index.php_" script;
+    `/public/index.php` script;
 -   classes or traits that **ARE** prefixed "**\_**" are meant to be used in the your app;
 -   objects that **ARE NOT** prefixed with any "**\_**" are meant for framework internals;
