@@ -7,7 +7,9 @@ php file system routing, file serving, connection and SQL DB querying library.
 this library assumes you are familiar with:
 
 -   php psr-4 auto-loading, using composer;
--   php OOP syntax(for extending, and using our helper classes in general);
+-   php OOP(for extending, and using our helper classes in general, also **atlaAS** uses little
+    abstraction, and not neccesarily a _battery-included_ library, so you have to have good
+    underlying php OOP in generals);
 
 ## how to initialize
 
