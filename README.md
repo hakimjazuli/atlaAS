@@ -271,7 +271,7 @@ $results = \Backend\Queries\Test::test_name_like('a');
 
 -   classes that are **PREFIXED** with "\_\_" are globals, no need to be instantiated after the
     `/public/index.php` script;
--   classes or traits that are **PREFIXED** "\_" are meant to be used in your app;
+-   classes or traits that are **PREFIXED** with "\_" are meant to be used in your app;
 -   classes or traits that are **NOT PREFIXED** with any "\_" are meant for library internals;
 
 ## Credit(s)
