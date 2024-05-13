@@ -188,7 +188,7 @@ class Test extends _Query {
 ```php
 <?php
 
-$results = \Backend\Queries\Test::test_name_like(a);
+$results = \Backend\Queries\Test::test_name_like('a');
 ```
 
 ## composer setting
