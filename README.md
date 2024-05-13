@@ -157,7 +157,7 @@ class test extends _RoutesWithMiddleware {
 }
 ```
 
--   middleware are run like this
+-   middleware priorities are run like this
     > -   toppest parent `mw.php`;
     > -   then parent bellow **UNTIL** routes folder;
     > -   then `mw.php` on the same folder;
