@@ -1,8 +1,8 @@
 ﻿# atlaAS
 
-php file system routing, file serving, connection and SQL DB querying library
+php file system routing, file serving, connection and SQL DB querying library.
 
-## assumtion
+## assumption
 
 this library assumes you are familiar with psr-4 autoloading using composer
 
