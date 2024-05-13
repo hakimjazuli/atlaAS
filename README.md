@@ -140,7 +140,7 @@ class test extends _RoutesWithMiddleware {
     > -   toppest parent `mw.php`;
     > -   then parent bellow **until** routes folder;
     > -   then `mw.php` on the same folder;
-    > -   then routes `mw` method (on \_MapResources case, you can use its `get` method)
+    > -   then routes `mw` method (on _\_MapResources_ case, you can use its `get` method)
 
 ## SQL Query
 
@@ -187,7 +187,7 @@ class Test extends _Query {
 }
 ```
 
--   then you can call it anywhere on your \_Routes method like
+-   then you can call it anywhere on your _\_Routes_ method like
 
 ```php
 <?php
