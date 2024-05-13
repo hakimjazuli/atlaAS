@@ -124,7 +124,10 @@ abstract class __atlaAS {
     public static function param_match(string $regex, string $param_name): bool {
         return \preg_match($regex, __Request::$query_params_arrray[$param_name]);
     }
-    public static function reroute(string $path, $use_client_side_routing = false): void {
+    public static function reroute(string $path, array $url_input = [], $use_client_side_routing = false): void {
+        if (\count($url_input) >= 1) {
+            $path .= '/' . \join($url_input);
+        }
         if ($use_client_side_routing) {
             __Response::echo_json_api([
                 __Settings::$client_reroute_key => $path
