@@ -73,12 +73,12 @@ class assets extends _MapResources {
 
 your folder should then looks like this
 
--   routes
+-   `routes`
 
-    > -   assets.php
-    > -   assets
-    >     > -   atlaAS.mjs
-    >     > -   main.css
+    > -   `assets.php`
+    > -   `assets`
+    >     > -   `atlaAS.mjs`
+    >     > -   `main.css`
 
 -   overwrite get method to use it as middleware for this specific routes;
     > -   your intellisense warning is your friend;
@@ -107,10 +107,10 @@ class mw extends _Middleware {
 
 -   folder structure
 
-    > -   routes
-    >     > -   index.php
-    >     > -   mw.php <-- this is middleware file
-    >     > -   other_routes.php
+    > -   `routes`
+    >     > -   `index.php`
+    >     > -   `mw.php` <-- this is middleware file
+    >     > -   `other_routes.php`
 
 -   routes can also have middleware
 
