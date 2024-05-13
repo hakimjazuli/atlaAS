@@ -36,7 +36,7 @@ abstract class __Env {
                 'host' => 'localhost',
                 'username' => 'root',
                 'password' => '',
-                'db' => '',
+                'db' => 'atlaas_htmx',
                 'type' => 'mysql',
                 'file_name' => '',
                 'encoding' => '',
@@ -45,11 +45,11 @@ abstract class __Env {
         'https' => [
             'app' =>
             [
-                'host' => 'localhost',
-                'username' => 'root',
-                'password' => '',
-                'db' => '',
-                'type' => 'mysql',
+                'host' => 'realhost',
+                'username' => 'realusername',
+                'password' => 'realuserpassword',
+                'db' => 'realdb',
+                'type' => 'realtype',
                 'file_name' => '',
                 'encoding' => '',
             ],
