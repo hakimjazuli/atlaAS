@@ -7,7 +7,7 @@ namespace HtmlFirst\atlaAS\Router;
  * - route file: $routename.php;
  * - resource path: "./$routename/*";
  */
-abstract class _MapResources {
+abstract class _MapResources extends _Routes {
     /**
      * overwrite this get method to use it as this route middleware;
      */

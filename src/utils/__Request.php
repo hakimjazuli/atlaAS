@@ -21,7 +21,9 @@ class __Request {
     private static function generate_query_param(): array {;
         return self::$__::$query_params_arrray = $_GET;
     }
-
+    public static function valid_request_header(string $request_header): string {
+        return \strtoupper('HTTP_' . $request_header);
+    }
     public static string $public_path;
     public static string $method;
     public static string $base;

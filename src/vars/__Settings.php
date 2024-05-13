@@ -2,6 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Vars;
 
+use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 
 abstract class __Settings {
@@ -15,7 +16,7 @@ abstract class __Settings {
     public static string $_ENV_conn_name = '_CONN';
     public static string $client_reroute_key = 'reroute';
     public static function atlaAS_client_request_header() {
-        return self::$__::valid_request_header('atlaAS_client_from');
+        return __Request::valid_request_header('atlaAS_client_from');
     }
 
     public static string $routes_path = 'routes';
@@ -41,8 +42,5 @@ abstract class __Settings {
     }
     public static function if_in_production(bool $in_production_value, bool $not_in_production_value): bool {
         return __Env::$is_in_production ? $in_production_value : $not_in_production_value;
-    }
-    public static function valid_request_header(string $request_header): string {
-        return \strtoupper('HTTP_' . $request_header);
     }
 }

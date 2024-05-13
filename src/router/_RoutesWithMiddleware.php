@@ -4,6 +4,6 @@ namespace HtmlFirst\atlaAS\Router;
 
 use HtmlFirst\atlaAS\Middlewares\hasMiddleware;
 
-abstract class _WithMiddleware {
+abstract class _RoutesWithMiddleware extends _Routes {
     use hasMiddleware;
 }

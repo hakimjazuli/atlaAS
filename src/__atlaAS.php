@@ -68,7 +68,7 @@ abstract class __atlaAS {
             _Temp::var(__Request::$uri_array, $uri_array),
             _Temp::var(__Request::$query_params_arrray, $query_parameters)
         );
-        self::$__::$fs_router->render();
+        self::$__::$fs_router->render(false);
         $reseters();
     }
     public static function assign_query_param_to_class_property(object $class_instance) {

@@ -17,7 +17,7 @@ class FSRouter extends FSMiddleware {
     private string $current_route;
     private object|string|false $real_route = false;
     private int $request_length = 0;
-    public function render() {
+    public function render($is_real_route = true) {
         $uri_array = __Request::$uri_array;
         $this->request_length = \count($uri_array);
         $this->current_folder = __atlaAS::$app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path;
@@ -39,7 +39,7 @@ class FSRouter extends FSMiddleware {
             __atlaAS::reroute_error(404);
             return;
         }
-        $this->run_real_route();
+        $this->run_real_route($is_real_route);
     }
     private function check_route(): bool {
         if (!\class_exists($this->current_route)) {
@@ -48,7 +48,7 @@ class FSRouter extends FSMiddleware {
         $this->real_route = $this->current_route;
         return true;
     }
-    private function run_real_route() {
+    private function run_real_route($is_real_route) {
         $this->check_middleware_exist_in_route();
         if (!\method_exists(
             $route = $this->real_route,
@@ -56,7 +56,7 @@ class FSRouter extends FSMiddleware {
         )) {
             return;
         }
-        $route_ref = new $route;
+        $route_ref = new $route($is_real_route);
         __atlaAS::assign_query_param_to_class_property($route_ref);
         if ($this->check_method_with_spread_input_logic($route, $route_ref)) {
             return;
