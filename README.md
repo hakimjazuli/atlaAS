@@ -5,19 +5,26 @@
     > -   [setting up middleware](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#middlewares);
     > -   [file serving](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#serving-files);
     > -   [connection and SQL DB querying library](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#sql-query);
--   it's designed to be used in the conjuction with our client side HATEOAS sister library
-    *https://github.com/hakimjazuli/atlaAS_client* in mind;
--   however you can still uses it like any Backend generally do, like:
-    > -   building REST json api backend;
-    > -   building HATEOAS backend for htmx/other HATEOAS;
-    >     > -   in fact you might be surprissed how good File
-    >         System Routing might fare for htmx/other HATEOAS library due to the nature of atlaAS code splitting in general;
-    >     > -   you can even opt out from using `hx-select` and/or `hx-target` as the returned html
-    >     >     needed are easily split per routes file;
+-   this library is designed to be used in the conjuction with our client side HATEOAS sister
+    library *https://github.com/hakimjazuli/atlaAS_client* in mind;
+-   however you can still uses it as Backend normally for, like:
+    > -   building REST json api backend: using our "_HtmlFirst\atlaAS\Middlewares\\\_Middleware_",
+    >     to set up header default header on `/api/**` routes;
+    > -   serving files: using our "_HtmlFirst\atlaAS\Router\\\_MapResources;_";
+    > -   building HATEOAS backend for htmx/other HATEOAS library/framework;
+    >     > -   in fact you might be surprissed how good File System Routing might fare for
+    >     >     htmx/other HATEOAS library due to the nature ofatlaAS code splitting in general;
+    >     >
+    >     >     > -   automatic routes setup;
+    >     >     > -   no need to register it using framework class instances first;
+    >     >
+    >     > -   in htmx use case, you can even opt out from using `hx-select` and/or `hx-target` as
+    >     >     the returned html needed are easily split per routes file;
     >     > -   not to mention how php is a natural templating language for html _(well... if
     >     >     there's any more natural language, php is still the most easiest to set up, "there's
     >     >     no setup", just use `?>` to enter front end and `<?php` to go back to backend)_
-    > -   serving files, using our "_HtmlFirst\atlaAS\Router\\\_MapResources;_";
+    >     >     > -   just make sure to sanitize your output, so you don't get XSS attack from user
+    >     >     >     generated content;
 
 ## assumption
 
