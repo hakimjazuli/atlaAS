@@ -109,10 +109,11 @@ your folder should then looks like this
     >     > -   `atlaAS.mjs`
     >     > -   `main.css`
 
--   overwrite get method to use it as middleware for this specific routes;
-    > -   your intellisense warning is your friend;
-    > -   _\_MapResources_ Routes's get method uses spread parameters;
--   don't worry it will **NOT** serve your `.php` files( or any file extentions, listed in extended
+overwrite get method to use it as middleware for this specific routes;
+
+-   your intellisense warning is your friend;
+-   _\_MapResources_ Routes's get method uses spread parameters;
+-   don't worry, it will **NOT** serve your `.php` files( or any file extentions, listed in extended
     _\_\_Settings::$system_file_);
 
 ## Middlewares
