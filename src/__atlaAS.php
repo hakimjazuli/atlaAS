@@ -36,7 +36,6 @@ abstract class __atlaAS {
     public static function run(): void {
         self::$__::$fs_router = new FSRouter();
         self::$__::$fs_router->run();
-        exit(0);
     }
     /**
      * render_get
@@ -87,7 +86,7 @@ abstract class __atlaAS {
      * @param callable|array $fallback : upon failing any $conditionals it will run:
      * - array: [route_class_ref::class, ...$arguments_for_the_class_get_method];
      * - callable: $fallback(array $generated_fallback_arguments);
-     * - after running any of the $fallback above, App will run exit(0);
+     * - after running any of the $fallback above, App will run exit();
      * @param  array $conditionals
      * - $fallback will be triggered when any $conditionals bool are false;
      * - [

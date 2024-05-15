@@ -39,8 +39,7 @@ abstract class Conn {
             };
             $conn->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
         } catch (PDOException $e) {
-            print "Connection failed!: " . $e->getMessage() . "<br/>";
-            die();
+            exit("Connection failed!: " . $e->getMessage() . "<br/>");
         }
         return $conn;
     }
