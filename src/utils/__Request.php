@@ -19,9 +19,6 @@ class __Request {
      */
     public static array|null $query_params_arrray = null;
 
-    private static function generate_query_param(): array {;
-        return self::$__::$query_params_arrray = $_GET;
-    }
     public static function valid_request_header(string $request_header): string {
         return \strtoupper('HTTP_' . $request_header);
     }
@@ -43,7 +40,7 @@ class __Request {
         $this::$method = \strtolower($_SERVER['REQUEST_METHOD']);
         $this::$public_path = $_SERVER['DOCUMENT_ROOT'];
         $this->set_as_global();
-        $this::generate_query_param();
+        self::$__::$query_params_arrray = $_GET;
     }
     private static function assign_http(): bool {
         if (isset($_SERVER['REQUEST_SCHEME']) && !empty($_SERVER['REQUEST_SCHEME'])) {
