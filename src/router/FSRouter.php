@@ -3,7 +3,6 @@
 namespace HtmlFirst\atlaAS\Router;
 
 use HtmlFirst\atlaAS\__atlaAS;
-use HtmlFirst\atlaAS\Middlewares\_Middleware;
 use HtmlFirst\atlaAS\Middlewares\FSMiddleware;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\_FileServer;

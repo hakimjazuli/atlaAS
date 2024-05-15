@@ -71,8 +71,8 @@ class __Request {
         }
         return $uri;
     }
-    public static function method_params(string $method): array {
-        return match ($method) {
+    public static function method_params(): array {
+        return match ($method = self::$__::$method) {
             'get', 'post' => $GLOBALS['_' . strtoupper($method)],
             default => self::$__::parse_other_method(),
         };

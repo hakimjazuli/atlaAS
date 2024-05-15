@@ -71,8 +71,7 @@ abstract class _Query {
                 public $count = 0;
             };
         }
-        $method = __Request::$method;
-        $METHOD = __Request::method_params($method);
+        $METHOD = __Request::method_params();
         $_api = __Env::$api;
         $api_key = self::get_api_key($METHOD);
         if (!$_api['check'][$api_key]) {
@@ -94,7 +93,7 @@ abstract class _Query {
                 public $count = 0;
             };
         }
-        if (($method !== 'get' || $csrf_key) && $check_csrf) {
+        if ((__Request::$method !== 'get' || $csrf_key) && $check_csrf) {
             _Hasher::csrf_check($csrf_key);
         }
         $connection ??= __Env::$connections[0];

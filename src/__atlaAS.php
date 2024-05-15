@@ -95,7 +95,7 @@ abstract class __atlaAS {
      *          bool, ['param_name' => 'warning message']
      *      ]
      * ]
-     * - consider use __atlaAS::param_match(...args);
+     * - consider use __atlaAS::input_match(...args);
      * @param  array $add_to_fallback_args associative :
      * - [
      *      ... $new_param_name_to_send_as => $prop_of_the_class
@@ -115,14 +115,25 @@ abstract class __atlaAS {
         FSRouter::follow_up_params($fallback, $conditionals, $add_to_fallback_args, $inherit_query_parameters);
     }
     /**
-     * param_match
+     * placeholder for form input parameter;
+     */
+    private static array|null  $form_s_input_param = null;
+    /**
+     * input_match
      *
-     * @param  string $param_name: key of method parameter
+     * @param  string $input_name: key of method parameter
      * @param  string $regex
      * @return bool
      */
-    public static function param_match(string $regex, string $param_name): bool {
-        return \preg_match($regex, __Request::$query_params_arrray[$param_name]);
+    public static function input_match(string $regex, string $input_name): bool {
+        if (self::$__::$form_s_input_param === null) {
+            /**
+             * since a form request are only allowed once on single request,
+             * it's ok to do it like this;
+             */
+            self::$__::$form_s_input_param = __Request::method_params();
+        }
+        return \preg_match($regex, self::$__::$form_s_input_param[$input_name]);
     }
     public static function reroute(string $path, array $url_input = [], $use_client_side_routing = false): void {
         if (\count($url_input) >= 1) {
