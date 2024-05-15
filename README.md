@@ -13,7 +13,7 @@
     > -   serving files: using our "_HtmlFirst\atlaAS\Router\\\_MapResources;_";
     > -   building HATEOAS backend for htmx/other HATEOAS library/framework;
     >     > -   in fact you might be surprissed how good File System Routing might fare for
-    >     >     htmx/other HATEOAS library due to the nature ofatlaAS code splitting in general;
+    >     >     htmx/other HATEOAS library due to the nature of atlaAS code splitting in general;
     >     >
     >     >     > -   automatic routes setup;
     >     >     > -   no need to register it using framework class instances first;
