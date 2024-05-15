@@ -1,7 +1,7 @@
 ﻿# atlaAS
 
 -   php:
-    > -   [file system routing](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#routes);
+    > -   [file system routing](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#routing);
     > -   [setting up middleware](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#middlewares);
     > -   [file serving](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#serving-files);
     > -   [connection and SQL DB querying library](https://github.com/hakimjazuli/atlaAS/blob/main/README.md#sql-query);
