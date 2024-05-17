@@ -9,7 +9,7 @@ use HtmlFirst\atlaAS\Utils\_FileServer;
 use HtmlFirst\atlaAS\Utils\_FunctionHelpers;
 use HtmlFirst\atlaAS\Vars\__Settings;
 
-class FSRouter extends FSMiddleware {
+final class FSRouter extends FSMiddleware {
     public function run() {
         $this->render();
     }

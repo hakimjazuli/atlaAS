@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-class __Response {
+final class __Response {
     use hasSetGlobal;
     protected static __Response $__;
 

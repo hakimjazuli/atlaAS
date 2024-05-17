@@ -2,7 +2,7 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-class _Temp {
+abstract class _Temp {
     /**
      * var
      *

@@ -3,7 +3,7 @@
 namespace HtmlFirst\atlaAS\Utils;
 
 
-class __Request {
+final class __Request {
     use hasSetGlobal;
     protected static __Request $__;
 
