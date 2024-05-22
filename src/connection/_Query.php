@@ -31,7 +31,8 @@ abstract class _Query {
     /**
      * sql_query
      * 
-     * @param string $sql_relative_path
+     * @param string $sql_path
+     * starts with '/';
      * @param string|null $csrf_key -descriptive
      * @param string|null $connection
      * - string: chose from env;
@@ -52,15 +53,15 @@ abstract class _Query {
      * @return _atlaASQuery
      */
     protected static function sql_query(
-        string $sql_relative_path,
+        string $sql_path,
         string|null $csrf_key = null,
         string|null $connection = null,
         array|null $bind = null,
         bool $check_csrf = true,
         string $binder_character = ':'
     ): _atlaASQuery {
-        if (!\is_file($sql_relative_path = __Settings::system_path(
-            __atlaAS::$app_root . '/' . __Settings::$sqls_path . '/' . $sql_relative_path
+        if (!\is_file($sql_path = __Settings::system_path(
+            __atlaAS::$app_root . $sql_path
         ))) {
             __atlaAS::set_error_header(500);
             __Response::header_json();
@@ -83,7 +84,7 @@ abstract class _Query {
                 ];
                 public $count = 0;
             };
-        } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key]['status'] != 'active') {
+        } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key] != 'active') {
             __atlaAS::set_error_header(403);
             __Response::header_json();
             return new class() extends _atlaASQuery {
@@ -96,10 +97,10 @@ abstract class _Query {
         if ((__Request::$method !== 'get' || $csrf_key) && $check_csrf) {
             _Hasher::csrf_check($csrf_key);
         }
-        $connection ??= __Env::$connections[0];
+        $connection ??= __Env::$preffered_connection;
         $pdo = Conn::connection_start($connection);
         $stmt = $pdo->prepare(
-            \file_get_contents($sql_relative_path)
+            \file_get_contents($sql_path)
         );
         if ($bind) {
             foreach ($bind as $parameter => $data_s) {

@@ -3,77 +3,39 @@
 namespace HtmlFirst\atlaAS\Vars;
 
 use HtmlFirst\atlaAS\Utils\hasSetGlobal;
+use PDO;
 
 abstract class __Env {
+    public static bool $is_in_production = false;
+
+    public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
+    public static string $preffered_connection = 'app';
+    /**
+     * both params are helpers to determine which pdo connection to chose
+     * @param bool $is_https
+     * @param string $connection_mode
+     */
+    public static function pdo(bool $is_https, string $connection_mode): PDO {
+        try {
+            return static::$__::pdo($is_https, $connection_mode);
+        } catch (\Throwable $e) {
+            exit("Connection failed!: " . $e->getMessage() . "<br/>");
+        }
+    }
+    public static $api = [
+        /**
+         * array key of the [0] index of 'check' is your api_key;
+         * make sure it is 'active';
+         */
+        'check' => [
+            'your#$@#@$%#$%KEY' => 'active',
+        ]
+    ];
+
     use hasSetGlobal;
     protected static __Env $__;
 
     public function __construct() {
         $this->set_as_global();
     }
-
-    public static bool $is_in_production = false;
-
-    public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
-    public static array $connections = [
-        'app',
-        'site'
-    ];
-    public static array $conn = [
-        'http' => [
-            'app' =>
-            [
-                'host' => 'localhost',
-                'username' => 'root',
-                'password' => '',
-                'db' => 'atlaas_htmx',
-                'type' => 'mysql',
-                'file_name' => '',
-                'encoding' => '',
-            ],
-            'site' =>
-            [
-                'host' => 'localhost',
-                'username' => 'root',
-                'password' => '',
-                'db' => 'atlaas_htmx',
-                'type' => 'mysql',
-                'file_name' => '',
-                'encoding' => '',
-            ],
-        ],
-        'https' => [
-            'app' =>
-            [
-                'host' => 'realhost',
-                'username' => 'realusername',
-                'password' => 'realuserpassword',
-                'db' => 'realdb',
-                'type' => 'realtype',
-                'file_name' => '',
-                'encoding' => '',
-            ],
-            'site' =>
-            [
-                'host' => '',
-                'username' => '',
-                'password' => '',
-                'db' => '',
-                'type' => '',
-                'file_name' => '',
-                'encoding' => '',
-            ]
-        ]
-    ];
-    public static $api = [
-        /**
-         * array key of the [0] index of 'check' is your api_key;
-         * make sure the 'status' is 'active';
-         */
-        'check' => [
-            'your#$@#@$%#$%KEY' => [
-                'status' => 'active',
-            ],
-        ]
-    ];
 }
