@@ -92,8 +92,8 @@ class test extends _Routes {
 -   `index`
 
     > -   `/` or `/index` which is commonly known as `root` url should be extended from
-    >     `\HtmlFirst\atlaAS\Router\_IndexRoute` or
-    >     `\HtmlFirst\atlaAS\Router\_IndexRouteWithMiddleware`
+    >     `\HtmlFirst\atlaAS\Router\_RouteWithMR` or
+    >     `\HtmlFirst\atlaAS\Router\_RouteWithMRWithMW`
     > -   due to the nature of web crawler, most of your web resource are assumed to be on the root
     >     folder; you can structure your routes like this;
 
