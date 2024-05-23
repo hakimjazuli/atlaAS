@@ -5,7 +5,7 @@ namespace HtmlFirst\atlaAS\Utils;
 
 final class __Request {
     use hasSetGlobal;
-    protected static __Request $__;
+    protected static __Request|null $__ = null;
 
     public static bool $is_https;
     public static string $http_mode;
@@ -26,6 +26,9 @@ final class __Request {
     public static string $method;
     public static string $base;
     public function __construct() {
+        if (static::$__ !== null) {
+            return $this;
+        }
         if ($this::$is_https = $this::assign_http()) {
             $this::$http_mode = 'https';
         } else {
@@ -39,8 +42,8 @@ final class __Request {
         }
         $this::$method = \strtolower($_SERVER['REQUEST_METHOD']);
         $this::$public_path = $_SERVER['DOCUMENT_ROOT'];
+        $this::$query_params_arrray = $_GET;
         $this->set_as_global();
-        self::$__::$query_params_arrray = $_GET;
     }
     private static function assign_http(): bool {
         if (isset($_SERVER['REQUEST_SCHEME']) && !empty($_SERVER['REQUEST_SCHEME'])) {

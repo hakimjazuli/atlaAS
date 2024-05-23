@@ -41,9 +41,12 @@ abstract class __Settings {
     }
 
     use hasSetGlobal;
-    protected static __Settings $__;
+    protected static __Settings|null $__ = null;
 
     public function __construct() {
+        if (static::$__ !== null) {
+            return $this;
+        }
         $this->set_as_global();
     }
 }

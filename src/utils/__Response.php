@@ -4,10 +4,13 @@ namespace HtmlFirst\atlaAS\Utils;
 
 final class __Response {
     use hasSetGlobal;
-    protected static __Response $__;
+    protected static __Response|null $__ = null;
 
     use hasAppRegex;
     public function __construct() {
+        if (static::$__ !== null) {
+            return $this;
+        }
         $this->set_as_global();
     }
 

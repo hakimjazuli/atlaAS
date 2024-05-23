@@ -33,9 +33,12 @@ abstract class __Env {
     ];
 
     use hasSetGlobal;
-    protected static __Env $__;
+    protected static __Env|null $__ = null;
 
     public function __construct() {
+        if (static::$__ !== null) {
+            return $this;
+        }
         $this->set_as_global();
     }
 }
