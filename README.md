@@ -128,10 +128,10 @@ your folder should then looks like this
     >     > -   `atlaAS.mjs`
     >     > -   `main.css`
 
-overwrite map method to use it as middleware for this specific routes;
+overwrite map_resources method to use it as middleware for this specific routes;
 
 -   your intellisense warning is your friend;
--   _\_MapResources_ Routes's map method uses spread parameters;
+-   _\_MapResources_ Routes's map_resources method uses spread parameters;
 -   don't worry, it will **NOT** serve your `.php` files( or any file extentions, listed in extended
     _\_\_Settings::$system_file_);
 
@@ -228,7 +228,7 @@ class test extends _RoutesWithMiddleware {
     > -   toppest parent `mw.php`;
     > -   then parent bellow **UNTIL** routes folder;
     > -   then `mw.php` on the same folder;
-    > -   then routes `mw` method (on _\_MapResources_ case, you can use its `map` method)
+    > -   then routes `mw` method (on _\_MapResources_ case, you can use its `map_resources` method)
 
 ## SQL Query
 
