@@ -87,6 +87,23 @@ class test extends _Routes {
     >     > -   "_HtmlFirst\atlaAS\Router\\\_Routes;_"
     >     > -   "_HtmlFirst\atlaAS\Router\\\_RoutesWithMiddleware;_"
 
+## special Routes
+
+-   `index`
+
+    > -   `/` or `/index` which is commonly known as `root` url should be extended from
+    >     `\HtmlFirst\atlaAS\Router\_IndexRoute` or
+    >     `\HtmlFirst\atlaAS\Router\_IndexRouteWithMiddleware`
+    > -   due to the nature of web crawler, most of your web resource are assumed to be on the root
+    >     folder; you can structure your routes like this;
+
+-   `routes`
+    > -   `index.php`
+    > -   `other_routes.php`
+    > -   `index`
+    >     > -   `ads.txt` which can be accessed using `/ads.txt`
+    >     > -   `robot.txt` which can be accessed using `/robot.txt`
+
 ## Serving files
 
 ```php
@@ -109,10 +126,10 @@ your folder should then looks like this
     >     > -   `atlaAS.mjs`
     >     > -   `main.css`
 
-overwrite get method to use it as middleware for this specific routes;
+overwrite map method to use it as middleware for this specific routes;
 
 -   your intellisense warning is your friend;
--   _\_MapResources_ Routes's get method uses spread parameters;
+-   _\_MapResources_ Routes's map method uses spread parameters;
 -   don't worry, it will **NOT** serve your `.php` files( or any file extentions, listed in extended
     _\_\_Settings::$system_file_);
 
@@ -173,7 +190,7 @@ class test extends _RoutesWithMiddleware {
     > -   toppest parent `mw.php`;
     > -   then parent bellow **UNTIL** routes folder;
     > -   then `mw.php` on the same folder;
-    > -   then routes `mw` method (on _\_MapResources_ case, you can use its `get` method)
+    > -   then routes `mw` method (on _\_MapResources_ case, you can use its `map` method)
 
 ## SQL Query
 

@@ -63,10 +63,19 @@ final class FSRouter extends FSMiddleware {
         }
     }
     private function check_is_map_resources(string $class_name, _Routes $route_ref): bool {
-        if ($route_ref instanceof _MapResources) {
+        if ($route_ref instanceof _MapResources && __Request::$method === 'get') {
             $url_inputs = \array_slice(__Request::$uri_array, $this->routes_length);
-            $route_ref->get(...$url_inputs);
-            _FileServer::map_resource($url_inputs, __atlaAS::$app_root . $class_name);
+            if (\count($url_inputs) === 0) {
+                if ($route_ref instanceof _IndexRouteWithMiddleware) {
+                    $route_ref->mw('get');
+                    $route_ref->get();
+                } elseif ($route_ref instanceof _IndexRoute) {
+                    $route_ref->get();
+                }
+            } else {
+                $route_ref->map_resources(...$url_inputs);
+                _FileServer::map_resource($url_inputs, __atlaAS::$app_root . $class_name);
+            }
             return true;
         };
         return false;

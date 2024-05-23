@@ -33,7 +33,7 @@ final class __Request {
         }
         $request_uri = \explode('?', $_SERVER['REQUEST_URI']);
         $this::$uri = \trim($request_uri[0], '/');
-        $this::$uri_array = $this->get_uri();
+        $this->set_uri();
         if (\count($request_uri) > 1) {
             $this::$query_params = $request_uri[1];
         }
@@ -61,12 +61,19 @@ final class __Request {
             }
         }
     }
-    private function get_uri(): array {
+    private function set_uri() {
         $uri = \explode('/', $this::$uri);
+        if (\count($uri) !== 1) {
+            $this::$uri_array = $uri;
+            return;
+        }
         if ($uri[0] === '') {
             $uri[0] = 'index';
+        } elseif (\str_contains($uri[0], '.')) {
+            $uri[1] = $uri[0];
+            $uri[0] = 'index';
         }
-        return $uri;
+        $this::$uri_array = $uri;
     }
     public static function method_params(): array {
         return match ($method = self::$__::$method) {

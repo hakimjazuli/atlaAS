@@ -2,7 +2,10 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
-abstract class _IndexRoute extends _MapResources {
+use HtmlFirst\atlaAS\Middlewares\hasMiddleware;
+
+class _IndexRouteWithMiddleware extends _IndexRoute {
+    use hasMiddleware;
     public function get() {
     }
     public function map_resources(string ...$map) {
