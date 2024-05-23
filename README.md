@@ -106,6 +106,8 @@ class test extends _Routes {
 
 ## Serving files
 
+1. **routes exclusively for file serving**
+
 ```php
 <?php
 
@@ -132,6 +134,42 @@ overwrite map method to use it as middleware for this specific routes;
 -   _\_MapResources_ Routes's map method uses spread parameters;
 -   don't worry, it will **NOT** serve your `.php` files( or any file extentions, listed in extended
     _\_\_Settings::$system_file_);
+
+2. **normal routes with file serving (using
+   `_RouteWithMapResources`|`_RouteWithMapResourcesAndMiddleware`)**
+
+```php
+<?php
+
+namespace Routes;
+
+use HtmlFirst\atlaAS\Router\_RouteWithMapResources;
+
+class assets extends _RouteWithMapResources {
+}
+```
+
+or
+
+```php
+<?php
+
+namespace Routes;
+
+use HtmlFirst\atlaAS\Router\_RouteWithMapResourcesAndMiddleware;
+
+class assets extends _RouteWithMapResourcesAndMiddleware {
+}
+```
+
+script reading priority for those routes (using
+`_RouteWithMapResources`|`_RouteWithMapResourcesAndMiddleware`) are
+
+1. route method `mw`, then
+1. if method == `get` then,
+    1. if uri_input length is 0, then read route method `get` with `exit(0)`;
+    1. if uri_input length is 1 or more, then read route method `map_resources` with `exit(0)`;
+1. if method != `get`then read route method `$method`;
 
 ## Middlewares
 
