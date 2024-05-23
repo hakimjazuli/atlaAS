@@ -2,6 +2,8 @@
 
 namespace HtmlFirst\atlaAS;
 
+use HtmlFirst\atlaAS\Middlewares\_Middleware;
+use HtmlFirst\atlaAS\Router\_Routes;
 use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 use HtmlFirst\atlaAS\Router\FSRouter;
 use HtmlFirst\atlaAS\Utils\__Request;
@@ -70,11 +72,11 @@ abstract class __atlaAS {
         self::$__::$fs_router->render(false);
         $reseters();
     }
-    public static function assign_query_param_to_class_property(object $class_instance) {
+    public static function assign_query_param_to_class_property(_Routes|_Middleware $class_instance) {
         $query_params = __Request::$query_params_arrray;
         foreach ($query_params as $name => $value) {
             if (\property_exists($class_instance, $name)) {
-                $class_instance->$name = $value;
+                $class_instance->$name = \htmlspecialchars($value);
             }
         }
     }
