@@ -67,10 +67,10 @@ final class FSRouter extends FSMiddleware {
         if ($route_ref instanceof _MapResources && __Request::$method === 'get') {
             $url_inputs = \array_slice(__Request::$uri_array, $this->routes_length);
             if (\count($url_inputs) === 0) {
-                if ($route_ref instanceof _RouteWithMRWithMW) {
+                if ($route_ref instanceof _RouteWithMapResourcesAndMiddleware) {
                     $route_ref->mw('get');
                     $route_ref->get();
-                } elseif ($route_ref instanceof _RouteWithMR) {
+                } elseif ($route_ref instanceof _RouteWithMapResources) {
                     $route_ref->get();
                 }
             } else {
