@@ -74,7 +74,7 @@ final class FSRouter extends FSMiddleware {
                 }
             } else {
                 $route_ref->map_resources(...$url_inputs);
-                _FileServer::map_resource($url_inputs, __atlaAS::$app_root . $class_name);
+                _FileServer::serves($url_inputs, $class_name);
             }
             return true;
         };

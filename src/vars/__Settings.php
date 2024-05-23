@@ -27,7 +27,7 @@ abstract class __Settings {
         return @$_SERVER['SERVER_ADDR'];
     }
     public static function system_path(string $path): string {
-        return str_replace(['/', '\\'], [\DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR], $path);
+        return str_replace(['/', '\\',], [\DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR,], $path);
     }
     public static function use_caching(): array {
         return [self::$__::if_in_production(true, false), 60/* days */];

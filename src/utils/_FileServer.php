@@ -8,8 +8,21 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 final class _FileServer {
-    public static function file_version(string $public_uri): string {
-        $version = $public_uri . '?t=' . \filemtime(__atlaAS::$app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path . \DIRECTORY_SEPARATOR . trim($public_uri, '/'));
+    /**
+     * file_version
+     *
+     * @param  string $server_uri
+     * @return string
+     */
+    public static function file_version(string $server_uri): string {
+        $public_uri = \str_replace(
+            ['/' . __Settings::$routes_path, '/index'],
+            ['', ''],
+            $server_uri
+        );
+        $version =  $public_uri . '?t=' . \filemtime(
+            __Settings::system_path(__atlaAS::$app_root . $server_uri)
+        );
         return $version;
     }
     /**
@@ -26,28 +39,31 @@ final class _FileServer {
      * - void: if $callback_file OR $callback_dir is callable
      */
     public static function recurse_dir_and_path(string $path, null|callable $callback_file = null, null|callable $callback_dir = null) {
+        $path = __Settings::system_path(__atlaAS::$app_root . $path);
         $recurvecontainer = new RecursiveDirectoryIterator($path);
         $files_and_dirs = new RecursiveIteratorIterator($recurvecontainer);
         if ($callback_file === null && $callback_dir === null) {
             return $files_and_dirs;
         }
         foreach ($files_and_dirs as $file_or_dir) {
-            if (\is_file(__Settings::system_path($file_or_dir))) {
+            if (\is_file($file_or_dir)) {
                 $callback_file($file_or_dir);
-            } elseif (\is_dir(__Settings::system_path($file_or_dir))) {
+            } elseif (\is_dir($file_or_dir)) {
                 $callback_dir($file_or_dir);
             }
         }
     }
     /**
-     * map_resource
+     * serves
+     * 
      * @param  array $relative_path
-     * @param  string $mapper_directory
+     * @param  string $system_dir
+     * prefix with '/'
      * @param  bool $force_download
      * @return void
      */
-    public static function map_resource(array $relative_path, string $mapper_directory, $force_download = false): void {
-        $file = __Settings::system_path($mapper_directory . '/' . join('/', $relative_path));
+    public static function serves(array $relative_path, string $system_dir, $force_download = false): void {
+        $file = __Settings::system_path(__atlaAS::$app_root . $system_dir . '/' . join('/', $relative_path));
         $resource = self::page_resource_handler($file, $force_download);
         switch ($resource) {
             case 'is_resource_file':
@@ -58,7 +74,7 @@ final class _FileServer {
                 break;
         }
     }
-    private static function unix_unit_to_days($days): float {
+    private static function unix_unit_to_days(float $days): float {
         return $days * 86400/* 60 * 24 * 60 */;
     }
     private static function header_file_type(string $filename): string {
@@ -71,11 +87,11 @@ final class _FileServer {
             'png' => 'image/png',
             'bmp' => 'image/bmp',
             'gif' => 'image/gif',
-            'mp4' => 'video/mp4',
             'tif', 'tiff' => 'image/tiff',
             'jpg', 'jpeg' => 'image/jpeg',
             'svg' => 'image/svg+xml',
             'ico' => 'image/x-icon',
+            'mp4' => 'video/mp4',
             '3gp' => 'video/3gpp',
             'avi' => 'video/x-msvideo',
             'flv' => 'video/x-flv',
@@ -147,7 +163,9 @@ final class _FileServer {
         } else {
             \header("Content-Length: $file_size");
         }
-        /** readfile|require will automatically echo the result */
+        /**
+         * readfile|require will automatically echo the result 
+         */
         if (__Settings::$load_file_with_php_require) {
             require $filename;
             return;
