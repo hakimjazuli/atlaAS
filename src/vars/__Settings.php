@@ -13,9 +13,13 @@ abstract class __Settings {
     }
 
     public static string $routes_path = 'routes';
-    public static string $middleware_name = 'mw';
     public static string $routes_class = 'Routes';
     public static string $routes_errors_prefix = '/errors/';
+
+    private static string $middleware_name = 'mw';
+    public static function middleware_name() {
+        return self::$middleware_name;
+    }
 
     public static int $chunk_sizes = 204_800;
     public static int $refresh_micro_second = 500_000;

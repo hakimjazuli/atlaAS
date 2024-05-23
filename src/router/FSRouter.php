@@ -23,9 +23,10 @@ final class FSRouter extends FSMiddleware {
         $this->current_folder = __atlaAS::$app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path;
         $this->current_route = '\\' . __Settings::$routes_class;
         $routes_length = 0;
+        $middleware_name = __Settings::middleware_name();
         foreach ($uri_array as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
-            $this->current_middleware = $this->current_route . '\\' . __Settings::$middleware_name;
+            $this->current_middleware = $this->current_route . '\\' . $middleware_name;
             $this->check_mw();
             $routes_length++;
             $this->current_route .= '\\' . $uri;
