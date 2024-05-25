@@ -35,6 +35,12 @@ this library assumes you are familiar with:
     abstraction, and not neccesarily a _battery-included_ library, so you have to have good
     underlying php OOP in generals);
 
+## how to install
+
+```shell
+composer require html_first/atla-as
+```
+
 ## how to initialize
 
 extends our
@@ -299,12 +305,6 @@ $results = \Backend\Queries\Test::test_name_like('a');
     using sql client software to type safe your query, like (including but not limited to) DBeaver,
     HeidiSQL, SQLite Expert, or many other;
 -   but fundamentally you can just opt out from raw sql, by installing your preffered orm;
-
-## how to install
-
-```shell
-composer require html_first/atla-as
-```
 
 ## what... no .env?
 
