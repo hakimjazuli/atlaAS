@@ -21,7 +21,7 @@ final class _FileServer {
             $server_uri
         );
         $version =  $public_uri . '?t=' . \filemtime(
-            __Settings::system_path(__atlaAS::$app_root . $server_uri)
+            __Settings::system_path(__Settings::$app_root . $server_uri)
         );
         return $version;
     }
@@ -39,7 +39,7 @@ final class _FileServer {
      * - void: if $callback_file OR $callback_dir is callable
      */
     public static function recurse_dir_and_path(string $path, null|callable $callback_file = null, null|callable $callback_dir = null) {
-        $path = __Settings::system_path(__atlaAS::$app_root . $path);
+        $path = __Settings::system_path(__Settings::$app_root . $path);
         $recurvecontainer = new RecursiveDirectoryIterator($path);
         $files_and_dirs = new RecursiveIteratorIterator($recurvecontainer);
         if ($callback_file === null && $callback_dir === null) {
@@ -63,7 +63,7 @@ final class _FileServer {
      * @return void
      */
     public static function serves(array $relative_path, string $system_dir, $force_download = false): void {
-        $file = __Settings::system_path(__atlaAS::$app_root . $system_dir . '/' . join('/', $relative_path));
+        $file = __Settings::system_path(__Settings::$app_root . $system_dir . '/' . join('/', $relative_path));
         $resource = self::page_resource_handler($file, $force_download);
         switch ($resource) {
             case 'is_resource_file':

@@ -39,7 +39,7 @@ abstract class __Settings {
     public static function if_in_production(bool $in_production_value, bool $not_in_production_value): bool {
         return __Env::$is_in_production ? $in_production_value : $not_in_production_value;
     }
-
+    public static string $app_root;
     use hasSetGlobal;
     protected static __Settings|null $__ = null;
 
@@ -47,6 +47,7 @@ abstract class __Settings {
         if (static::$__ !== null) {
             return;
         }
+        $this::$app_root = \dirname(__Request::$public_path);
         $this->set_as_global();
     }
 }
