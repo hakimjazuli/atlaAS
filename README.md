@@ -274,14 +274,14 @@ use HtmlFirst\atlaAS\Connection\_Query;
 class Test extends _Query {
     public static function test_name_like(string $test_name): _atlaASQuery {
         $test = new TablesTest;
-        return self::sql_query('views/test.sql', bind: [
+        return self::sql_query('/sql/views/test.sql', bind: [
             'test_name' => [$test->name->type, "%$test_name%"]
         ]);
     }
 }
 ```
 
--   setting sql on _\_\_Settings::\$sqls_path_ `./views/test.sql`
+-   setting up `/sql/views/test.sql`
 
 ```sql
 SELECT
