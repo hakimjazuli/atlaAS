@@ -37,7 +37,7 @@ abstract class __Env {
 
     public function __construct() {
         if (static::$__ !== null) {
-            return $this;
+            return;
         }
         $this->set_as_global();
     }

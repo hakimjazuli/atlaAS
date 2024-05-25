@@ -27,7 +27,7 @@ final class __Request {
     public static string $base;
     public function __construct() {
         if (static::$__ !== null) {
-            return $this;
+            return;
         }
         if ($this::$is_https = $this::assign_http()) {
             $this::$http_mode = 'https';

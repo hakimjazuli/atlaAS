@@ -29,7 +29,7 @@ abstract class __atlaAS {
 
     public function __construct(__Env $env, __Settings $settings) {
         if (static::$__ !== null) {
-            return $this;
+            return;
         }
         new __Request;
         $this::$app_root = \dirname(__Request::$public_path);

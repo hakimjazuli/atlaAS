@@ -45,7 +45,7 @@ abstract class __Settings {
 
     public function __construct() {
         if (static::$__ !== null) {
-            return $this;
+            return;
         }
         $this->set_as_global();
     }
