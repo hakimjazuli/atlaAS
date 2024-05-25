@@ -300,24 +300,10 @@ $results = \Backend\Queries\Test::test_name_like('a');
     HeidiSQL, SQLite Expert, or many other;
 -   but fundamentally you can just opt out from raw sql, by installing your preffered orm;
 
-## composer setting
+## how to install
 
-```json
-{
-    ...
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/hakimjazuli/atlaAS"
-		},
-        ...
-	],
-	"require": {
-		"html_first/atla-as": "*",
-        ...
-	},
-    ...
-}
+```shell
+composer require html_first/atla-as
 ```
 
 ## what... no .env?
