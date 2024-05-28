@@ -52,11 +52,12 @@ final class FSRouter extends FSMiddleware {
     private function run_real_route($is_real_route) {
         $route = $this->real_route;
         $route_ref = new $route($is_real_route);
-        __atlaAS::assign_query_param_to_class_property($route_ref);
         if ($route_ref instanceof _RoutesWithMiddleware) {
+            __atlaAS::assign_query_param_to_class_property($route_ref);
             $route_ref->mw(__Request::$method);
         }
         if ($route_ref instanceof _Routes) {
+            __atlaAS::assign_query_param_to_class_property($route_ref);
             if ($this->check_is_map_resources($route, $route_ref)) {
                 return;
             }
@@ -84,12 +85,12 @@ final class FSRouter extends FSMiddleware {
     private function run_method_with_input_logic(string $class_name, object $route_ref): void {
         $num_params = _FunctionHelpers::url_input_length(
             $class_name,
-            $method = __Request::$method
         );
         if ($num_params !== $this->request_length - $this->routes_length) {
             __atlaAS::reroute_error(404);
             return;
         }
+        $method = __Request::$method;
         $url_inputs = \array_slice(__Request::$uri_array, -$num_params);
         $route_ref->$method(...$url_inputs);
     }

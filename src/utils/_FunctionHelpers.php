@@ -13,8 +13,8 @@ abstract class _FunctionHelpers {
         }
         return false;
     }
-    public static function url_input_length(string $class_name, string $method_name): int {
-        $reflection = new ReflectionMethod($class_name, $method_name);
+    public static function url_input_length(string $class_name): int {
+        $reflection = new ReflectionMethod($class_name,  __Request::$method);
         return $reflection->getNumberOfParameters();
     }
     public static function run_array_functions(callable ...$functions): void {
