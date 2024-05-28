@@ -34,14 +34,14 @@ final class __Request {
         } else {
             $this::$http_mode = 'http';
         }
+        $this::$public_path = $_SERVER['DOCUMENT_ROOT'];
+        $this::$method = \strtolower($_SERVER['REQUEST_METHOD']);
         $request_uri = \explode('?', $_SERVER['REQUEST_URI']);
         $this::$uri = \trim($request_uri[0], '/');
         $this->set_uri();
         if (\count($request_uri) > 1) {
             $this::$query_params = $request_uri[1];
         }
-        $this::$method = \strtolower($_SERVER['REQUEST_METHOD']);
-        $this::$public_path = $_SERVER['DOCUMENT_ROOT'];
         $this::$query_params_arrray = $_GET;
         $this->set_as_global();
     }

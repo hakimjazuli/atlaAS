@@ -16,7 +16,7 @@ final class __Response {
 
     private static function preprocess(callable $html_function, bool $html_document = true) {
         if ($html_document) {
-            \header('Content-Type: text/html; charset=UTF-8');
+            \header('text/html; charset=UTF-8');
         }
         \ob_start();
         $html_function();
@@ -29,7 +29,7 @@ final class __Response {
     public static function html_single_line(callable $html_function, bool $html_document = true) {
         $output = self::$__::preprocess($html_function, $html_document);
         echo trim(\preg_replace(
-            [self::$__::$regex_single_line, self::$__::$regex_excesive_spacing, '/> /', '/ </'],
+            [self::$__::$regex_single_line, self::$__::$regex_excessive_spacing, '/> /', '/ </'],
             [' ', ' ', '>', '<'],
             $output
         ), ' ');

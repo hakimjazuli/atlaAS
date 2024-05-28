@@ -7,7 +7,7 @@ trait hasAppRegex {
         return trim($php_regex, "/");
     }
     protected static $regex_single_line = '/\/\*[\s\S]*?\*\/|<!--[\s\S]*?-->|\r|\n|\t|\s{2,}|\/\/ .*$/m';
-    protected static $regex_excesive_spacing = '/\s{2,}/m';
+    protected static $regex_excessive_spacing = '/\s{2,}/m';
     protected static $regex_html_tag_spacing = '/\s*(?=[><\/])/mU';
     protected static $regex_excesive_html_br = '/(<br>){2,}/';
     protected static $regex_no_indents = '/^[\s]+| {2,}/m';
