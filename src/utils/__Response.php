@@ -16,7 +16,7 @@ final class __Response {
 
     private static function preprocess(callable $html_function, bool $html_document = true) {
         if ($html_document) {
-            \header('text/html; charset=UTF-8');
+            \header('Content-Type: text/html; charset=UTF-8');
         }
         \ob_start();
         $html_function();
