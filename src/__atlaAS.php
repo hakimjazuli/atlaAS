@@ -111,10 +111,25 @@ abstract class __atlaAS {
     public static function follow_up_params(
         array|callable $fallback,
         array $conditionals,
-        array $add_to_fallback_args = [],
-        bool $inherit_query_parameters = true
+        array $query_parameter = [],
+        bool $inherit_query_parameter = true
     ): void {
-        FSRouter::follow_up_params($fallback, $conditionals, $add_to_fallback_args, $inherit_query_parameters);
+        $match = true;
+        foreach ($conditionals as $data) {
+            [$conditional, $if_meet_merge] = $data;
+            if (!$conditional) {
+                $query_parameter = \array_merge($query_parameter, $if_meet_merge);
+                $match = false;
+            }
+        }
+        if (!$match) {
+            if (\is_array($fallback)) {
+                __atlaAS::render_get($fallback, $query_parameter, $inherit_query_parameter);
+            } else {
+                $fallback($query_parameter);
+            }
+            exit(0);
+        }
     }
     /**
      * placeholder for form input parameter;
