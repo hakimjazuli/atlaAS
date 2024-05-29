@@ -17,7 +17,7 @@ final class __Request {
      * atlaAS best practice is to add $query_name to the route class;
      * so it can be accessed using $this->$$query_parameter_name;
      */
-    public static array|null $query_params_arrray = null;
+    public static array|null $query_params_array = null;
 
     public static function valid_request_header(string $request_header): string {
         return \strtoupper('HTTP_' . $request_header);
@@ -42,7 +42,7 @@ final class __Request {
         if (\count($request_uri) > 1) {
             $this::$query_params = $request_uri[1];
         }
-        $this::$query_params_arrray = $_GET;
+        $this::$query_params_array = $_GET;
         $this->set_as_global();
     }
     private static function assign_http(): bool {

@@ -45,8 +45,7 @@ abstract class __atlaAS {
     /**
      * render_get
      *
-     * @param  null|array $class_ref_and_uri_input
-     * - null: use the same __Request::uri_array where this method is called;
+     * @param  array $class_ref_and_uri_input
      * - array: [class_ref::class, ...$arguments_for_the_class_get_method];
      * @param  array $query_parameters
      * - associative array, assigned to route class property if any (for best practice);
@@ -57,7 +56,7 @@ abstract class __atlaAS {
      * @return void
      */
     public static function render_get(
-        null|array $class_ref_and_uri_input = null,
+        array $class_ref_and_uri_input,
         array $query_parameters = [],
         bool $inherit_query_parameters = true
     ) {
@@ -65,18 +64,18 @@ abstract class __atlaAS {
         \array_shift($class_ref_and_uri_input);
         $uri_array = \array_merge($class_reference, $class_ref_and_uri_input);
         if ($inherit_query_parameters) {
-            $query_parameters = \array_merge(__Request::$query_params_arrray, $query_parameters);
+            $query_parameters = \array_merge(__Request::$query_params_array, $query_parameters);
         }
         $reseters = _FunctionHelpers::callable_collections(
             _Temp::var(__Request::$method, 'get'),
             _Temp::var(__Request::$uri_array, $uri_array),
-            _Temp::var(__Request::$query_params_arrray, $query_parameters)
+            _Temp::var(__Request::$query_params_array, $query_parameters)
         );
         self::$__::$fs_router->render(false);
         $reseters();
     }
     public static function assign_query_param_to_class_property(_Routes|_Middleware $class_instance) {
-        $query_params = __Request::$query_params_arrray;
+        $query_params = __Request::$query_params_array;
 
         foreach ($query_params as $name => $value) {
             if (\property_exists($class_instance, $name)) {

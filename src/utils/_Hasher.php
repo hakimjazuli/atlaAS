@@ -39,7 +39,7 @@ abstract class _Hasher {
         if (($stored_token = isset($_SESSION[$csrf]) ? $_SESSION[$csrf] : null) === null) {
             return false;
         }
-        $METHOD = __Request::$query_params_arrray;
+        $METHOD = __Request::$query_params_array;
         if (($submitted_token = isset($METHOD[$csrf]) ? $METHOD[$csrf] : null) === null) {
             return false;
         }
