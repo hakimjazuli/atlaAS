@@ -119,24 +119,22 @@ abstract class __atlaAS {
         $match = true;
         foreach ($conditionals as $data) {
             [$conditional, $if_meet_merge] = $data;
-            if (!$conditional) {
-                $query_parameter = \array_merge($query_parameter, $if_meet_merge);
-                $match = false;
+            if ($conditional) {
+                continue;
             }
+            $query_parameter = \array_merge($query_parameter, $if_meet_merge);
+            $match = false;
         }
-        if (!$match) {
-            if (\is_array($fallback)) {
-                __atlaAS::render_get($fallback, $query_parameter, $inherit_query_parameter);
-            } else {
-                $fallback($query_parameter);
-            }
-            exit(0);
+        if ($match) {
+            return;
         }
+        if (\is_array($fallback)) {
+            __atlaAS::render_get($fallback, $query_parameter, $inherit_query_parameter);
+        } else {
+            $fallback($query_parameter);
+        }
+        exit(0);
     }
-    /**
-     * placeholder for form input parameter;
-     */
-    private static array|null  $form_s_input_param = null;
     /**
      * input_match
      *
@@ -145,14 +143,10 @@ abstract class __atlaAS {
      * @return bool
      */
     public static function input_match(string $regex, string $input_name): bool {
-        if (self::$__::$form_s_input_param === null) {
-            /**
-             * since a form request are only allowed once on single request,
-             * it's ok to do it like this;
-             */
-            self::$__::$form_s_input_param = __Request::method_params();
+        if (self::$__::$fs_router::$form_s_input_param === null) {
+            self::$__::$fs_router::$form_s_input_param = __Request::method_params();
         }
-        return \preg_match($regex, self::$__::$form_s_input_param[$input_name]);
+        return \preg_match($regex, self::$__::$fs_router::$form_s_input_param[$input_name]);
     }
     public static function reroute(string $path, array $url_input = [], $use_client_side_routing = false): void {
         if (\count($url_input) >= 1) {

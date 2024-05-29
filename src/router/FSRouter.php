@@ -13,6 +13,7 @@ final class FSRouter extends FSMiddleware {
     public function run() {
         $this->render();
     }
+    public static array|null  $form_s_input_param = null;
     private int $routes_length = 0;
     private string $current_route;
     private object|string|false $real_route = false;
