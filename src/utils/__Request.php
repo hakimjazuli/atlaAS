@@ -67,6 +67,7 @@ final class __Request {
     private function set_uri() {
         $uri = \explode('/', $this::$uri);
         if (\count($uri) !== 1) {
+            $uri = array_map('htmlspecialchars', $uri);
             $this::$uri_array = $uri;
             return;
         }
@@ -76,6 +77,7 @@ final class __Request {
             $uri[1] = $uri[0];
             $uri[0] = 'index';
         }
+        $uri = array_map('htmlspecialchars', $uri);
         $this::$uri_array = $uri;
     }
     public static function method_params(): array {

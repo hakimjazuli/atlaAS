@@ -61,7 +61,7 @@ abstract class _Query {
         string $binder_character = ':'
     ): _atlaASQuery {
         if (!\is_file($sql_path = __Settings::system_path(
-            __Settings::$app_root . $sql_path
+            __atlaAS::$app_root . $sql_path
         ))) {
             __atlaAS::set_error_header(500);
             __Response::header_json();

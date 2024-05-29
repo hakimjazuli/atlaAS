@@ -35,6 +35,7 @@ abstract class __Env {
     use hasSetGlobal;
     protected static __Env|null $__ = null;
 
+    public static string $public_path;
     public function __construct() {
         if (static::$__ !== null) {
             return;

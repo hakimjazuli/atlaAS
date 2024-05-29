@@ -26,11 +26,13 @@ abstract class __atlaAS {
 
     public static string $public_url_root;
 
+    public static string $app_root;
     public function __construct(__Env $env, __Settings $settings) {
         if (static::$__ !== null) {
             return;
         }
         new __Request;
+        $this::$app_root = \dirname(__Request::$public_path);
         $this::$public_url_root = __Request::$http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
         new __Response;
         $this->set_as_global();
@@ -75,6 +77,7 @@ abstract class __atlaAS {
     }
     public static function assign_query_param_to_class_property(_Routes|_Middleware $class_instance) {
         $query_params = __Request::$query_params_arrray;
+
         foreach ($query_params as $name => $value) {
             if (\property_exists($class_instance, $name)) {
                 $class_instance->$name = \htmlspecialchars($value);

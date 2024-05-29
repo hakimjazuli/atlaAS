@@ -20,7 +20,7 @@ final class FSRouter extends FSMiddleware {
     public function render($is_real_route = true) {
         $uri_array = __Request::$uri_array;
         $this->request_length = \count($uri_array);
-        $this->current_folder = __Settings::$app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path;
+        $this->current_folder = __atlaAS::$app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path;
         $this->current_route = '\\' . __Settings::$routes_class;
         $routes_length = 0;
         $middleware_name = __Settings::middleware_name();

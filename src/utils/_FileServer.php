@@ -21,7 +21,7 @@ final class _FileServer {
             $server_uri
         );
         $version =  $public_uri . '?t=' . \filemtime(
-            __Settings::system_path(__Settings::$app_root . $server_uri)
+            __Settings::system_path(__atlaAS::$app_root . $server_uri)
         );
         return $version;
     }
@@ -39,7 +39,7 @@ final class _FileServer {
      * - void: if $callback_file OR $callback_dir is callable
      */
     public static function recurse_dir_and_path(string $path, null|callable $callback_file = null, null|callable $callback_dir = null) {
-        $path = __Settings::system_path(__Settings::$app_root . $path);
+        $path = __Settings::system_path(__atlaAS::$app_root . $path);
         $recurvecontainer = new RecursiveDirectoryIterator($path);
         $files_and_dirs = new RecursiveIteratorIterator($recurvecontainer);
         if ($callback_file === null && $callback_dir === null) {
@@ -63,7 +63,7 @@ final class _FileServer {
      * @return void
      */
     public static function serves(array $relative_path, string $system_dir, $force_download = false): void {
-        $file = __Settings::system_path(__Settings::$app_root . $system_dir . '/' . join('/', $relative_path));
+        $file = __Settings::system_path(__atlaAS::$app_root . $system_dir . '/' . join('/', $relative_path));
         $resource = self::page_resource_handler($file, $force_download);
         switch ($resource) {
             case 'is_resource_file':
@@ -152,16 +152,12 @@ final class _FileServer {
     private static function file_handler(string $filename, bool $use_stream = false, bool $force_download = false): void {
         self::caching(__Settings::use_caching()[1]);
         $content_type = self::header_file_type($filename);
-        \header('Accept-Ranges: bytes');
-        $file_size = filesize($filename);
         if ($force_download) {
             self::download_force($filename);
-        } elseif ($use_stream && str_starts_with($content_type, 'video') && !$force_download) {
+        } elseif ($use_stream && str_starts_with($content_type, 'video')) {
             $stream = new VideoStream($filename);
             $stream->start();
             return;
-        } else {
-            \header("Content-Length: $file_size");
         }
         /**
          * readfile|require will automatically echo the result 
