@@ -76,6 +76,9 @@ final class FSRouter extends FSMiddleware {
                     $route_ref->get();
                 }
             } else {
+                if (\method_exists($route_ref, $mw_name = __Settings::middleware_name())) {
+                    $route_ref->$mw_name('get');
+                }
                 $route_ref->map_resources(...$url_inputs);
                 _FileServer::serves($url_inputs, $class_name);
             }
