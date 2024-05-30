@@ -11,17 +11,17 @@ final class _FileServer {
     /**
      * file_version
      *
-     * @param  string $server_uri
+     * @param  string $server_url
      * @return string
      */
-    public static function file_version(string $server_uri): string {
+    public static function file_version(string $server_url): string {
         $public_uri = \str_replace(
             ['/' . __Settings::$routes_path, '/index'],
             ['', ''],
-            $server_uri
+            $server_url
         );
         $version =  $public_uri . '?t=' . \filemtime(
-            __Settings::system_path(__atlaAS::$app_root . $server_uri)
+            __Settings::system_path(__atlaAS::$app_root . $server_url)
         );
         return $version;
     }
