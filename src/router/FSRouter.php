@@ -54,52 +54,52 @@ final class FSRouter extends FSMiddleware {
     }
     private function run_real_route($is_real_route) {
         $route = $this->real_route;
-        $route_ref = new $route($is_real_route);
-        if ($route_ref instanceof _Routes) {
-            __atlaAS::assign_query_param_to_class_property($route_ref);
-            if ($route_ref instanceof _RoutesWithMiddleware) {
-                if (!$route_ref->mw(__Request::$method)) {
+        $route_instance = new $route($is_real_route);
+        if ($route_instance instanceof _Routes) {
+            __atlaAS::assign_query_param_to_class_property($route_instance);
+            if ($route_instance instanceof _RoutesWithMiddleware) {
+                if (!$route_instance->mw(__Request::$method)) {
                     return;
                 }
             }
-            if ($this->check_is_map_resources($route, $route_ref)) {
+            if ($this->check_is_map_resources($route, $route_instance)) {
                 return;
             }
-            $this->run_method_with_input_logic($route, $route_ref);
+            $this->run_method_with_input_logic($route, $route_instance);
         }
     }
-    private function check_is_map_resources(string $class_name, _Routes $route_ref): bool {
-        if ($route_ref instanceof _MapResources && __Request::$method === 'get') {
+    private function check_is_map_resources(string $class_name, _Routes $route_instance): bool {
+        if ($route_instance instanceof _MapResources && __Request::$method === 'get') {
             $url_inputs = \array_slice(__Request::$uri_array, $this->routes_length);
             if (\count($url_inputs) === 0) {
-                if ($route_ref instanceof _RouteWithMapResourcesAndMiddleware) {
-                    if (!$route_ref->mw('get')) {
+                if ($route_instance instanceof _RouteWithMapResourcesAndMiddleware) {
+                    if (!$route_instance->mw('get')) {
                         /**
                          * to stop from checking any further route function check;
                          */
                         return true;
                     };
-                    $route_ref->get();
-                } elseif ($route_ref instanceof _RouteWithMapResources) {
-                    $route_ref->get();
+                    $route_instance->get();
+                } elseif ($route_instance instanceof _RouteWithMapResources) {
+                    $route_instance->get();
                 }
             } else {
-                if (\method_exists($route_ref, $mw_name = __Settings::middleware_name())) {
-                    if (!$route_ref->$mw_name('get')) {
+                if (\method_exists($route_instance, $mw_name = __Settings::middleware_name())) {
+                    if (!$route_instance->$mw_name('get')) {
                         /**
                          * to stop from checking any further route function check;
                          */
                         return true;
                     };
                 }
-                $route_ref->map_resources(...$url_inputs);
+                $route_instance->map_resources(...$url_inputs);
                 _FileServer::serves($url_inputs, $class_name);
             }
             return true;
         };
         return false;
     }
-    private function run_method_with_input_logic(string $class_name, object $route_ref): void {
+    private function run_method_with_input_logic(string $class_name, object $route_instance): void {
         $num_params = _FunctionHelpers::url_input_length(
             $class_name,
         );
@@ -109,6 +109,10 @@ final class FSRouter extends FSMiddleware {
         }
         $method = __Request::$method;
         $url_inputs = \array_slice(__Request::$uri_array, -$num_params);
-        $route_ref->$method(...$url_inputs);
+        if (!\method_exists($route_instance, $method)) {
+            __atlaAS::reroute_error(404);
+            return;
+        }
+        $route_instance->$method(...$url_inputs);
     }
 }
