@@ -12,15 +12,16 @@ abstract class FSMiddleware {
     public function is_folder_exist(): bool {
         return \is_dir(__Settings::system_path($this->current_folder));
     }
-    public function check_mw(): void {
+    public function check_mw(): bool {
         $mw = $this->current_middleware;
         if (!\class_exists($mw)) {
-            return;
+            return true;
         };
         $mw_ref = new $mw;
         if ($mw_ref instanceof _Middleware) {
             __atlaAS::assign_query_param_to_class_property($mw_ref);
-            $mw_ref->mw(__Request::$method);
+            return $mw_ref->mw(__Request::$method);
         }
+        return true;
     }
 }

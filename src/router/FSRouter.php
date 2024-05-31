@@ -28,7 +28,9 @@ final class FSRouter extends FSMiddleware {
         foreach ($uri_array as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
             $this->current_middleware = $this->current_route . '\\' . $middleware_name;
-            $this->check_mw();
+            if (!$this->check_mw()) {
+                return;
+            }
             $routes_length++;
             $this->current_route .= '\\' . $uri;
             if ($this->check_route()) {
@@ -53,12 +55,13 @@ final class FSRouter extends FSMiddleware {
     private function run_real_route($is_real_route) {
         $route = $this->real_route;
         $route_ref = new $route($is_real_route);
-        if ($route_ref instanceof _RoutesWithMiddleware) {
-            __atlaAS::assign_query_param_to_class_property($route_ref);
-            $route_ref->mw(__Request::$method);
-        }
         if ($route_ref instanceof _Routes) {
             __atlaAS::assign_query_param_to_class_property($route_ref);
+            if ($route_ref instanceof _RoutesWithMiddleware) {
+                if (!$route_ref->mw(__Request::$method)) {
+                    return;
+                }
+            }
             if ($this->check_is_map_resources($route, $route_ref)) {
                 return;
             }
@@ -70,14 +73,24 @@ final class FSRouter extends FSMiddleware {
             $url_inputs = \array_slice(__Request::$uri_array, $this->routes_length);
             if (\count($url_inputs) === 0) {
                 if ($route_ref instanceof _RouteWithMapResourcesAndMiddleware) {
-                    $route_ref->mw('get');
+                    if (!$route_ref->mw('get')) {
+                        /**
+                         * to stop from checking any further route function check;
+                         */
+                        return true;
+                    };
                     $route_ref->get();
                 } elseif ($route_ref instanceof _RouteWithMapResources) {
                     $route_ref->get();
                 }
             } else {
                 if (\method_exists($route_ref, $mw_name = __Settings::middleware_name())) {
-                    $route_ref->$mw_name('get');
+                    if (!$route_ref->$mw_name('get')) {
+                        /**
+                         * to stop from checking any further route function check;
+                         */
+                        return true;
+                    };
                 }
                 $route_ref->map_resources(...$url_inputs);
                 _FileServer::serves($url_inputs, $class_name);

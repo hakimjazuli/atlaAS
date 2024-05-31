@@ -195,9 +195,10 @@ namespace Routes\api;
 use HtmlFirst\atlaAS\Middlewares\_Middleware;
 
 class mw extends _Middleware {
-    public function mw(string $method) {
+    public function mw(string $method): bool {
         \header('Content-Type: application/json');
         }
+        return true; /** return true to continue response */
 }
 ```
 
@@ -219,10 +220,11 @@ namespace Routes\example;
 use HtmlFirst\atlaAS\Router\_RoutesWithMiddleware;
 
 class test extends _RoutesWithMiddleware {
-    public function mw(string $method){
+    public function mw(string $method): bool{
         /**
          * $method can be used for conditionals
          * to apply in only on specific method
+         * return false to immediately stop response;
         */
     }
     public function get(string $name, string $num) {
