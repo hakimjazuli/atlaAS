@@ -45,8 +45,11 @@ abstract class __atlaAS {
     /**
      * render_get
      *
-     * @param  array $class_ref_and_uri_input
-     * - array: [class_ref::class, ...$arguments_for_the_class_get_method];
+     * @param  string $route_file
+     * - full path prefixed with '/';
+     * - ends with file extention too;
+     * @param  array $uri_input
+     * - array input for get method arguments;
      * @param  array $query_parameters
      * - associative array, assigned to route class property if any (for best practice);
      * @param  bool $inherit_query_parameters 
@@ -56,13 +59,23 @@ abstract class __atlaAS {
      * @return void
      */
     public static function render_get(
-        array $class_ref_and_uri_input,
-        array $query_parameters = [],
-        bool $inherit_query_parameters = true
+        $route_file,
+        $uri_input = [],
+        $query_parameters = [],
+        $inherit_query_parameters = true
     ) {
-        $class_reference = _FunctionHelpers::class_name_as_array($class_ref_and_uri_input[0], [__Settings::$routes_class]);
-        \array_shift($class_ref_and_uri_input);
-        $uri_array = \array_merge($class_reference, $class_ref_and_uri_input);
+        $uri_array = \array_filter(
+            \explode(
+                '/',
+                \str_replace(
+                    [__Settings::$routes_path, '//', '.' . __Settings::$system_file[0]],
+                    ['', '/', ''],
+                    $route_file
+                )
+            ),
+            fn ($str) => $str !== ''
+        );
+        \array_push($uri_array, ...$uri_input);
         if ($inherit_query_parameters) {
             $query_parameters = \array_merge(__Request::$query_params_array, $query_parameters);
         }
@@ -88,8 +101,10 @@ abstract class __atlaAS {
      * - generate followup for ParamsReceiver and
      * - fallback using render(...args);
      *
-     * @param callable|array $fallback : upon failing any $conditionals it will run:
-     * - array: [route_class_ref::class, ...$arguments_for_the_class_get_method];
+     * @param callable|string $fallback : upon failing any $conditionals it will run:
+     * - string:
+     * > - full path prefixed with '/';
+     * > - ends with file extention too;
      * - callable: $fallback(array $generated_fallback_arguments);
      * - after running any of the $fallback above, App will run exit();
      * @param  array $conditionals
@@ -106,13 +121,14 @@ abstract class __atlaAS {
      * ]
      * @param  bool $inherit_query_parameters 
      * - rendered route will:
-     * >- true:  inherit parent query parameter merge with $query_parameters;
+     * >- true:  inherit parent query parameter merged with $query_parameters;
      * >- false: use $query_parameters as new query parameters;
      * @return array
      */
     public static function follow_up_params(
-        array|callable $fallback,
-        array $conditionals,
+        string|callable $fallback,
+        array $url_input = [],
+        array $conditionals = [],
         array $query_parameter = [],
         bool $inherit_query_parameter = true
     ): void {
@@ -129,7 +145,7 @@ abstract class __atlaAS {
             return;
         }
         if (\is_array($fallback)) {
-            __atlaAS::render_get($fallback, $query_parameter, $inherit_query_parameter);
+            __atlaAS::render_get($fallback, $url_input, $query_parameter, $inherit_query_parameter);
         } else {
             $fallback($query_parameter);
         }
