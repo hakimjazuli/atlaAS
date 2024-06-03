@@ -46,8 +46,8 @@ abstract class __atlaAS {
      * render_get
      *
      * @param  string $route_file
-     * - full path prefixed with '/';
-     * - ends with file extention too;
+     * - full path prefixed with '/', ends with file extention too, OR
+     * - class_reference::class;
      * @param  array $uri_input
      * - array input for get method arguments;
      * @param  array $query_parameters
@@ -68,8 +68,20 @@ abstract class __atlaAS {
             \explode(
                 '/',
                 \str_replace(
-                    [__Settings::$routes_path, '//', '.' . __Settings::$system_file[0]],
-                    ['', '/', ''],
+                    [
+                        __Settings::$routes_class,
+                        '\\',
+                        __Settings::$routes_path,
+                        '//',
+                        '.' . __Settings::$system_file[0]
+                    ],
+                    [
+                        '',
+                        '/',
+                        '',
+                        '/',
+                        ''
+                    ],
                     $route_file
                 )
             ),
