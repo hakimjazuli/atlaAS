@@ -8,6 +8,7 @@ use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 use HtmlFirst\atlaAS\Router\FSRouter;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\__Response;
+use HtmlFirst\atlaAS\Utils\_FolloupParams;
 use HtmlFirst\atlaAS\Utils\_FunctionHelpers;
 use HtmlFirst\atlaAS\Utils\_Temp;
 use HtmlFirst\atlaAS\Vars\__Settings;
@@ -119,14 +120,12 @@ abstract class __atlaAS {
      * > - ends with file extention too;
      * - callable: $fallback(array $generated_fallback_arguments);
      * - after running any of the $fallback above, App will run exit();
-     * @param  array $conditionals
-     * - $fallback will be triggered when any $conditionals bool are false;
+     * @param  array $conditionals _FolloupParams
      * - [
      *      ...[
-     *          bool, ['param_name' => 'warning message']
+     *          ...HtmlFirst\atlaAS\Utils\_FolloupParams,
      *      ]
      * ]
-     * - consider use __atlaAS::input_match(...args);
      * @param  array $add_to_fallback_args associative :
      * - [
      *      ... $new_param_name_to_send_as => $prop_of_the_class
@@ -146,11 +145,13 @@ abstract class __atlaAS {
     ): void {
         $match = true;
         foreach ($conditionals as $data) {
-            [$conditional, $if_meet_merge] = $data;
-            if ($conditional) {
+            if (!$data instanceof _FolloupParams) {
                 continue;
             }
-            $query_parameter = \array_merge($query_parameter, $if_meet_merge);
+            if ($data->conditional) {
+                continue;
+            }
+            $query_parameter = \array_merge($query_parameter, $data->if_meet_merge);
             $match = false;
         }
         if ($match) {
