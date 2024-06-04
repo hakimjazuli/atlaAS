@@ -17,10 +17,10 @@ abstract class FSMiddleware {
         if (!\class_exists($mw)) {
             return true;
         };
-        $mw_ref = new $mw;
-        if ($mw_ref instanceof _Middleware) {
-            __atlaAS::assign_query_param_to_class_property($mw_ref);
-            return $mw_ref->mw(__Request::$method);
+        $mw_instance = new $mw;
+        if ($mw_instance instanceof _Middleware) {
+            __atlaAS::assign_query_param_to_class_property($mw_instance);
+            return $mw_instance->mw(__Request::$method);
         }
         return true;
     }
