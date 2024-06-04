@@ -47,7 +47,6 @@ abstract class __atlaAS {
      * render_get
      *
      * @param  string $route_file
-     * - full path prefixed with '/', ends with file extention too, OR
      * - class_reference::class;
      * @param  array $uri_input
      * - array input for get method arguments;
@@ -69,20 +68,8 @@ abstract class __atlaAS {
             \explode(
                 '/',
                 \str_replace(
-                    [
-                        __Settings::$routes_class,
-                        '\\',
-                        __Settings::$routes_path,
-                        '//',
-                        '.' . __Settings::$system_file[0]
-                    ],
-                    [
-                        '',
-                        '/',
-                        '',
-                        '/',
-                        ''
-                    ],
+                    [__Settings::$routes_class, '\\', '//',],
+                    ['', '/', '/',],
                     $route_file
                 )
             ),
@@ -115,9 +102,7 @@ abstract class __atlaAS {
      * - fallback using render(...args);
      *
      * @param callable|string $fallback : upon failing any $conditionals it will run:
-     * - string:
-     * > - full path prefixed with '/';
-     * > - ends with file extention too;
+     * - string: class_reference::class;
      * - callable: $fallback(array $generated_fallback_arguments);
      * - after running any of the $fallback above, App will run exit();
      * @param  array $conditionals _FolloupParams
