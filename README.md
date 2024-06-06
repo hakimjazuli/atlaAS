@@ -43,6 +43,36 @@ composer require html_first/atla-as
 
 ## how to initialize
 
+set your `.htaccess` on your static public folder into something like this:
+
+```t
+<IfModule mod_rewrite.c>
+    SetEnvIf Origin "^http(s)?://(.+\.)?(127\.0\.0\.1:8000)$" ACAO=$0
+    # SetEnvIf Origin "^http(s)?://(.+\.)?(127\.0\.0\.1:8000|172\.23\.224\.1:8000)$" ACAO=$0
+    Header set Access-Control-Allow-Origin "%{ACAO}e" env=ACAO
+
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+```
+
 extends our
 
 -   _"HtmlFirst\atlaAS\\\_\_atlaAS;"_

@@ -6,6 +6,7 @@ use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 use PDO;
 
 abstract class __Env {
+    public static int $cors_cache = 86400;
     public static bool $is_in_production = false;
 
     public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
