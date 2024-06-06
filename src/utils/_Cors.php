@@ -43,7 +43,7 @@ class _Cors {
         } elseif (!empty($this->allowed_headers)) {
             header("Access-Control-Allow-Headers: " . implode(", ", $this->allowed_headers));
         }
-        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+        if (__Request::$method == 'options') {
             if (in_array('*', $this->allowed_methods)) {
                 header("Access-Control-Allow-Methods: *");
             } elseif (!empty($this->allowed_methods)) {
