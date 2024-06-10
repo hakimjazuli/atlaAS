@@ -99,30 +99,42 @@ abstract class _Query {
         }
         $connection ??= __Env::$preffered_connection;
         $pdo = Conn::connection_start($connection);
-        $stmt = $pdo->prepare(
-            \file_get_contents($sql_path)
-        );
-        if ($bind) {
-            foreach ($bind as $parameter => $data_s) {
-                if (isset($data_s[0])) {
-                    $pdo_param_type = $data_s[0];
-                } else {
-                    $pdo_param_type = PDO::PARAM_STR;
-                }
-                if (isset($data_s[1])) {
-                    $value = $data_s[1];
-                } else {
-                    $value = $METHOD[$parameter];
-                }
-                if (\str_starts_with($parameter, 'hash_')) {
-                    $hashed = _Hasher::password_generate($value);
-                    $stmt->bindValue("$binder_character$parameter", $hashed, $pdo_param_type);
-                } else {
-                    $stmt->bindValue("$binder_character$parameter", $value, $pdo_param_type);
+        try {
+            $stmt = $pdo->prepare(
+                \file_get_contents($sql_path)
+            );
+            if ($bind) {
+                foreach ($bind as $parameter => $data_s) {
+                    if (isset($data_s[0])) {
+                        $pdo_param_type = $data_s[0];
+                    } else {
+                        $pdo_param_type = PDO::PARAM_STR;
+                    }
+                    if (isset($data_s[1])) {
+                        $value = $data_s[1];
+                    } else {
+                        $value = $METHOD[$parameter];
+                    }
+                    if (\str_starts_with($parameter, 'hash_')) {
+                        $hashed = _Hasher::password_generate($value);
+                        $stmt->bindValue("$binder_character$parameter", $hashed, $pdo_param_type);
+                    } else {
+                        $stmt->bindValue("$binder_character$parameter", $value, $pdo_param_type);
+                    }
                 }
             }
+            $stmt->execute();
+        } catch (\Throwable $e) {
+            if ($e->getCode() == 23000) {
+                return new class extends _atlaASQuery {
+                    public $data = [
+                        ['error' => 'unique field have duplicate(s)']
+                    ];
+                    public $count = 0;
+                };
+            }
+            throw $e;
         }
-        $stmt->execute();
         $result = self::normalize_query_return($stmt);
         $stmt->closeCursor();
         Conn::connection_close($connection);
