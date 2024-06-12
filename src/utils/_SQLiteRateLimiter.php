@@ -14,7 +14,7 @@ class _SQLiteRateLimiter {
      * @return void
      */
     public static function limit(string $dbPath, float $rate_limit = 100, float $time_window = 60, string|null $clientId = null): void {
-        $clientId ??= $_SERVER['REMOTE_ADDR'];
+        $clientId ??= $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
         $dsn = "sqlite:" . __Settings::system_path(__atlaAS::$app_root . $dbPath);
         $pdo = new PDO($dsn);
         $pdo->exec('CREATE TABLE IF NOT EXISTS rate_limits (
