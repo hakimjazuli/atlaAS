@@ -13,8 +13,8 @@ class _SQLiteRateLimiter {
      * @param  float $time_window : in seconds
      * @return void
      */
-    public static function limit(string $dbPath, float $rate_limit = 100, float $time_window = 60, string|null $clientId = null): void {
-        $clientId ??= $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
+    public static function limit(string $dbPath, float $rate_limit = 100, float $time_window = 60, string|null $client_id = null): void {
+        $client_id = $client_id ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
         $dsn = "sqlite:" . __Settings::system_path(__atlaAS::$app_root . $dbPath);
         $pdo = new PDO($dsn);
         $pdo->exec('CREATE TABLE IF NOT EXISTS rate_limits (
@@ -27,7 +27,7 @@ class _SQLiteRateLimiter {
         $windowStart = intval($currentTime / $time_window) * $time_window;
         $stmt = $pdo->prepare('SELECT request_count FROM rate_limits WHERE client_id = :client_id AND window_start = :window_start');
         $stmt->execute([
-            ':client_id' => $clientId,
+            ':client_id' => $client_id,
             ':window_start' => $windowStart
         ]);
         $rateLimit = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -43,18 +43,18 @@ class _SQLiteRateLimiter {
             }
             $stmt = $pdo->prepare('DELETE FROM rate_limits WHERE client_id = :client_id AND window_start <> :window_start');
             $stmt->execute([
-                ':client_id' => $clientId,
+                ':client_id' => $client_id,
                 ':window_start' => $windowStart
             ]);
             $stmt = $pdo->prepare('UPDATE rate_limits SET request_count = request_count + 1 WHERE client_id = :client_id AND window_start = :window_start');
             $stmt->execute([
-                ':client_id' => $clientId,
+                ':client_id' => $client_id,
                 ':window_start' => $windowStart
             ]);
         } else {
             $stmt = $pdo->prepare('INSERT INTO rate_limits (client_id, request_count, window_start) VALUES (:client_id, 1, :window_start)');
             $stmt->execute([
-                ':client_id' => $clientId,
+                ':client_id' => $client_id,
                 ':window_start' => $windowStart
             ]);
         }
