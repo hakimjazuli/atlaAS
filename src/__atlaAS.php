@@ -97,7 +97,7 @@ abstract class __atlaAS {
         }
     }
     /**
-     * follow_up_params
+     * validate_params
      * - generate followup for ParamsReceiver and
      * - fallback using render(...args);
      *
@@ -121,7 +121,7 @@ abstract class __atlaAS {
      * >- false: use $query_parameters as new query parameters;
      * @return array
      */
-    public static function follow_up_params(
+    public static function validate_params(
         string|callable $fallback,
         array $url_input = [],
         array $conditionals = [],
