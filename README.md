@@ -93,6 +93,39 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 ```
 
+## \_\_Env
+
+```php
+<?php
+
+namespace Backend;
+
+use HtmlFirst\atlaAS\Vars\__Env;
+use PDO;
+
+class Env extends __Env {
+    public static bool $is_in_production = false;
+
+    public static string $app_key = 'YOUR_APP_KEY';
+    public static string $preffered_connection = 'app';
+    public static function pdo(bool $https, string $connection): PDO {
+        /**
+         *
+         * switch case to return desired connection mode
+         * based on the _Query.sql_query(connection: $connectionValue)
+         *
+        */
+        return new PDO(...pdoArguments);
+    }
+    public static $api = [
+        'KEY_NAME' => [
+            'YOUR_API_KEY' => 'STATUS_VALUE',
+        ]
+    ];
+}
+
+```
+
 ## Routing
 
 -   using extended \_\_Settings class you can change

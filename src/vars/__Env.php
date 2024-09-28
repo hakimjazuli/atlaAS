@@ -13,6 +13,7 @@ abstract class __Env {
     public static string $preffered_connection = 'app';
     /**
      * both params are helpers to determine which pdo connection to chose
+     * you need to add public method on the extended class that returns PDO instances
      * @param bool $is_https
      * @param string $connection_mode
      */
