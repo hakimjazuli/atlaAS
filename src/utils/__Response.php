@@ -13,7 +13,7 @@ final class __Response {
         }
         $this->set_as_global();
     }
-
+    static bool $already_json_header = false;
     private static function preprocess(callable $html_function, bool $html_document = true) {
         if ($html_document) {
             \header('Content-Type: text/html; charset=UTF-8');
@@ -36,7 +36,9 @@ final class __Response {
     }
     public static function echo_json_api(array|object $array): void {
         if ($json = \json_encode($array)) {
-            self::$__::header_json();
+            if (!self::$already_json_header) {
+                self::$__::header_json();
+            }
             echo $json;
         } else {
             \header("HTTP/1.0 500 Internal Server Error");
@@ -50,5 +52,6 @@ final class __Response {
     }
     public static function header_json() {
         \header('Content-Type: application/json');
+        self::$already_json_header = true;
     }
 }
