@@ -73,7 +73,7 @@ abstract class __atlaAS {
                     $route_file
                 )
             ),
-            fn ($str) => $str !== ''
+            fn($str) => $str !== ''
         );
         \array_push($uri_array, ...$uri_input);
         if ($inherit_query_parameters) {
