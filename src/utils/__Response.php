@@ -36,9 +36,7 @@ final class __Response {
     }
     public static function echo_json_api(array|object $array): void {
         if ($json = \json_encode($array)) {
-            if (!self::$already_json_header) {
-                self::$__::header_json();
-            }
+            self::$__::header_json();
             echo $json;
         } else {
             \header("HTTP/1.0 500 Internal Server Error");
@@ -51,7 +49,9 @@ final class __Response {
         exit(0);
     }
     public static function header_json() {
-        \header('Content-Type: application/json');
-        self::$already_json_header = true;
+        if (!self::$already_json_header) {
+            \header('Content-Type: application/json');
+            self::$already_json_header = true;
+        }
     }
 }
