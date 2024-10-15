@@ -68,7 +68,7 @@ abstract class __atlaAS {
             \explode(
                 '/',
                 \str_replace(
-                    [__Settings::$__::$routes_class, '\\', '//',],
+                    [__Settings::$__->routes_class, '\\', '//',],
                     ['', '/', '/',],
                     $route_file
                 )
@@ -168,7 +168,7 @@ abstract class __atlaAS {
         }
         if ($use_client_side_routing) {
             __Response::echo_json_api([
-                __Settings::$__::$client_reroute_key => $path
+                __Settings::$__->client_reroute_key => $path
             ]);
         }
         \header("location: $path");
@@ -189,7 +189,7 @@ abstract class __atlaAS {
             default => 404,
         };
         $this->set_error_header($code);
-        $this->reroute(__Settings::$__::$routes_errors_prefix . $code);
+        $this->reroute(__Settings::$__->routes_errors_prefix . $code);
     }
     public function get_api_key(): string {
         return \array_keys(__Env::$__->api['check'])[0];
