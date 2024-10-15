@@ -79,7 +79,7 @@ extends our
 -   _"HtmlFirst\atlaAS\Vars\\\_\_Env;"_
 -   _"HtmlFirst\atlaAS\Vars\\\_\_Settings;"_
 
-then run static method from extended \_\_atlaAs; your `/public/index.php` then should looks this
+then run method from extended \_\_atlaAs; your `/public/index.php` then should looks this
 
 ```php
 <?php
@@ -89,7 +89,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 (new \Backend\__atlaAS(
     new \Backend\__Env,
     new \Backend\__Settings
-))::run();
+))->run();
 
 ```
 
@@ -104,11 +104,11 @@ use HtmlFirst\atlaAS\Vars\__Env;
 use PDO;
 
 class Env extends __Env {
-    public static bool $is_in_production = false;
+    public bool $is_in_production = false;
 
-    public static string $app_key = 'YOUR_APP_KEY';
-    public static string $preffered_connection = 'app';
-    public static function pdo(bool $https, string $connection): PDO {
+    public string $app_key = 'YOUR_APP_KEY';
+    public string $preffered_connection = 'app';
+    public function pdo(bool $https, string $connection): PDO {
         /**
          *
          * switch case to return desired connection mode
@@ -117,7 +117,7 @@ class Env extends __Env {
         */
         return new PDO(...pdoArguments);
     }
-    public static $api = [
+    public $api = [
         'KEY_NAME' => [
             'YOUR_API_KEY' => 'STATUS_VALUE',
         ]
@@ -129,8 +129,8 @@ class Env extends __Env {
 ## Routing
 
 -   using extended \_\_Settings class you can change
-    > -   folder: _\_\_Settings class::\$routes_path_
-    > -   namespace: _\_\_Settings class::\$routes_class_
+    > -   folder: _\_\_Settings class property \$routes_path_
+    > -   namespace: _\_\_Settings class property \$routes_class_
 -   routes naming:
     > -   have to be the same with the class name(case-sensitve), preferably lowercase
     > -   method are public function http-method(lower case) with parameters of the dynamic uri's;
@@ -203,7 +203,7 @@ array request;
 -   your intellisense warning is your friend;
 -   _\_MapResources_ Routes's map_resources method uses spread parameters;
 -   don't worry, it will **NOT** serve your `.php` files( or any file extentions, listed in extended
-    _\_\_Settings::$system_file_);
+    _\_\_Settings $system_file_);
 
 2. **normal routes with file serving (using
    `_RouteWithMapResources`|`_RouteWithMapResourcesAndMiddleware`)**
@@ -245,7 +245,7 @@ script reading priority for those routes (using
 
 -   naming:
 
-    > -   uses extended _\_\_Settings::$middleware_name_;
+    > -   uses extended _\_\_Settings $middleware_name_;
     > -   `mw.php` by default;
 
 -   middleware file

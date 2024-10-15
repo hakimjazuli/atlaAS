@@ -21,15 +21,15 @@ use HtmlFirst\atlaAS\Vars\__Env;
  */
 abstract class __atlaAS {
     use hasSetGlobal;
-    protected static __atlaAS|null $__ = null;
+    public static __atlaAS|null $__ = null;
 
-    public static array $global = [];
+    public array $global = [];
 
-    public static string $public_url_root;
+    public string $public_url_root;
 
-    public static string $app_root;
+    public string $app_root;
     public function __construct(__Env $env, __Settings $settings) {
-        if (static::$__ !== null) {
+        if (self::$__ = null) {
             return;
         }
         new __Request;
@@ -38,10 +38,10 @@ abstract class __atlaAS {
         new __Response;
         $this->set_as_global();
     }
-    private static FSRouter $fs_router;
-    public static function run(): void {
-        self::$__::$fs_router = new FSRouter();
-        self::$__::$fs_router->run();
+    private FSRouter $fs_router;
+    public function run(): void {
+        $this->fs_router = new FSRouter();
+        $this->fs_router->run();
     }
     /**
      * render_get
@@ -58,7 +58,7 @@ abstract class __atlaAS {
      * >- false: use $query_parameters as new query parameters;
      * @return void
      */
-    public static function render_get(
+    public function render_get(
         $route_file,
         $uri_input = [],
         $query_parameters = [],
@@ -68,7 +68,7 @@ abstract class __atlaAS {
             \explode(
                 '/',
                 \str_replace(
-                    [__Settings::$routes_class, '\\', '//',],
+                    [__Settings::$__::$routes_class, '\\', '//',],
                     ['', '/', '/',],
                     $route_file
                 )
@@ -84,10 +84,10 @@ abstract class __atlaAS {
             _Temp::var(__Request::$uri_array, $uri_array),
             _Temp::var(__Request::$query_params_array, $query_parameters)
         );
-        self::$__::$fs_router->render(false);
+        $this->fs_router->render(false);
         $reseters();
     }
-    public static function assign_query_param_to_class_property(_Routes|_Middleware $class_instance) {
+    public function assign_query_param_to_class_property(_Routes|_Middleware $class_instance) {
         $query_params = __Request::$query_params_array;
 
         foreach ($query_params as $name => $value) {
@@ -121,7 +121,7 @@ abstract class __atlaAS {
      * >- false: use $query_parameters as new query parameters;
      * @return array
      */
-    public static function validate_params(
+    public function validate_params(
         string|callable $fallback,
         array $url_input = [],
         array $conditionals = [],
@@ -143,7 +143,7 @@ abstract class __atlaAS {
             return;
         }
         if (\is_array($fallback)) {
-            __atlaAS::render_get($fallback, $url_input, $query_parameter, $inherit_query_parameter);
+            __atlaAS::$__->render_get($fallback, $url_input, $query_parameter, $inherit_query_parameter);
         } else {
             $fallback($query_parameter);
         }
@@ -156,25 +156,25 @@ abstract class __atlaAS {
      * @param  string $regex
      * @return bool
      */
-    public static function input_match(string $regex, string $input_name): bool {
-        if (self::$__::$fs_router::$form_s_input_param === null) {
-            self::$__::$fs_router::$form_s_input_param = __Request::method_params();
+    public function input_match(string $regex, string $input_name): bool {
+        if ($this->fs_router::$form_s_input_param === null) {
+            $this->fs_router::$form_s_input_param = __Request::method_params();
         }
-        return \preg_match($regex, self::$__::$fs_router::$form_s_input_param[$input_name]);
+        return \preg_match($regex, $this->fs_router::$form_s_input_param[$input_name]);
     }
-    public static function reroute(string $path, array $url_input = [], $use_client_side_routing = false): void {
+    public function reroute(string $path, array $url_input = [], $use_client_side_routing = false): void {
         if (\count($url_input) >= 1) {
             $path .= '/' . \join($url_input);
         }
         if ($use_client_side_routing) {
             __Response::echo_json_api([
-                __Settings::$client_reroute_key => $path
+                __Settings::$__::$client_reroute_key => $path
             ]);
         }
         \header("location: $path");
         exit(0);
     }
-    public static function set_error_header(int $code = 404): void {
+    public function set_error_header(int $code = 404): void {
         $header = match ($code) {
             403 => 'HTTP/1.1 403 Forbidden',
             500 => 'HTTP/1.0 500 Internal Server Error',
@@ -183,15 +183,15 @@ abstract class __atlaAS {
         };
         \header($header);
     }
-    public static function reroute_error(int $code = 404): void {
+    public function reroute_error(int $code = 404): void {
         $code = match ($code) {
             403, 404, 500 => $code,
             default => 404,
         };
-        self::$__::set_error_header($code);
-        self::$__::reroute(__Settings::$routes_errors_prefix . $code);
+        $this->set_error_header($code);
+        $this->reroute(__Settings::$__::$routes_errors_prefix . $code);
     }
-    public static function get_api_key(): string {
-        return \array_keys(__Env::$api['check'])[0];
+    public function get_api_key(): string {
+        return \array_keys(__Env::$__->api['check'])[0];
     }
 }

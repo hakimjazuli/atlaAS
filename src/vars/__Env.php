@@ -6,25 +6,25 @@ use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 use PDO;
 
 abstract class __Env {
-    public static int $cors_cache = 86400;
-    public static bool $is_in_production = false;
+    public int $cors_cache = 86400;
+    public bool $is_in_production = false;
 
-    public static string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
-    public static string $preffered_connection = 'app';
+    public string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
+    public string $preffered_connection = 'app';
     /**
      * both params are helpers to determine which pdo connection to chose
      * you need to add public method on the extended class that returns PDO instances
      * @param bool $is_https
      * @param string $connection_mode
      */
-    public static function pdo(bool $is_https, string $connection_mode): PDO {
+    public function pdo(bool $is_https, string $connection_mode): PDO {
         try {
-            return static::$__::pdo($is_https, $connection_mode);
+            exit("Connection failed!: overwrite '__Env->pdo' with documented type");
         } catch (\Throwable $e) {
             exit("Connection failed!: " . $e->getMessage() . "<br/>");
         }
     }
-    public static $api = [
+    public $api = [
         /**
          * array key of the [0] index of 'check' is your api_key;
          * make sure it is 'active';
@@ -35,9 +35,9 @@ abstract class __Env {
     ];
 
     use hasSetGlobal;
-    protected static __Env|null $__ = null;
+    public static __Env|null $__ = null;
 
-    public static string $public_path;
+    public string $public_path;
     public function __construct() {
         if (static::$__ !== null) {
             return;

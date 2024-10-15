@@ -21,10 +21,10 @@ final class FSRouter extends FSMiddleware {
     public function render($is_real_route = true) {
         $uri_array = __Request::$uri_array;
         $this->request_length = \count($uri_array);
-        $this->current_folder = __atlaAS::$app_root . \DIRECTORY_SEPARATOR . __Settings::$routes_path;
-        $this->current_route = '\\' . __Settings::$routes_class;
+        $this->current_folder = __atlaAS::$__->app_root . \DIRECTORY_SEPARATOR . __Settings::$__->routes_path;
+        $this->current_route = '\\' . __Settings::$__->routes_class;
         $routes_length = 0;
-        $middleware_name = __Settings::middleware_name();
+        $middleware_name = __Settings::$__->middleware_name();
         foreach ($uri_array as $uri) {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
             $this->current_middleware = $this->current_route . '\\' . $middleware_name;
@@ -40,7 +40,7 @@ final class FSRouter extends FSMiddleware {
             }
         }
         if (!$this->real_route) {
-            __atlaAS::reroute_error(404);
+            __atlaAS::$__->reroute_error(404);
             return;
         }
         $this->run_real_route($is_real_route);
@@ -56,7 +56,7 @@ final class FSRouter extends FSMiddleware {
         $route = $this->real_route;
         $route_instance = new $route($is_real_route);
         if ($route_instance instanceof _Routes) {
-            __atlaAS::assign_query_param_to_class_property($route_instance);
+            __atlaAS::$__->assign_query_param_to_class_property($route_instance);
             if ($route_instance instanceof _RoutesWithMiddleware) {
                 if (!$route_instance->mw(__Request::$method)) {
                     return;
@@ -84,7 +84,7 @@ final class FSRouter extends FSMiddleware {
                     $route_instance->get();
                 }
             } else {
-                if (\method_exists($route_instance, $mw_name = __Settings::middleware_name())) {
+                if (\method_exists($route_instance, $mw_name = __Settings::$__->middleware_name())) {
                     if (!$route_instance->$mw_name('get')) {
                         /**
                          * to stop from checking any further route function check;
@@ -104,13 +104,13 @@ final class FSRouter extends FSMiddleware {
             $class_name,
         );
         if ($num_params !== $this->request_length - $this->routes_length) {
-            __atlaAS::reroute_error(404);
+            __atlaAS::$__->reroute_error(404);
             return;
         }
         $method = __Request::$method;
         $url_inputs = \array_slice(__Request::$uri_array, -$num_params);
         if (!\method_exists($route_instance, $method)) {
-            __atlaAS::reroute_error(404);
+            __atlaAS::$__->reroute_error(404);
             return;
         }
         $route_instance->$method(...$url_inputs);

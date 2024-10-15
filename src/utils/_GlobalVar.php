@@ -14,7 +14,7 @@ abstract class _GlobalVar {
     protected static string $global = 'global';
 
     protected static function global(string $name, mixed $initial_value) {
-        $atlaAS_global = __atlaAS::$global;
+        $atlaAS_global = __atlaAS::$__->global;
         if (!\is_string(static::$global)) {
             return null;
         }

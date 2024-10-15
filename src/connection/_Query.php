@@ -13,8 +13,8 @@ use PDOStatement;
 
 abstract class _Query {
     private static function get_api_key($METHOD) {
-        if ($_SERVER['REMOTE_ADDR'] === __Settings::server_ip()) {
-            return __atlaAS::get_api_key();
+        if ($_SERVER['REMOTE_ADDR'] === __Settings::$__->server_ip()) {
+            return __atlaAS::$__->get_api_key();
         }
         return $METHOD['api_key'];
     }
@@ -60,10 +60,10 @@ abstract class _Query {
         bool $check_csrf = true,
         string $binder_character = ':'
     ): _atlaASQuery {
-        if (!\is_file($sql_path = __Settings::system_path(
-            __atlaAS::$app_root . $sql_path
+        if (!\is_file($sql_path = __Settings::$__->system_path(
+            __atlaAS::$__->app_root . $sql_path
         ))) {
-            __atlaAS::set_error_header(500);
+            __atlaAS::$__->set_error_header(500);
             __Response::header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
@@ -73,10 +73,10 @@ abstract class _Query {
             };
         }
         $METHOD = __Request::method_params();
-        $_api = __Env::$api;
+        $_api = __Env::$__->api;
         $api_key = self::get_api_key($METHOD);
         if (!$_api['check'][$api_key]) {
-            __atlaAS::set_error_header(403);
+            __atlaAS::$__->set_error_header(403);
             __Response::header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
@@ -85,7 +85,7 @@ abstract class _Query {
                 public $count = 0;
             };
         } elseif (isset($_api['check'][$api_key]) && $_api['check'][$api_key] != 'active') {
-            __atlaAS::set_error_header(403);
+            __atlaAS::$__->set_error_header(403);
             __Response::header_json();
             return new class() extends _atlaASQuery {
                 public $data = [
@@ -97,7 +97,7 @@ abstract class _Query {
         if ((__Request::$method !== 'get' || $csrf_key) && $check_csrf) {
             _Hasher::csrf_check($csrf_key);
         }
-        $connection ??= __Env::$preffered_connection;
+        $connection ??= __Env::$__->preffered_connection;
         $pdo = Conn::connection_start($connection);
         try {
             $stmt = $pdo->prepare(

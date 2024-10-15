@@ -12,7 +12,7 @@ class _Is extends _GlobalVar {
         if (!$_routes->is_real_route) {
             return false;
         }
-        $atlaAS_client_request_header = __Settings::atlaAS_client_request_header();
+        $atlaAS_client_request_header = __Settings::$__->atlaAS_client_request_header();
         if (isset($_SERVER[$atlaAS_client_request_header])) {
             return self::global($atlaAS_client_request_header, $_SERVER[$atlaAS_client_request_header]);
         }

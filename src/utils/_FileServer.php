@@ -16,12 +16,12 @@ final class _FileServer {
      */
     public static function file_version(string $server_url): string {
         $public_uri = \str_replace(
-            ['/' . __Settings::$routes_path, '/index'],
+            ['/' . __Settings::$__->routes_path, '/index'],
             ['', ''],
             $server_url
         );
         $version =  $public_uri . '?t=' . \filemtime(
-            __Settings::system_path(__atlaAS::$app_root . $server_url)
+            __Settings::$__->system_path(__atlaAS::$__->app_root . $server_url)
         );
         return $version;
     }
@@ -39,7 +39,7 @@ final class _FileServer {
      * - void: if $callback_file OR $callback_dir is callable
      */
     public static function recurse_dir_and_path(string $path, null|callable $callback_file = null, null|callable $callback_dir = null) {
-        $path = __Settings::system_path(__atlaAS::$app_root . $path);
+        $path = __Settings::$__->system_path(__atlaAS::$__->app_root . $path);
         $recurvecontainer = new RecursiveDirectoryIterator($path);
         $files_and_dirs = new RecursiveIteratorIterator($recurvecontainer);
         if ($callback_file === null && $callback_dir === null) {
@@ -63,14 +63,14 @@ final class _FileServer {
      * @return void
      */
     public static function serves(array $relative_path, string $system_dir, $force_download = false): void {
-        $file = __Settings::system_path(__atlaAS::$app_root . $system_dir . '/' . join('/', $relative_path));
+        $file = __Settings::$__->system_path(__atlaAS::$__->app_root . $system_dir . '/' . join('/', $relative_path));
         $resource = self::page_resource_handler($file, $force_download);
         switch ($resource) {
             case 'is_resource_file':
                 break;
             case 'is_system_file':
             case 'not_found':
-                __atlaAS::reroute_error(404);
+                __atlaAS::$__->reroute_error(404);
                 break;
         }
     }
@@ -136,7 +136,7 @@ final class _FileServer {
         return $content_type;
     }
     private static function caching(float $days = 60, bool $force_cache = false): void {
-        if (__Settings::use_caching()[0] || $force_cache) {
+        if (__Settings::$__->use_caching()[0] || $force_cache) {
             $expires = self::unix_unit_to_days($days);
             \header('Pragma: public');
             \header("Cache-Control: max-age=$expires");
@@ -150,7 +150,7 @@ final class _FileServer {
         \header("Content-disposition: filename=$path");
     }
     private static function file_handler(string $filename, bool $use_stream = false, bool $force_download = false): void {
-        self::caching(__Settings::use_caching()[1]);
+        self::caching(__Settings::$__->use_caching()[1]);
         $content_type = self::header_file_type($filename);
         if ($force_download) {
             self::download_force($filename);
@@ -162,7 +162,7 @@ final class _FileServer {
         /**
          * readfile|require will automatically echo the result 
          */
-        if (__Settings::$load_file_with_php_require) {
+        if (__Settings::$__->load_file_with_php_require) {
             require $filename;
             return;
         }
@@ -170,11 +170,11 @@ final class _FileServer {
     }
     private static function page_resource_handler(string $file, bool $force_download = false): string {
         $file_ext = pathinfo($file, PATHINFO_EXTENSION);
-        if (in_array($file_ext, _FunctionHelpers::merge_unique_1d_array(__Settings::$system_file, ['php']))) {
+        if (in_array($file_ext, _FunctionHelpers::merge_unique_1d_array(__Settings::$__->system_file, ['php']))) {
             return 'is_system_file';
         }
-        if (is_file(__Settings::system_path($file))) {
-            self::file_handler($file, __Settings::$use_stream, $force_download);
+        if (is_file(__Settings::$__->system_path($file))) {
+            self::file_handler($file, __Settings::$__->use_stream, $force_download);
             return 'is_resource_file';
         }
         return 'not_found';

@@ -19,7 +19,7 @@ final class VideoStream {
 
     function __construct(private string $path) {
         /** HS */
-        $this->buffer = __Settings::$chunk_sizes;
+        $this->buffer = __Settings::$__->chunk_sizes;
         /** HS */
     }
 
@@ -114,7 +114,7 @@ final class VideoStream {
             $data = fread($this->stream, $bytesToRead);
 
             /** HS */
-            usleep(__Settings::$refresh_micro_second);
+            usleep(__Settings::$__->refresh_micro_second);
             /** HS */
 
             echo $data;
