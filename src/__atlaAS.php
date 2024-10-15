@@ -33,8 +33,8 @@ abstract class __atlaAS {
             return;
         }
         new __Request;
-        $this::$app_root = \dirname(__Request::$public_path);
-        $this::$public_url_root = __Request::$http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
+        $this->app_root = \dirname(__Request::$public_path);
+        $this->public_url_root = __Request::$http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
         new __Response;
         $this->set_as_global();
     }
