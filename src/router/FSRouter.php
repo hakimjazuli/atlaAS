@@ -29,7 +29,7 @@ final class FSRouter extends FSMiddleware {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
             $this->current_middleware = $this->current_route . '\\' . $middleware_name;
             if (
-                \in_array($this->current_middleware, FSMiddleware::$allowed, true) &&
+                !\in_array($this->current_middleware, FSMiddleware::$allowed, true) &&
                 !$this->check_mw()
             ) {
                 return;
