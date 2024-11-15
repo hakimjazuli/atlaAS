@@ -7,6 +7,7 @@ use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Vars\__Settings;
 
 abstract class FSMiddleware {
+    public static array $allowed = [];
     public string $current_middleware;
     public string $current_folder;
     public function is_folder_exist(): bool {
