@@ -29,12 +29,12 @@ final class FSRouter extends FSMiddleware {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
             $this->current_middleware = $this->current_route . '\\' . $middleware_name;
             if (
-                !\in_array($this->current_middleware, FSMiddleware::$allowed, true) &&
+                !($allowed = FSMiddleware::is_mw_allowed($this->current_middleware)) &&
                 !$this->check_mw()
             ) {
                 return;
             }
-            FSMiddleware::$allowed[] = $this->current_middleware;
+            FSMiddleware::allow_mw($allowed, $this->current_middleware);
             $routes_length++;
             $this->current_route .= '\\' . $uri;
             if ($this->check_route()) {
@@ -61,11 +61,14 @@ final class FSRouter extends FSMiddleware {
         $route_instance = new $route($is_real_route);
         if ($route_instance instanceof _Routes) {
             __atlaAS::$__->assign_query_param_to_class_property($route_instance);
-            if ($route_instance instanceof _RoutesWithMiddleware) {
-                if (!$route_instance->mw(__Request::$method)) {
-                    return;
-                }
+            if (
+                !($allowed = FSMiddleware::is_mw_allowed($route::class)) &&
+                $route_instance instanceof _RoutesWithMiddleware &&
+                !$route_instance->mw(__Request::$method)
+            ) {
+                return;
             }
+            FSMiddleware::allow_mw($allowed, $route::class);
             if ($this->check_is_map_resources($route, $route_instance)) {
                 return;
             }
@@ -77,12 +80,16 @@ final class FSRouter extends FSMiddleware {
             $url_inputs = \array_slice(__Request::$uri_array, $this->routes_length);
             if (\count($url_inputs) === 0) {
                 if ($route_instance instanceof _RouteWithMapResourcesAndMiddleware) {
-                    if (!$route_instance->mw('get')) {
+                    if (
+                        !($allowed = FSMiddleware::is_mw_allowed($class_name)) &&
+                        !$route_instance->mw('get')
+                    ) {
                         /**
                          * to stop from checking any further route function check;
                          */
                         return true;
                     };
+                    FSMiddleware::allow_mw($allowed, $class_name);
                     $route_instance->get();
                 } elseif ($route_instance instanceof _RouteWithMapResources) {
                     $route_instance->get();
