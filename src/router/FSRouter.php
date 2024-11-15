@@ -96,12 +96,16 @@ final class FSRouter extends FSMiddleware {
                 }
             } else {
                 if (\method_exists($route_instance, $mw_name = __Settings::$__->middleware_name())) {
-                    if (!$route_instance->$mw_name('get')) {
+                    if (
+                        !($allowed = FSMiddleware::is_mw_allowed($class_name)) &&
+                        !$route_instance->$mw_name('get')
+                    ) {
                         /**
                          * to stop from checking any further route function check;
                          */
                         return true;
                     };
+                    FSMiddleware::allow_mw($allowed, $class_name);
                 }
                 $route_instance->map_resources(...$url_inputs);
                 _FileServer::serves($url_inputs, $class_name);
