@@ -89,7 +89,6 @@ abstract class __atlaAS {
     }
     public function assign_query_param_to_class_property(_Routes|_Middleware $class_instance) {
         $query_params = __Request::$query_params_array;
-
         foreach ($query_params as $name => $value) {
             if (\property_exists($class_instance, $name)) {
                 $class_instance->$name = \htmlspecialchars($value);

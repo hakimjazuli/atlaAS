@@ -2,7 +2,6 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
-
 final class __Request {
     use hasSetGlobal;
     protected static __Request|null $__ = null;

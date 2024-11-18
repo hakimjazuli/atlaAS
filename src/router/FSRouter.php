@@ -61,7 +61,7 @@ final class FSRouter extends FSMiddleware {
             __atlaAS::$__->assign_query_param_to_class_property($route_instance);
             if (
                 $route_instance instanceof _RoutesWithMiddleware &&
-                !(FSMiddleware::is_mw_allowed($route::class, fn() => $route_instance->mw(__Request::$method)))
+                !(FSMiddleware::is_mw_allowed($route, fn() => $route_instance->mw(__Request::$method)))
             ) {
                 return;
             }
@@ -92,7 +92,7 @@ final class FSRouter extends FSMiddleware {
             !($route_instance instanceof _RouteWithMapResourcesAndMiddleware) ||
             (
                 \method_exists($route_instance, $mw_name = __Settings::$__->middleware_name()) &&
-                $this->is_mw_allowed($class_name, $route_instance->$mw_name('get')))
+                $this->is_mw_allowed($class_name, fn() => $route_instance->$mw_name('get')))
         ) {
             $route_instance->map_resources(...$url_inputs);
             _FileServer::serves($url_inputs, $class_name);

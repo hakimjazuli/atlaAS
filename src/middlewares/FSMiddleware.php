@@ -8,12 +8,9 @@ use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Vars\__Settings;
 
 abstract class FSMiddleware {
-    private SplObjectStorage $allow_cache;
-    public function __construct() {
-        $this->allow_cache = new SplObjectStorage();
-    }
-    public function is_mw_allowed(mixed $identifier, callable $callback): bool {
-        if ($this->allow_cache->contains($identifier) && $this->allow_cache[$identifier] === true) {
+    private array $allow_cache = [];
+    public function is_mw_allowed(string $identifier, callable $callback): bool {
+        if (isset($this->allow_cache[$identifier]) && $this->allow_cache[$identifier] === true) {
             return true;
         }
         $new_bool = $callback();
