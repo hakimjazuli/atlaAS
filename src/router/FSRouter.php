@@ -29,12 +29,10 @@ final class FSRouter extends FSMiddleware {
             $this->current_folder .= \DIRECTORY_SEPARATOR . $uri;
             $this->current_middleware = $this->current_route . '\\' . $middleware_name;
             if (
-                !($allowed = FSMiddleware::is_mw_allowed($this->current_middleware)) &&
-                !$this->check_mw()
+                !(FSMiddleware::is_mw_allowed($this->current_middleware, fn() => $this->check_mw()))
             ) {
                 return;
             }
-            FSMiddleware::allow_mw($allowed, $this->current_middleware);
             $routes_length++;
             $this->current_route .= '\\' . $uri;
             if ($this->check_route()) {
@@ -62,57 +60,44 @@ final class FSRouter extends FSMiddleware {
         if ($route_instance instanceof _Routes) {
             __atlaAS::$__->assign_query_param_to_class_property($route_instance);
             if (
-                !($allowed = FSMiddleware::is_mw_allowed($route::class)) &&
                 $route_instance instanceof _RoutesWithMiddleware &&
-                !$route_instance->mw(__Request::$method)
+                !(FSMiddleware::is_mw_allowed($route::class, fn() => $route_instance->mw(__Request::$method)))
             ) {
                 return;
             }
-            FSMiddleware::allow_mw($allowed, $route::class);
-            if ($this->check_is_map_resources($route, $route_instance)) {
+            if ($this->check_is_map_resources_or_mw_blocked($route, $route_instance)) {
                 return;
             }
             $this->run_method_with_input_logic($route, $route_instance);
         }
     }
-    private function check_is_map_resources(string $class_name, _Routes $route_instance): bool {
-        if ($route_instance instanceof _MapResources && __Request::$method === 'get') {
-            $url_inputs = \array_slice(__Request::$uri_array, $this->routes_length);
-            if (\count($url_inputs) === 0) {
-                if ($route_instance instanceof _RouteWithMapResourcesAndMiddleware) {
-                    if (
-                        !($allowed = FSMiddleware::is_mw_allowed($class_name)) &&
-                        !$route_instance->mw('get')
-                    ) {
-                        /**
-                         * to stop from checking any further route function check;
-                         */
-                        return true;
-                    };
-                    FSMiddleware::allow_mw($allowed, $class_name);
-                    $route_instance->get();
-                } elseif ($route_instance instanceof _RouteWithMapResources) {
-                    $route_instance->get();
-                }
-            } else {
-                if (\method_exists($route_instance, $mw_name = __Settings::$__->middleware_name())) {
-                    if (
-                        !($allowed = FSMiddleware::is_mw_allowed($class_name)) &&
-                        !$route_instance->$mw_name('get')
-                    ) {
-                        /**
-                         * to stop from checking any further route function check;
-                         */
-                        return true;
-                    };
-                    FSMiddleware::allow_mw($allowed, $class_name);
-                }
-                $route_instance->map_resources(...$url_inputs);
-                _FileServer::serves($url_inputs, $class_name);
+    private function check_is_map_resources_or_mw_blocked(string $class_name, _Routes $route_instance): bool {
+        if (
+            !($route_instance instanceof _MapResources) ||
+            __Request::$method !== 'get'
+        ) {
+            return false;
+        }
+        $url_inputs = \array_slice(__Request::$uri_array, $this->routes_length);
+        if (\count($url_inputs) === 0) {
+            if (
+                $route_instance instanceof _RouteWithMapResourcesAndMiddleware &&
+                !$this->is_mw_allowed($class_name, fn() => $route_instance->mw('get'))
+            ) {
+                return true;
             }
-            return true;
-        };
-        return false;
+            return false;
+        }
+        if (
+            !($route_instance instanceof _RouteWithMapResourcesAndMiddleware) ||
+            (
+                \method_exists($route_instance, $mw_name = __Settings::$__->middleware_name()) &&
+                $this->is_mw_allowed($class_name, $route_instance->$mw_name('get')))
+        ) {
+            $route_instance->map_resources(...$url_inputs);
+            _FileServer::serves($url_inputs, $class_name);
+        }
+        return true;
     }
     private function run_method_with_input_logic(string $class_name, object $route_instance): void {
         $num_params = _FunctionHelpers::url_input_length(
