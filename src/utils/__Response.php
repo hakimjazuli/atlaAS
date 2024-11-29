@@ -2,9 +2,15 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
+/**
+ * @see
+ * - this class is [global singelton](#globals) 
+ * - altough this class are global singleton all methods and properties are public static;
+ * - this class contains several common methods to handle response to client;
+ */
 final class __Response {
     use hasSetGlobal;
-    protected static __Response|null $__ = null;
+    private static __Response|null $__ = null;
 
     use hasAppRegex;
     public function __construct() {

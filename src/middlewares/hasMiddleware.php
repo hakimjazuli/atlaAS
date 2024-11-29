@@ -2,6 +2,10 @@
 
 namespace HtmlFirst\atlaAS\Middlewares;
 
+/**
+ * @see
+ * - [internal class](#internals)
+ */
 trait hasMiddleware {
     /**
      * @param  string $method

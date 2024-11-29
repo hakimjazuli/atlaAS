@@ -11,6 +11,41 @@ use HtmlFirst\atlaAS\Vars\__Settings;
 use PDO;
 use PDOStatement;
 
+/**
+ * @see
+ *-   query helper
+ *
+ *```php
+ *<?php
+ *
+ *namespace Backend\Queries;
+ *
+ *use Backend\Tables\Test as TablesTest;
+ *use HtmlFirst\atlaAS\Connection\_atlaASQuery;
+ *use HtmlFirst\atlaAS\Connection\_Query;
+ *
+ *class Test extends _Query {
+ *    public static function test_name_like(string $test_name): _atlaASQuery {
+ *        $test = new TablesTest;
+ *        return self::sql_query('/sql/views/test.sql', bind: [
+ *            'test_name' => [$test->name->type, "%$test_name%"]
+ *        ]);
+ *    }
+ *}
+ *```
+ *
+ *-   setting up `/sql/views/test.sql`
+ *
+ *```sql
+ *SELECT
+ *	`id`,
+ *    test.test_name
+ *FROM
+ *    test
+ *WHERE
+ *    `test_name` LIKE :test_name;
+ *```
+ */
 abstract class _Query {
     private static function get_api_key($METHOD) {
         if ($_SERVER['REMOTE_ADDR'] === __Settings::$__->server_ip()) {

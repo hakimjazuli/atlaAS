@@ -1,14 +1,20 @@
 <?php
 
-namespace HtmlFirst\atlaAS\Utils;
+namespace HtmlFirst\__atlaAS\Utils;
 
 use HtmlFirst\atlaAS\Vars\__Settings;
 
 /**
  * Description of VideoStream
- * 
- * @author Rana modified by HS
- * @link http://codesamplez.com/programming/php-html5-video-streaming-tutorial
+ * @see
+ * - a modified VideoStream helper which the original I got from
+ * ```php
+ * <[blank]?php
+ * /** 
+ * * @author Rana modified by HS
+ * * @link http://codesamplez.com/programming/php-html5-video-streaming-tutorial
+ * *[blank]/
+ * ```
  */
 final class VideoStream {
     private $stream = "";
@@ -18,9 +24,9 @@ final class VideoStream {
     private $size   = 0;
 
     function __construct(private string $path) {
-        /** HS */
+        /** __atlaAS */
         $this->buffer = __Settings::$__->chunk_sizes;
-        /** HS */
+        /** __atlaAS */
     }
 
     /**
@@ -30,7 +36,7 @@ final class VideoStream {
         if (!($this->stream = fopen($this->path, 'rb'))) {
             // die('Could not open stream for reading');
 
-            /** HS */
+            /** __atlaAS */
             exit('Could not open stream for reading');
         }
     }
@@ -113,9 +119,9 @@ final class VideoStream {
             }
             $data = fread($this->stream, $bytesToRead);
 
-            /** HS */
+            /** __atlaAS */
             usleep(__Settings::$__->refresh_micro_second);
-            /** HS */
+            /** __atlaAS */
 
             echo $data;
             flush();

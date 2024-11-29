@@ -2,9 +2,15 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
+/**
+ * @see
+ * - this class is [global singelton](#globals) 
+ * - altough this class are global singleton all methods and properties are public static;
+ * - this class contains several values that contains incoming request variables;
+ */
 final class __Request {
     use hasSetGlobal;
-    protected static __Request|null $__ = null;
+    private static __Request|null $__ = null;
 
     public static bool $is_https;
     public static string $http_mode;
@@ -63,11 +69,11 @@ final class __Request {
             }
         }
     }
-    private function set_uri() {
-        $uri = \explode('/', $this::$uri);
+    private static function set_uri() {
+        $uri = \explode('/', self::$uri);
         if (\count($uri) !== 1) {
             $uri = array_map('htmlspecialchars', $uri);
-            $this::$uri_array = $uri;
+            self::$uri_array = $uri;
             return;
         }
         if ($uri[0] === '') {
@@ -77,7 +83,7 @@ final class __Request {
             $uri[0] = 'index';
         }
         $uri = array_map('htmlspecialchars', $uri);
-        $this::$uri_array = $uri;
+        self::$uri_array = $uri;
     }
     public static function method_params(): array {
         return match ($method = self::$__::$method) {

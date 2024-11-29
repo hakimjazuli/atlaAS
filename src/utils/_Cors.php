@@ -2,6 +2,10 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
+/**
+ * @see
+ * - contains static method(s) to handle cors policy;
+ */
 class _Cors {
     /**
      * __construct

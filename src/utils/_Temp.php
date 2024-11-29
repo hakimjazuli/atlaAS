@@ -2,6 +2,11 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
+/**
+ * @see
+ * - static method `var` of this class to be used to hold temporary value onto reference, which then returns a `callable`, to return the value before calling `var`;
+ * ?> - `var_reference` the first argument is a pointer;
+ */
 abstract class _Temp {
     /**
      * var

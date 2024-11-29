@@ -2,11 +2,14 @@
 
 namespace HtmlFirst\atlaAS\Middlewares;
 
-use SplObjectStorage;
 use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Vars\__Settings;
 
+/**
+ * @see
+ * - [internal class](#internals)
+ */
 abstract class FSMiddleware {
     private array $allow_cache = [];
     public function is_mw_allowed(string $identifier, callable $callback): bool {

@@ -1,0 +1,8 @@
+{
+	"devDependencies": {
+		"@html_first/js_lib_template": "^2.0.12"
+	},
+	"scripts": {
+		"dev": "bun --watch ./dev/index.mjs"
+	}
+}

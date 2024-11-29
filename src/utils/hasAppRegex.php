@@ -2,6 +2,10 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
+/**
+ * @see
+ * - a trait that contains multiple static methods and properties, that can be used to handle strings;
+ */
 trait hasAppRegex {
     protected static function regex_php_to_html(string $php_regex) {
         return trim($php_regex, "/");

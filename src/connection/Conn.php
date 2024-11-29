@@ -8,6 +8,10 @@ use HtmlFirst\atlaAS\Vars\__Settings;
 use PDO;
 use PDOException;
 
+/**
+ * @see
+ * - containt static methods for connection helpers;
+ */
 abstract class Conn {
     public static function connection_start(string $mode) {
         if (!isset($_ENV[$conn = __Settings::$__->_ENV_conn_name][$mode])) {

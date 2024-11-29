@@ -2,12 +2,39 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
+use HtmlFirst\__atlaAS\Utils\VideoStream;
 use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Vars\__Settings;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
+/**
+ * @see
+ * - contains method(s) for file serving related functionalities;
+ */
 final class _FileServer {
+    private static string|null $log_dir = null;
+
+    public static function log(string $prefix, array $content): null|string {
+        $prefix = preg_replace('/[\/\\\\:*?"<>|]/', '', $prefix);
+        $prefix = preg_replace('/\s+/', '_', $prefix);
+        $prefix = trim($prefix);
+        $log_dir = _FileServer::$log_dir;
+        if (!$log_dir) {
+            $log_dir = _FileServer::$log_dir = __atlaAS::$__->app_root . \DIRECTORY_SEPARATOR .  __Settings::$__->app_log;
+        }
+        if (!\is_dir($log_dir)) {
+            mkdir($log_dir, 0755, true);
+        }
+        $content = \json_encode($content);
+        if (!$content) {
+            return null;
+        }
+        $log_path = $log_dir . \DIRECTORY_SEPARATOR . $prefix . "-" . time() . ".json";
+        file_put_contents($log_path, $content);
+        return $log_path;
+    }
+
     /**
      * file_version
      *

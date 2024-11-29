@@ -4,6 +4,10 @@ namespace HtmlFirst\atlaAS\Utils;
 
 use ReflectionMethod;
 
+/**
+ * @see
+ * - contains method(s) for php general variable handling functionalities;
+ */
 abstract class _FunctionHelpers {
     public static function is_first_parameter_spread(string $class_name, string $method_name): bool {
         $reflection = new ReflectionMethod($class_name, $method_name);
@@ -23,7 +27,7 @@ abstract class _FunctionHelpers {
         }
     }
     public static function callable_collections(callable ...$functions): callable {
-        return fn () => self::run_array_functions(...$functions);
+        return fn() => self::run_array_functions(...$functions);
     }
     public static function class_name_as_array(string $class_name, array|null $delete_from_array = null): array {
         $class_array = \explode('\\', $class_name);

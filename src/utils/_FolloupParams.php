@@ -2,6 +2,10 @@
 
 namespace HtmlFirst\atlaAS\Utils;
 
+/**
+ * @see
+ * - instance helper for `__atlaAS::$__::validate_params` method;
+ */
 class _FolloupParams {
     /**
      * @param bool $conditional

@@ -8,6 +8,8 @@ use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 use HtmlFirst\atlaAS\Router\FSRouter;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\__Response;
+use HtmlFirst\atlaAS\Vars\__SQLite3;
+use HtmlFirst\atlaAS\Utils\_FileServer;
 use HtmlFirst\atlaAS\Utils\_FolloupParams;
 use HtmlFirst\atlaAS\Utils\_FunctionHelpers;
 use HtmlFirst\atlaAS\Utils\_Temp;
@@ -15,20 +17,39 @@ use HtmlFirst\atlaAS\Vars\__Settings;
 use HtmlFirst\atlaAS\Vars\__Env;
 
 /**
- * use this class as entry point;
- * instantiate it, with extended __Env and __Settings as arguments;
- * then call run method;
+ * @see
+ * - this class is [global singelton](#globals)
+ * - use this class as entry point;
+ * - instantiate it, with extended __Env, __Settings, __SQLite3* as arguments;
+ * > *: optionals;
+ * - then call run method;
+ * ```php
+ * // /your_public_root/index.html
+ * <[blank]?php
+ * 
+ * require_once __DIR__ . '/../vendor/autoload.php';
+ * 
+ * (new \Backend\__atlaAS(
+ *     new \Backend\__Env,
+ *     new \Backend\__Settings,
+ *     new \Backend\__SQLite3,
+ * ))->run();
+ * ```
  */
 abstract class __atlaAS {
     use hasSetGlobal;
     public static __atlaAS|null $__ = null;
+    public static function print_and_log(string $prefix, array $message) {
+        \print_r(\json_encode($message));
+        _FileServer::log($prefix, $message);
+    }
 
     public array $global = [];
 
     public string $public_url_root;
 
     public string $app_root;
-    public function __construct(__Env $env, __Settings $settings) {
+    public function __construct(__Env $env, __Settings $settings, __SQLite3 $sqlite = null) {
         if (self::$__ = null) {
             return;
         }

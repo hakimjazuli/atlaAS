@@ -2,15 +2,16 @@
 
 namespace HtmlFirst\atlaAS\Vars;
 
-use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\hasSetGlobal;
 
+/**
+ * @see
+ * - this class is a [global singelton](#globals);
+ * - this class is a [setting class]($setting_class);
+ */
 abstract class __Settings {
     public string $_ENV_conn_name = '_CONN';
     public string $client_reroute_key = 'reroute';
-    public function atlaAS_client_request_header() {
-        return __Request::valid_request_header('atlaAS_client_from');
-    }
 
     public string $routes_path = 'routes';
     public string $routes_class = 'Routes';
@@ -22,6 +23,7 @@ abstract class __Settings {
     }
 
     public int $chunk_sizes = 204_800;
+    public string $app_log = 'app_log';
     public int $refresh_micro_second = 500_000;
     public bool $load_file_with_php_require = false;
     public array $system_file = ['php'];
