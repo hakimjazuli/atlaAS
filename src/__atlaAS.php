@@ -10,7 +10,7 @@ use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\__Response;
 use HtmlFirst\atlaAS\Vars\__SQLite3;
 use HtmlFirst\atlaAS\Utils\_FileServer;
-use HtmlFirst\atlaAS\Utils\_FolloupParams;
+use HtmlFirst\atlaAS\Utils\Validate;
 use HtmlFirst\atlaAS\Utils\_FunctionHelpers;
 use HtmlFirst\atlaAS\Utils\_Temp;
 use HtmlFirst\atlaAS\Vars\__Settings;
@@ -21,7 +21,6 @@ use HtmlFirst\atlaAS\Vars\__Env;
  * - this class is [global singelton](#globals)
  * - use this class as entry point;
  * - instantiate it, with extended __Env, __Settings, __SQLite3* as arguments;
- * > *: optionals;
  * - then call run method;
  * ```php
  * // /your_public_root/index.html
@@ -53,13 +52,14 @@ abstract class __atlaAS {
         if (self::$__ = null) {
             return;
         }
+        \session_start();
         new __Request;
         $this->app_root = \dirname(__Request::$public_path);
         $this->public_url_root = __Request::$http_mode . '://' . $_SERVER['HTTP_HOST'] . '/';
         new __Response;
         $this->set_as_global();
     }
-    private FSRouter $fs_router;
+    public FSRouter $fs_router;
     public function run(): void {
         $this->fs_router = new FSRouter();
         $this->fs_router->run();
@@ -111,9 +111,10 @@ abstract class __atlaAS {
     public function assign_query_param_to_class_property(_Routes|_Middleware $class_instance) {
         $query_params = __Request::$query_params_array;
         foreach ($query_params as $name => $value) {
-            if (\property_exists($class_instance, $name)) {
-                $class_instance->$name = \htmlspecialchars($value);
+            if (!\property_exists($class_instance, $name)) {
+                continue;
             }
+            $class_instance->$name = \htmlspecialchars($value);
         }
     }
     /**
@@ -121,17 +122,17 @@ abstract class __atlaAS {
      * - generate followup for ParamsReceiver and
      * - fallback using render(...args);
      *
-     * @param callable|string $fallback : upon failing any $conditionals it will run:
+     * @param array $url_input
+     * - pass url input to the method;
+     * @param callable|string $fallback : upon failing any $validate it will run:
      * - string: class_reference::class;
      * - callable: $fallback(array $generated_fallback_arguments);
      * - after running any of the $fallback above, App will run exit();
-     * @param  array $conditionals _FolloupParams
+     * @param  array $validate _Validate
      * - [
-     *      ...[
-     *          ...HtmlFirst\atlaAS\Utils\_FolloupParams,
-     *      ]
+     *       ...$table_instance->$field_name->validate(...args),
      * ]
-     * @param  array $add_to_fallback_args associative :
+     * @param  array $query_parameter associative :
      * - [
      *      ... $new_param_name_to_send_as => $prop_of_the_class
      * ]
@@ -144,50 +145,37 @@ abstract class __atlaAS {
     public function validate_params(
         string|callable $fallback,
         array $url_input = [],
-        array $conditionals = [],
+        array $validate = [],
         array $query_parameter = [],
         bool $inherit_query_parameter = true
     ): void {
         $match = true;
-        foreach ($conditionals as $data) {
-            if (!$data instanceof _FolloupParams) {
+        foreach ($validate as $data) {
+            if (!$data instanceof Validate) {
                 continue;
             }
             if ($data->conditional) {
                 continue;
             }
-            $query_parameter = \array_merge($query_parameter, $data->if_meet_merge);
+            $query_parameter = \array_merge($query_parameter, $data->if_false_merge);
             $match = false;
         }
         if ($match) {
             return;
         }
-        if (\is_array($fallback)) {
-            __atlaAS::$__->render_get($fallback, $url_input, $query_parameter, $inherit_query_parameter);
-        } else {
+        if (\is_callable($fallback)) {
             $fallback($query_parameter);
+        } elseif (\is_string($fallback)) {
+            __atlaAS::$__->render_get($fallback, $url_input, $query_parameter, $inherit_query_parameter);
         }
         exit(0);
-    }
-    /**
-     * input_match
-     *
-     * @param  string $input_name: key of method parameter
-     * @param  string $regex
-     * @return bool
-     */
-    public function input_match(string $regex, string $input_name): bool {
-        if ($this->fs_router::$form_s_input_param === null) {
-            $this->fs_router::$form_s_input_param = __Request::method_params();
-        }
-        return \preg_match($regex, $this->fs_router::$form_s_input_param[$input_name]);
     }
     public function reroute(string $path, array $url_input = [], $use_client_side_routing = false): void {
         if (\count($url_input) >= 1) {
             $path .= '/' . \join($url_input);
         }
         if ($use_client_side_routing) {
-            __Response::echo_json_api([
+            __Response::echo_json([
                 __Settings::$__->client_reroute_key => $path
             ]);
         }

@@ -2,7 +2,9 @@
 
 namespace HtmlFirst\atlaAS\Router;
 
+use HtmlFirst\atlaAS\__atlaAS;
 use HtmlFirst\atlaAS\Utils\_FunctionHelpers;
+use HtmlFirst\atlaAS\Utils\_Hasher;
 use HtmlFirst\atlaAS\Vars\__Settings;
 
 /**

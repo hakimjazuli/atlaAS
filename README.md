@@ -150,6 +150,8 @@ this library is inspired by:
 
 - [HtmlFirst\atlaAS\Connection\_atlaASQuery](#htmlfirst_atlaas_connection__atlaasquery)
 
+- [HtmlFirst\atlaAS\connection\_Binder](#htmlfirst_atlaas_connection__binder)
+
 - [HtmlFirst\atlaAS\Connection\_FieldType](#htmlfirst_atlaas_connection__fieldtype)
 
 - [HtmlFirst\atlaAS\Connection\_Query](#htmlfirst_atlaas_connection__query)
@@ -166,19 +168,19 @@ this library is inspired by:
 
 - [HtmlFirst\atlaAS\Router\_Routes](#htmlfirst_atlaas_router__routes)
 
+- [HtmlFirst\atlaAS\Router\_RoutesWithMapResources](#htmlfirst_atlaas_router__routeswithmapresources)
+
+- [HtmlFirst\atlaAS\Router\_RoutesWithMapResourcesAndMiddleware](#htmlfirst_atlaas_router__routeswithmapresourcesandmiddleware)
+
 - [HtmlFirst\atlaAS\Router\_RoutesWithMiddleware](#htmlfirst_atlaas_router__routeswithmiddleware)
 
-- [HtmlFirst\atlaAS\Router\_RouteWithMapResources](#htmlfirst_atlaas_router__routewithmapresources)
-
-- [HtmlFirst\atlaAS\Router\_RouteWithMapResourcesAndMiddleware](#htmlfirst_atlaas_router__routewithmapresourcesandmiddleware)
+- [HtmlFirst\atlaAS\Utils\Validate](#htmlfirst_atlaas_utils_validate)
 
 - [HtmlFirst\__atlaAS\Utils\VideoStream](#htmlfirst___atlaas_utils_videostream)
 
 - [HtmlFirst\atlaAS\Utils\_Cors](#htmlfirst_atlaas_utils__cors)
 
 - [HtmlFirst\atlaAS\Utils\_FileServer](#htmlfirst_atlaas_utils__fileserver)
-
-- [HtmlFirst\atlaAS\Utils\_FolloupParams](#htmlfirst_atlaas_utils__folloupparams)
 
 - [HtmlFirst\atlaAS\Utils\_FunctionHelpers](#htmlfirst_atlaas_utils__functionhelpers)
 
@@ -218,9 +220,17 @@ this library is inspired by:
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>
 
 
+<h2 id="htmlfirst_atlaas_connection__binder">HtmlFirst\atlaAS\connection\_Binder</h2>
+
+
+
+
+*) <sub>[go to exported list](#exported-api-by-namespace)</sub>
+
+
 <h2 id="htmlfirst_atlaas_connection__fieldtype">HtmlFirst\atlaAS\Connection\_FieldType</h2>
 
-- class helper for _Query;
+- internal class helper for _Query;
 
 
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>
@@ -228,7 +238,7 @@ this library is inspired by:
 
 <h2 id="htmlfirst_atlaas_connection__query">HtmlFirst\atlaAS\Connection\_Query</h2>
 
--   query helper```php<?phpnamespace Backend\Queries;use Backend\Tables\Test as TablesTest;use HtmlFirst\atlaAS\Connection\_atlaASQuery;use HtmlFirst\atlaAS\Connection\_Query;class Test extends _Query {   public static function test_name_like(string $test_name): _atlaASQuery {       $test = new TablesTest;       return self::sql_query('/sql/views/test.sql', bind: [           'test_name' => [$test->name->type, "%$test_name%"]       ]);   }}```-   setting up `/sql/views/test.sql````sqlSELECT`id`,   test.test_nameFROM   testWHERE   `test_name` LIKE :test_name;```
+-   query helper```php<?phpnamespace Backend\Queries;use Backend\Tables\Test as TablesTest;use HtmlFirst\atlaAS\Connection\_atlaASQuery;use HtmlFirst\atlaAS\Connection\_Query;class Test extends _Query {   public static function test_name_like(string $test_name): _atlaASQuery {       $test = new TablesTest;       return self::sql_query('/sql/views/test.sql', bind: [           ... new HtmlFirst\atlaAS\connection\_Binder(...$args),       ]);   }}```-   setting up `/sql/views/test.sql````sqlSELECT`id`,   test.test_nameFROM   testWHERE   `test_name` LIKE :test_name;```
 
 
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>
@@ -236,7 +246,7 @@ this library is inspired by:
 
 <h2 id="htmlfirst_atlaas_connection__table">HtmlFirst\atlaAS\Connection\_Table</h2>
 
-- extend this class for sql table templating;- assign all property type as \HtmlFirst\atlaAS\Connection\_FieldType;- eg. public _FieldType $field_name_alias;- then on constructor assign it by calling $this->column(...$neccessary_args);-   table helper```php<?phpnamespace Backend\Tables;use HtmlFirst\atlaAS\Connection\_FieldType;use HtmlFirst\atlaAS\Connection\_Table;use PDO;class Test extends _Table {   public _FieldType $id;   public _FieldType $name;   public function __construct() {       $this->id = $this->column(PDO::PARAM_INT);       $this->name = $this->column(PDO::PARAM_STR, $this->regex_alphanumeric_loose(1, 255));   }}```
+- extend this class for sql table templating;- assign all property type as \HtmlFirst\atlaAS\Connection\_FieldType;- eg. public _FieldType $field_name_alias;- then on constructor assign it by calling $this->column(...$neccessary_args);-   table helper```php<?phpnamespace Backend\Tables;use HtmlFirst\atlaAS\Connection\_FieldType;use HtmlFirst\atlaAS\Connection\_Table;use PDO;class Test extends _Table {    public _FieldType $id;   public _FieldType $name;   public function __construct() {       $this->id = $this->column(PDO::PARAM_INT);       $this->name = $this->column(PDO::PARAM_STR, $this->regex_alphanumeric_loose(1, 255));   }}```
 
 
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>
@@ -282,6 +292,22 @@ this library is inspired by:
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>
 
 
+<h2 id="htmlfirst_atlaas_router__routeswithmapresources">HtmlFirst\atlaAS\Router\_RoutesWithMapResources</h2>
+
+- derived from:> - [HtmlFirst\atlaAS\Router\_Routes](#htmlfirst_atlaas_router__routes);> - [HtmlFirst\atlaAS\Router\_MapResources](#htmlfirst_atlaas_router__mapresources);
+
+
+*) <sub>[go to exported list](#exported-api-by-namespace)</sub>
+
+
+<h2 id="htmlfirst_atlaas_router__routeswithmapresourcesandmiddleware">HtmlFirst\atlaAS\Router\_RoutesWithMapResourcesAndMiddleware</h2>
+
+- derived from:> - [HtmlFirst\atlaAS\Middlewares\_Middleware](#htmlfirst_atlaas_middlewares__middleware);> - [HtmlFirst\atlaAS\Router\_Routes](#htmlfirst_atlaas_router__routes);> - [HtmlFirst\atlaAS\Router\_MapResources](#htmlfirst_atlaas_router__mapresources);
+
+
+*) <sub>[go to exported list](#exported-api-by-namespace)</sub>
+
+
 <h2 id="htmlfirst_atlaas_router__routeswithmiddleware">HtmlFirst\atlaAS\Router\_RoutesWithMiddleware</h2>
 
 - derived from:> - [HtmlFirst\atlaAS\Middlewares\_Middleware](#htmlfirst_atlaas_middlewares__middleware);> - [HtmlFirst\atlaAS\Router\_Routes](#htmlfirst_atlaas_router__routes);
@@ -290,17 +316,9 @@ this library is inspired by:
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>
 
 
-<h2 id="htmlfirst_atlaas_router__routewithmapresources">HtmlFirst\atlaAS\Router\_RouteWithMapResources</h2>
+<h2 id="htmlfirst_atlaas_utils_validate">HtmlFirst\atlaAS\Utils\Validate</h2>
 
-- derived from:> - [HtmlFirst\atlaAS\Router\_Routes](#htmlfirst_atlaas_router__routes);> - [HtmlFirst\atlaAS\Router\_MapResources](#htmlfirst_atlaas_router__mapresources);
-
-
-*) <sub>[go to exported list](#exported-api-by-namespace)</sub>
-
-
-<h2 id="htmlfirst_atlaas_router__routewithmapresourcesandmiddleware">HtmlFirst\atlaAS\Router\_RouteWithMapResourcesAndMiddleware</h2>
-
-- derived from:> - [HtmlFirst\atlaAS\Middlewares\_Middleware](#htmlfirst_atlaas_middlewares__middleware);> - [HtmlFirst\atlaAS\Router\_Routes](#htmlfirst_atlaas_router__routes);> - [HtmlFirst\atlaAS\Router\_MapResources](#htmlfirst_atlaas_router__mapresources);
+- internal class helper;
 
 
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>
@@ -330,14 +348,6 @@ this library is inspired by:
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>
 
 
-<h2 id="htmlfirst_atlaas_utils__folloupparams">HtmlFirst\atlaAS\Utils\_FolloupParams</h2>
-
-- instance helper for `__atlaAS::$__::validate_params` method;
-
-
-*) <sub>[go to exported list](#exported-api-by-namespace)</sub>
-
-
 <h2 id="htmlfirst_atlaas_utils__functionhelpers">HtmlFirst\atlaAS\Utils\_FunctionHelpers</h2>
 
 - contains method(s) for php general variable handling functionalities;
@@ -356,7 +366,7 @@ this library is inspired by:
 
 <h2 id="htmlfirst_atlaas_utils__hasher">HtmlFirst\atlaAS\Utils\_Hasher</h2>
 
-
+collection of static methods for hashing purposes;- html_csrf_element: for generating string element of csrf;
 
 
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>
@@ -396,7 +406,7 @@ this library is inspired by:
 
 <h2 id="htmlfirst_atlaas_vars___env">HtmlFirst\atlaAS\Vars\__Env</h2>
 
-- this class is a [global singelton](#globals);- this class is a [setting class]($setting_class);
+- this class is a [global singelton](#globals);- this class is a [setting class]($setting_class);- overwrite this  `public function pdo`;
 
 
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>
@@ -420,7 +430,7 @@ this library is inspired by:
 
 <h2 id="htmlfirst_atlaas___atlaas">HtmlFirst\atlaAS\__atlaAS</h2>
 
-- this class is [global singelton](#globals)- use this class as entry point;- instantiate it, with extended __Env, __Settings, __SQLite3* as arguments;> *: optionals;- then call run method;```php// /your_public_root/index.html<?phprequire_once __DIR__ . '/../vendor/autoload.php';(new \Backend\__atlaAS(    new \Backend\__Env,    new \Backend\__Settings,    new \Backend\__SQLite3,))->run();```
+- this class is [global singelton](#globals)- use this class as entry point;- instantiate it, with extended __Env, __Settings, __SQLite3* as arguments;- then call run method;```php// /your_public_root/index.html<?phprequire_once __DIR__ . '/../vendor/autoload.php';(new \Backend\__atlaAS(    new \Backend\__Env,    new \Backend\__Settings,    new \Backend\__SQLite3,))->run();```
 
 
 *) <sub>[go to exported list](#exported-api-by-namespace)</sub>

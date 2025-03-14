@@ -7,14 +7,18 @@ namespace HtmlFirst\atlaAS\Utils;
  * - a trait that contains multiple static methods and properties, that can be used to handle strings;
  */
 trait hasAppRegex {
-    protected static function regex_php_to_html(string $php_regex) {
-        return trim($php_regex, "/");
+    protected static function regex_php_to_html(string|null $php_regex = null): string|null {
+        if ($php_regex) {
+            return trim($php_regex, "/");
+        }
+        return null;
     }
     protected static $regex_single_line = '/\/\*[\s\S]*?\*\/|<!--[\s\S]*?-->|\r|\n|\t|\s{2,}|\/\/ .*$/m';
     protected static $regex_excessive_spacing = '/\s{2,}/m';
     protected static $regex_html_tag_spacing = '/\s*(?=[><\/])/mU';
     protected static $regex_excesive_html_br = '/(<br>){2,}/';
     protected static $regex_no_indents = '/^[\s]+| {2,}/m';
+    protected static $regex_tabs_indent = '/^[\t\t]+|/m';
     protected static function tag(string $tag_name) {
         return "/<$tag_name(.*?)>|<\/$tag_name>/m";
     }

@@ -2,7 +2,7 @@
 	"name": "html_first/atla-as",
 	"description": "php file system routing, file serving, connection and SQL DB querying library",
 	"license": "MIT",
-	"version": "1.0.5",
+	"version": "2.0.0",
 	"autoload": {
 		"psr-4": {
 			"HtmlFirst\\atlaAS\\": "src/"

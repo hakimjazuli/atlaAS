@@ -9,13 +9,9 @@ use PDO;
  * @see
  * - this class is a [global singelton](#globals);
  * - this class is a [setting class]($setting_class);
+ * - overwrite this  `public function pdo`;
  */
 abstract class __Env {
-    public int $cors_cache = 86400;
-    public bool $is_in_production = false;
-
-    public string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
-    public string $preffered_connection = 'app';
     /**
      * - overwirite this method;
      * - both params are helpers to determine which pdo connection to chose;
@@ -30,6 +26,12 @@ abstract class __Env {
             exit("Connection failed!: " . $e->getMessage() . "<br/>");
         }
     }
+
+    public int $cors_cache = 86400;
+    public bool $is_in_production = false;
+
+    public string $app_key = 'APP_@#$@%#$%#$%$%_KEY';
+    public string $preffered_connection = 'app';
     public $api = [
         /**
          * array key of the [0] index of 'check' is your api_key;

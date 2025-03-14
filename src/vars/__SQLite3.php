@@ -206,7 +206,7 @@ abstract class __SQLite3 {
         }
         if ($row_rate_limit['request_count'] >= $rate_limit) {
             http_response_code(429);
-            __Response::echo_json_api([
+            __Response::echo_json([
                 'code' => 429,
                 'status' => 'not enough resource',
                 'message' => 'try again later'

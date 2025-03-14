@@ -2,3 +2,7 @@
 /vendor/
 
 node_modules
+
+package.json
+bun.lockb
+/test/

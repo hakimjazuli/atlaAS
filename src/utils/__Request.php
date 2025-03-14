@@ -68,6 +68,7 @@ final class __Request {
                 return false;
             }
         }
+        return false;
     }
     private static function set_uri() {
         $uri = \explode('/', self::$uri);
@@ -91,7 +92,7 @@ final class __Request {
             default => self::$__::parse_other_method(),
         };
     }
-    private static function parse_other_method() {
+    private static function parse_other_method(): array {
         $data = file_get_contents('php://input');
         $boundary = "--" . explode("boundary=", $_SERVER["CONTENT_TYPE"])[1];
         $form_data = explode($boundary, $data);
@@ -106,5 +107,6 @@ final class __Request {
         if (\count($data_) !== 0) {
             return $data_;
         }
+        return [];
     }
 }

@@ -22,7 +22,7 @@ use HtmlFirst\atlaAS\Utils\hasAppRegex;
  *use HtmlFirst\atlaAS\Connection\_Table;
  *use PDO;
  *
- *class Test extends _Table {
+ *class Test extends _Table { 
  *    public _FieldType $id;
  *    public _FieldType $name;
  *    public function __construct() {
@@ -35,11 +35,12 @@ use HtmlFirst\atlaAS\Utils\hasAppRegex;
  */
 abstract class _Table {
     use hasAppRegex;
-    protected function column(int $pdo_param_type, string|null $regex = null): _FieldType {
+    protected function column(string $field_name, int $pdo_param_type, string|null $regex = null): _FieldType {
         return new _FieldType(
+            $field_name,
             $pdo_param_type,
+            $this,
             $regex,
-            $regex ? $this->regex_php_to_html($regex) : null
         );
     }
 }

@@ -12,6 +12,6 @@ use HtmlFirst\atlaAS\Middlewares\hasMiddleware;
  * > - [HtmlFirst\atlaAS\Router\_Routes](#htmlfirst_atlaas_router__routes);
  * > - [HtmlFirst\atlaAS\Router\_MapResources](#htmlfirst_atlaas_router__mapresources);
  */
-class _RouteWithMapResourcesAndMiddleware extends _RouteWithMapResources {
+class _RoutesWithMapResourcesAndMiddleware extends _RoutesWithMapResources {
     use hasMiddleware;
 }

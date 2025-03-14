@@ -28,19 +28,54 @@ final class __Response {
         $html_function();
         return \ob_get_clean();
     }
-    public static function html_no_indent(callable $html_function, bool $html_document = true) {
-        $output = self::$__::preprocess($html_function, $html_document);
+    /**
+     * html_no_indent
+     * - average looking output;
+     * 
+     * @param  callable $html_function
+     * - returning to html tag using "?>HTML CODE<?php" inside function block;
+     * @return void
+     */
+    public static function html_no_indent(callable $html_function) {
+        $output = self::$__::preprocess($html_function);
         echo \preg_replace(self::$__::$regex_no_indents, '', $output);
     }
-    public static function html_single_line(callable $html_function, bool $html_document = true) {
-        $output = self::$__::preprocess($html_function, $html_document);
+    /**
+     * html_pretify
+     * - most human readable output;
+     *
+     * @param  callable $html_function
+     * - returning to html tag using "?>HTML CODE<?php" inside function block;
+     * @return void
+     */
+    public static function html_pretify(callable $html_function) {
+        $output = self::$__::preprocess($html_function);
+        $html = preg_replace('/^\s*\n/', '', $output);
+        /** Find the first non-whitespace character's indentation */
+        if (preg_match('/^(\s*)\S/m', $html, $matches)) {
+            $indent = $matches[1];
+            /** Capture leading spaces/tabs */
+            $html = preg_replace('/^' . preg_quote($indent, '/') . '/m', '', $html);
+        }
+        echo $html;
+    }
+    /**
+     * html_single_line
+     * - best for transfer size;
+     * 
+     * @param  callable $html_function
+     * - returning to html tag using "?>HTML CODE<?php" inside function block;
+     * @return void
+     */
+    public static function html_single_line(callable $html_function) {
+        $output = self::$__::preprocess($html_function);
         echo trim(\preg_replace(
             [self::$__::$regex_single_line, self::$__::$regex_excessive_spacing, '/> /', '/ </'],
             [' ', ' ', '>', '<'],
             $output
         ), ' ');
     }
-    public static function echo_json_api(array|object $array): void {
+    public static function echo_json(array|object $array): void {
         if ($json = \json_encode($array)) {
             self::$__::header_json();
             echo $json;

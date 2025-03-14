@@ -3,6 +3,7 @@
 namespace HtmlFirst\atlaAS\Connection;
 
 use HtmlFirst\atlaAS\__atlaAS;
+use HtmlFirst\atlaAS\connection\_Binder;
 use HtmlFirst\atlaAS\Utils\__Request;
 use HtmlFirst\atlaAS\Utils\__Response;
 use HtmlFirst\atlaAS\Utils\_Hasher;
@@ -28,7 +29,7 @@ use PDOStatement;
  *    public static function test_name_like(string $test_name): _atlaASQuery {
  *        $test = new TablesTest;
  *        return self::sql_query('/sql/views/test.sql', bind: [
- *            'test_name' => [$test->name->type, "%$test_name%"]
+ *            ... new HtmlFirst\atlaAS\connection\_Binder(...$args),
  *        ]);
  *    }
  *}
@@ -65,7 +66,7 @@ abstract class _Query {
     }
     /**
      * sql_query
-     * 
+     * - this query helper doesn't have built-in race condition prevention, you may add it in your query file;
      * @param string $sql_path
      * starts with '/';
      * @param string|null $csrf_key -descriptive
@@ -74,12 +75,7 @@ abstract class _Query {
      * - null: default from env;
      * @param array|null $bind
      * - null: do nothing;
-     * - [
-     *    ...
-     *    $field_name => [?PDO::PARAM_type, ?$value],
-     *  ]
-     * >- in case of key <string> $field_name starts with 'hash_':
-     * >>-the value will be hashed before being executed;
+     * - [ ...HtmlFirst\atlaAS\connection\_Binder instance]: bind the values to query;
      * >- to save the param type and regex for client and server validation:
      * >>- consider extending our \HtmlFirst\atlaAS\Connection\Table_ for each table you have;
      * @param bool $check_csrf
@@ -135,44 +131,35 @@ abstract class _Query {
         $connection ??= __Env::$__->preffered_connection;
         $pdo = Conn::connection_start($connection);
         try {
-            $stmt = $pdo->prepare(
-                \file_get_contents($sql_path)
-            );
+            $real_query_job = \file_get_contents($sql_path);
+            $stmt = $pdo->prepare($real_query_job);
             if ($bind) {
-                foreach ($bind as $parameter => $data_s) {
-                    if (isset($data_s[0])) {
-                        $pdo_param_type = $data_s[0];
-                    } else {
-                        $pdo_param_type = PDO::PARAM_STR;
+                foreach ($bind as $binder) {
+                    if (!($binder instanceof _Binder)) {
+                        throw ['$bind' => 'is not array of instanceof _Binder'];
                     }
-                    if (isset($data_s[1])) {
-                        $value = $data_s[1];
-                    } else {
-                        $value = $METHOD[$parameter];
-                    }
-                    if (\str_starts_with($parameter, 'hash_')) {
-                        $hashed = _Hasher::password_generate($value);
-                        $stmt->bindValue("$binder_character$parameter", $hashed, $pdo_param_type);
-                    } else {
-                        $stmt->bindValue("$binder_character$parameter", $value, $pdo_param_type);
-                    }
+                    $field_name = $binder->incoming_parameter_name;
+                    $pdo_param_type = $binder->pdo_param_type;
+                    $value = match ($binder->value) {
+                        null => $METHOD[$field_name],
+                        default => $binder->value,
+                    };
+                    $stmt->bindValue("$binder_character$field_name", $value, $pdo_param_type);
                 }
             }
             $stmt->execute();
-        } catch (\Throwable $e) {
-            if ($e->getCode() == 23000) {
-                return new class extends _atlaASQuery {
-                    public $data = [
-                        ['error' => 'unique field have duplicate(s)']
-                    ];
-                    public $count = 0;
-                };
-            }
-            throw $e;
+            $result = self::normalize_query_return($stmt);
+            $stmt->closeCursor();
+            Conn::connection_close($connection);
+            return $result;
+        } catch (\Throwable $error) {
+            return new class($error) extends _atlaASQuery {
+                public $data = [];
+                public $count = 0;
+                public function __construct(\Throwable $error) {
+                    $this->data = ['error' => $error];
+                }
+            };
         }
-        $result = self::normalize_query_return($stmt);
-        $stmt->closeCursor();
-        Conn::connection_close($connection);
-        return $result;
     }
 }
